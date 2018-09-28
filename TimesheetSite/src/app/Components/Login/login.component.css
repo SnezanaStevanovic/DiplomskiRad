@@ -1,0 +1,35 @@
+.login-container {
+    margin: 0 auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 25px;
+    border-radius: 2px;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 300px;
+  }
+
+  .btn-login {
+    float: right;
+    color: white;
+  }
+  .username-input,
+  .password-input {
+    font-size: 15px;
+    padding-left: 20px;
+    padding-right: 30px;
+    width: 250px !important;
+  }
+
+  .mat-sufix-ico {
+    color: #b3b3b3;
+    cursor: pointer;
+  }
+  .error-message {
+    color: red;
+  }

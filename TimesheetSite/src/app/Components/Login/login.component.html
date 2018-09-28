@@ -1,3 +1,18 @@
-<p>
-  login works!
-</p>
+<div class="login-container" (keyup.enter)="login()">
+  <mat-form-field class="username-input">
+    <input matInput [(ngModel)]="loginParam.userName" placeholder="Username">
+  </mat-form-field>
+
+  <mat-form-field class="password-input">
+    <input matInput [(ngModel)]="loginParam.password" placeholder="Password" [type]="hide ? 'text': 'password'">
+    <mat-icon matSuffix class="mat-sufix-ico" (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+  </mat-form-field>
+
+  <div class="button-row">
+    <span class="error-message" *ngIf="showError">{{errorText}}</span>
+    <button mat-raised-button color="primary" (click)="login()" class="btn-login">
+      <span *ngIf="!loading">Login</span>
+      <mat-spinner style="margin:0 auto;" *ngIf="loading" [diameter]="30"></mat-spinner>
+    </button>
+  </div>
+</div>

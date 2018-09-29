@@ -1,10 +1,15 @@
-<div class="login-container" (keyup.enter)="login()">
+<mat-card class="login-container" (keyup.enter)="login()">
+
+  <mat-card-title>
+  </mat-card-title>
+
   <mat-form-field class="username-input">
-    <input matInput [(ngModel)]="loginParam.userName" placeholder="Username">
+    <input matInput [(ngModel)]="loginParam.userName" (ngModelChange)="dataChanged($event)" placeholder="Username">
   </mat-form-field>
 
   <mat-form-field class="password-input">
-    <input matInput [(ngModel)]="loginParam.password" placeholder="Password" [type]="hide ? 'text': 'password'">
+    <input matInput [(ngModel)]="loginParam.password" (ngModelChange)="dataChanged($event)" placeholder="Password"
+      [type]="hide ? 'text': 'password'">
     <mat-icon matSuffix class="mat-sufix-ico" (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
   </mat-form-field>
 
@@ -15,4 +20,4 @@
       <mat-spinner style="margin:0 auto;" *ngIf="loading" [diameter]="30"></mat-spinner>
     </button>
   </div>
-</div>
+</mat-card>

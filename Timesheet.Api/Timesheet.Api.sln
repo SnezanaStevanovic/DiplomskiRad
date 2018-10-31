@@ -1,9 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.28010.2036
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timesheet.Api", "Timesheet.Api\Timesheet.Api.csproj", "{74695113-055C-4449-A1FD-11318C4626C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Timesheet.Api", "Timesheet.Api\Timesheet.Api.csproj", "{74695113-055C-4449-A1FD-11318C4626C8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Timesheet.BLL", "..\..\..\..\Desktop\LoggingApp\Timesheet.BLL\Timesheet.BLL.csproj", "{2208A9DA-C052-4A82-AC3B-1CA9D8057B89}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Timesheet.DAL", "..\..\..\..\Desktop\LoggingApp\Timesheet.DAL\Timesheet.DAL.csproj", "{C1D65096-F11F-463C-A69E-BC201778CF76}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Timesheet.Model", "..\..\..\..\Desktop\LoggingApp\Timesheet.Model\Timesheet.Model.csproj", "{68C696D8-1157-45E4-A0D5-DFC938737064}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{74695113-055C-4449-A1FD-11318C4626C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74695113-055C-4449-A1FD-11318C4626C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{74695113-055C-4449-A1FD-11318C4626C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2208A9DA-C052-4A82-AC3B-1CA9D8057B89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2208A9DA-C052-4A82-AC3B-1CA9D8057B89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2208A9DA-C052-4A82-AC3B-1CA9D8057B89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2208A9DA-C052-4A82-AC3B-1CA9D8057B89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1D65096-F11F-463C-A69E-BC201778CF76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1D65096-F11F-463C-A69E-BC201778CF76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1D65096-F11F-463C-A69E-BC201778CF76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1D65096-F11F-463C-A69E-BC201778CF76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68C696D8-1157-45E4-A0D5-DFC938737064}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68C696D8-1157-45E4-A0D5-DFC938737064}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68C696D8-1157-45E4-A0D5-DFC938737064}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68C696D8-1157-45E4-A0D5-DFC938737064}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

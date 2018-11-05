@@ -19,9 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\Desktop\LoggingApp\Timesheet.BLL\Timesheet.BLL.csproj" />
-    <ProjectReference Include="..\..\..\..\..\Desktop\LoggingApp\Timesheet.DAL\Timesheet.DAL.csproj" />
-    <ProjectReference Include="..\..\..\..\..\Desktop\LoggingApp\Timesheet.Model\Timesheet.Model.csproj" />
+    <ProjectReference Include="..\Timesheet.BLL\Timesheet.BLL.csproj" />
+    <ProjectReference Include="..\Timesheet.DAL\Timesheet.DAL.csproj" />
+    <ProjectReference Include="..\Timesheet.Model\Timesheet.Model.csproj" />
   </ItemGroup>
 
 </Project>

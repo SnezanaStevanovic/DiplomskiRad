@@ -12,7 +12,7 @@ namespace Timesheet.Model.APIModel
 
         public string LastName { get; set; }
 
-        public string Gender { get; set; }
+        public Gender Gender { get; set; }
 
         public DateTime DateOfBirth { get; set; }
 
@@ -22,9 +22,9 @@ namespace Timesheet.Model.APIModel
 
         public string Password { get; set; }
 
-        public int RoleId { get; set; }
+        public Role Role { get; set; }
 
-        public int ProjectId { get; set; }
+        public List<int> ProjectIds { get; set; }
 
     }
 }

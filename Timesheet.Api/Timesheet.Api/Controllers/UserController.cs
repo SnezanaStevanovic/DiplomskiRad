@@ -48,56 +48,18 @@ namespace Timesheet.Api.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody]RegistrationRequest registrationRequest)
         {
-            UserLogin registeredUser = await _userDP.GetUserByEmail(registrationRequest.Email)
-                                                    .ConfigureAwait(false);
+            BaseResponse response = await _userService.Register(registrationRequest)
+                                                      .ConfigureAwait(false);
 
-            if (registeredUser != null)
-            {
-                return Ok(new BaseResponse
-                {
-                    Success = false,
-                    Message = "This user is already registered"
-                });
-            }
-
-            await _userService.Register(registrationRequest)
-                              .ConfigureAwait(false);
-
-            return Ok(new BaseResponse
-            {
-                Success = true,
-                Message = "Registration successful"
-            });
+            return Ok(response);
 
         }
 
         [HttpPost("auth")]
         public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
         {
-            LoginResponse response = new LoginResponse();
-
-            try
-            {
-                string cryptedPass = $"{loginRequest.Password}{_appSettings.PasswordSalt}";
-                string hashPass = _hashService.GetMd5Hash(cryptedPass);
-
-                Employee existingEmployee = await _employeeDP.GetEmployee(loginRequest.Email,
-                                                                          hashPass)
-                                                             .ConfigureAwait(false);
-
-                if (existingEmployee == null)
-                {
-                    response.Success = false;
-                    response.Message = "Invalid password";
-                }
-
-                response.Token = _tokenService.TokenCreate(loginRequest.Email,
-                                                           existingEmployee.RoleId.ToString());
-            }
-            catch (Exception ex)
-            {
-                Logger.Error($"ERROR in LoginController.Login(). Details {ex}");
-            }
+            LoginResponse response = await _userService.Login(loginRequest);
+          
             return Ok(response);
         }
 

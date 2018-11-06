@@ -22,7 +22,7 @@ namespace Timesheet.BLL
             _appSettings = appSettings.Value;
         }
 
-        public string TokenCreate(string email, string roleId)
+        public string TokenCreate(string email, string role)
         {
             string retValToken = string.Empty;
             try
@@ -33,7 +33,7 @@ namespace Timesheet.BLL
                 {
                     Subject = new ClaimsIdentity(new Claim[]
                     {
-                        new Claim (ClaimTypes.Role, roleId),
+                        new Claim (ClaimTypes.Role, role),
                         new Claim (ClaimTypes.Name, email)
 
                     }),

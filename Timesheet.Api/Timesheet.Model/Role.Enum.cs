@@ -4,10 +4,10 @@ using System.Text;
 
 namespace Timesheet.Model
 {
-    public enum TaskTypeEnum
+    public enum Role
     {
-        BUG,
-        FEATURE,
-        SUPPORT
+		ADMIN,
+		PROJECT_MANAGER,
+		EMPLOYEE
     }
 }

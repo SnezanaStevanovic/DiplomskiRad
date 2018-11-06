@@ -36,7 +36,7 @@ namespace Timesheet.DAL
                                 DateOfBirth,
                                 Gender,
                                 ProjectId,
-                                RoleId
+                                Role
                            )
                VALUES
                            (
@@ -47,7 +47,7 @@ namespace Timesheet.DAL
                              @DateOfBirth,
                              @Gender,
                              @ProjectId,
-                             @RoleId
+                             @Role
                             )";
 
         private const string GET_EMPLOYEE =
@@ -122,7 +122,7 @@ namespace Timesheet.DAL
                     {
 
                         cmd.Parameters.AddWithValue("@UserId", employee.UserId);
-                        cmd.Parameters.AddWithValue("@RoleId", employee.RoleId);
+                        cmd.Parameters.AddWithValue("@Role", employee.Role);
                         cmd.Parameters.AddWithValue("@ProjectId", employee.ProjectId);
                         cmd.Parameters.AddWithValue("@FirstName", employee.FirstName);
                         cmd.Parameters.AddWithValue("@LastName", employee.LastName);
@@ -216,7 +216,7 @@ namespace Timesheet.DAL
             {
                 employee.Id = Convert.ToInt32(reader["Id"]);
                 employee.UserId = Convert.ToInt32(reader["UserId"]);
-                employee.RoleId = Convert.ToInt32(reader["RoleId"]);
+                employee.Role = (Role)Convert.ToInt32(reader["Role"]);
                 employee.ProjectId = Convert.ToInt32(reader["ProjectId"]);
                 employee.FirstName = reader["FirstName"].ToString();
                 employee.LastName = reader["LastName"].ToString();

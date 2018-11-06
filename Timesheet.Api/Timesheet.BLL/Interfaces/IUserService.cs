@@ -9,7 +9,9 @@ namespace Timesheet.BLL.Interfaces
 {
     public interface IUserService
     {
-        Task Register(RegistrationRequest registrationRequest);
+        Task<BaseResponse> Register(RegistrationRequest registrationRequest);
+
+        Task<LoginResponse> Login(LoginRequest loginRequest);
 
     }
 }

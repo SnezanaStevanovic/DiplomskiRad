@@ -12,7 +12,7 @@ namespace Timesheet.Model
 
         public string Name { get; set; }
 
-        public TaskTypeEnum Type { get; set; }
+        public TaskType Type { get; set; }
 
         public string Description { get; set; }
 

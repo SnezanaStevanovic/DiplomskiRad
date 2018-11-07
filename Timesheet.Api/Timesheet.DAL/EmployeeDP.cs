@@ -216,12 +216,12 @@ namespace Timesheet.DAL
             {
                 employee.Id = Convert.ToInt32(reader["Id"]);
                 employee.UserId = Convert.ToInt32(reader["UserId"]);
-                employee.Role = (Role)Convert.ToInt32(reader["Role"]);
-                employee.ProjectId = Convert.ToInt32(reader["ProjectId"]);
+                employee.Role = (Role)Convert.ToInt32(reader["RoleId"]);
+                //employee.ProjectId = Convert.ToInt32(reader["ProjectId"]);
                 employee.FirstName = reader["FirstName"].ToString();
                 employee.LastName = reader["LastName"].ToString();
                 employee.Adress = reader["Adress"].ToString();
-                employee.DateOfBirth = Convert.ToDateTime(reader["DateOfBirth"]);
+                //employee.DateOfBirth = Convert.ToDateTime(reader["DateOfBirth"]);
 
             }
             catch (Exception ex)

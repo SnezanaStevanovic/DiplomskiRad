@@ -45,6 +45,7 @@ namespace Timesheet.BLL
                 {
                     baseResponse.Success = false;
                     baseResponse.Message = "This user is already registered";
+                    return baseResponse;
                 }
 
                 string cryptedPass = $"{registrationRequest.Password}{_appSettings.PasswordSalt}";
@@ -80,6 +81,7 @@ namespace Timesheet.BLL
 
                 baseResponse.Success = true;
                 baseResponse.Message = "Registration successful";
+                return baseResponse;
 
             }
             catch (Exception ex)
@@ -87,9 +89,10 @@ namespace Timesheet.BLL
                 Logger.Error($"ERROR: {ex.StackTrace}");
                 baseResponse.Success = false;
                 baseResponse.Message = "Registration failed";
+                return baseResponse; 
             }
 
-            return baseResponse;
+           
         }
 
         public async Task<LoginResponse> Login(LoginRequest loginRequest)

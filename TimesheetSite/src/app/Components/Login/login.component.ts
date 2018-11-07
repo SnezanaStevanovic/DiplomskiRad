@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/DataProviders/User/user.service';
 import { Router } from '@angular/router';
 import { LoginRequest } from 'src/app/Model/LoginRequest';
+import { AuthService } from 'src/app/Services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -19,6 +20,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private _userSerice: UserService,
+    private _authService: AuthService,
     private _router: Router) { }
 
 
@@ -33,9 +35,15 @@ export class LoginComponent implements OnInit {
   login(): void {
     this.loading = true;
     this._userSerice.login(this.loginParam).subscribe(res => {
-      sessionStorage.setItem('token', res.token);
-      this.loading = false;
-      this._router.navigate([this.url]);
+
+      if (res.success) {
+        this._authService.login(res.token);
+        this.loading = false;
+        this._router.navigate([this.url]);
+      } else {
+        this.showError = true;
+        this.loading = false;
+      }
     }, () => {
       this.showError = true;
       this.loading = false;

@@ -17,7 +17,7 @@ export class UserService extends BaseService {
   }
 
   login(reqest: LoginRequest): Observable<LoginResponse> {
-    const url = this._baseUrl + 'User/Login';
+    const url = this._baseUrl + 'user/auth';
     const postBudy = JSON.stringify(reqest);
     return this._http.post<LoginResponse>(url, postBudy, this.httpOptions)
       .pipe(

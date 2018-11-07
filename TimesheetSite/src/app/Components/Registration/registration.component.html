@@ -1,3 +1,46 @@
-<p>
-  registration works!
-</p>
+<div class="register-container">
+  <mat-card class="register-card">
+    <mat-card-title>
+    </mat-card-title>
+    <form [formGroup]="registerForm" class="form-card-group">
+
+      <mat-form-field class="username-input">
+        <input matInput placeholder="Username" formControlName="Username" required>
+        <mat-error *ngIf="registerForm.controls['Username']?.errors?.required">Username is required.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="name-input">
+        <input matInput placeholder="FirstName" formControlName="FirstName" required>
+        <mat-error *ngIf="registerForm.controls['FirstName']?.errors?.required">Name is required.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="last-name-input">
+        <input matInput placeholder="LastName" formControlName="LastName" required>
+        <mat-error *ngIf="registerForm.controls['LastName']?.errors?.required">Last name is required.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="adress-input">
+        <input matInput placeholder="Adress" formControlName="Adress" required>
+        <mat-error *ngIf="registerForm.controls['Adress']?.errors?.required">Adress is required.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="email-input">
+        <input matInput placeholder="Email" formControlName="Email" required>
+        <mat-error *ngIf="registerForm.controls['Email'].invalid">{{getErrorMessage()}}</mat-error>
+      </mat-form-field>
+
+      <div class="button-row">
+        <button mat-raised-button color="warn" (click)="cancel()" class="btn-cancel">
+          <span>Cancel</span>
+        </button>
+
+        <button mat-raised-button color="primary" (click)="register()" class="btn-register">
+          <span *ngIf="!loading">Register</span>
+          <mat-spinner style="margin:0 auto;" *ngIf="loading" [diameter]="30"></mat-spinner>
+        </button>
+
+      </div>
+
+    </form>
+  </mat-card>
+</div>

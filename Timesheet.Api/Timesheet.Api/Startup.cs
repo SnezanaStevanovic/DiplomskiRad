@@ -67,6 +67,14 @@ namespace Timesheet.Api
             services.AddSingleton<IHashService, HashService>();
             services.AddSingleton<IUserService, UserService>();
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
+            });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
@@ -76,6 +84,7 @@ namespace Timesheet.Api
         {
             if (env.IsDevelopment())
             {
+
                 app.UseDeveloperExceptionPage();
             }
             else
@@ -83,9 +92,8 @@ namespace Timesheet.Api
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
             app.UseAuthentication();
-
+            app.UseCors("AllowAll");
             app.UseMiddleware<HeaderMiddleware>();
             app.UseMvc();
         }

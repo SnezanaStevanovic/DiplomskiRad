@@ -6,8 +6,8 @@ namespace Timesheet.Model
 {
     public enum Role
     {
-		ADMIN,
-		PROJECT_MANAGER,
-		EMPLOYEE
+		ADMIN = 1,
+		PROJECT_MANAGER = 2,
+		EMPLOYEE = 3
     }
 }

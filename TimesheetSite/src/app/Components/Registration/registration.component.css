@@ -1,0 +1,31 @@
+.register-container{    
+      display: grid;
+      align-items: center;
+ }
+
+ .register-card{
+     justify-self: center;
+     margin-top: 20px;
+     width: 400px;
+ }
+
+ .form-card-group{
+     display: grid;
+     padding: 50px;
+ }
+
+ .button-row{
+      margin-top: 20px;
+      display: grid;
+      grid-gap: 10px;
+      grid-template-areas: "a b"
+ }
+
+ .btn-cancel{
+     grid-area: a;
+ }
+
+ .btn-register{
+     grid-area: b;
+ }
+

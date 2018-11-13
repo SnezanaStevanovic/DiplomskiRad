@@ -18,7 +18,5 @@ namespace Timesheet.Model
 
         public DateTime EndTime { get; set; }
 
-
-
     }
 }

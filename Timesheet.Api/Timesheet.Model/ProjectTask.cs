@@ -16,13 +16,13 @@ namespace Timesheet.Model
 
         public string Description { get; set; }
 
-        public DateTime EstimatedTime { get; set; }
+        public DateTime? EstimatedTime { get; set; }
 
-        public DateTime StartDate { get; set; }
+        public DateTime? StartDate { get; set; }
 
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
-        public DateTime SpentTime { get; set; }
+        public DateTime? SpentTime { get; set; }
 
         public string Progress { get; set; }
 

@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Timesheet.DAL", "Timesheet.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Timesheet.Model", "Timesheet.Model\Timesheet.Model.csproj", "{9CFE93D8-EDED-4F0E-B5C6-1E9226B68B3D}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Timesheet.Common", "Timesheet.Common\Timesheet.Common.csproj", "{325BA5B2-BF26-4E91-B3B8-FB824EC24E2D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{9CFE93D8-EDED-4F0E-B5C6-1E9226B68B3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9CFE93D8-EDED-4F0E-B5C6-1E9226B68B3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9CFE93D8-EDED-4F0E-B5C6-1E9226B68B3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{325BA5B2-BF26-4E91-B3B8-FB824EC24E2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{325BA5B2-BF26-4E91-B3B8-FB824EC24E2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{325BA5B2-BF26-4E91-B3B8-FB824EC24E2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{325BA5B2-BF26-4E91-B3B8-FB824EC24E2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

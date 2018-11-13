@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Text;
 using System.Threading.Tasks;
+using Timesheet.Common;
 using Timesheet.DAL.Interfaces;
 using Timesheet.Model;
 
@@ -15,6 +16,7 @@ namespace Timesheet.DAL
         private ILog Logger { get; } = LogManager.GetLogger(typeof(UserLoginDP));
 
         private readonly AppSettings _config;
+
 
         #region SqlQueries
         private const string GET_ALL =
@@ -95,7 +97,7 @@ namespace Timesheet.DAL
                     {
                         using (SqlDataReader reader = await cmd.ExecuteReaderAsync().ConfigureAwait(false))
                         {
-                            Employee employee = this.Create(reader);
+                            Employee employee = await this.Create(reader);
                             retValEmployees.Add(employee);
                         }
                     }
@@ -123,12 +125,12 @@ namespace Timesheet.DAL
 
                         cmd.Parameters.AddWithValue("@UserId", employee.UserId);
                         cmd.Parameters.AddWithValue("@Role", employee.Role);
-                        cmd.Parameters.AddWithValue("@ProjectId", employee.ProjectId);
+                      //  cmd.Parameters.AddWithValue("@ProjectId", employee.ProjectId);
                         cmd.Parameters.AddWithValue("@FirstName", employee.FirstName);
                         cmd.Parameters.AddWithValue("@LastName", employee.LastName);
-                        cmd.Parameters.AddWithValue("@DateOfBirth", employee.DateOfBirth);
-                        cmd.Parameters.AddWithValue("@Gender", employee.Gender);
-                        cmd.Parameters.AddWithValue("@Adress", employee.Adress);
+                        cmd.Parameters.AddWithValue("@DateOfBirth", employee.DateOfBirth == null ? DBNull.Value : (object)employee.DateOfBirth);
+                        cmd.Parameters.AddWithValue("@Gender", employee.Gender == null ? DBNull.Value : (object)employee.Gender);
+                        cmd.Parameters.AddWithValue("@Adress", employee.Adress == null ? DBNull.Value : (object)employee.Adress);
 
                         await cmd.ExecuteNonQueryAsync()
                                  .ConfigureAwait(false);
@@ -159,7 +161,7 @@ namespace Timesheet.DAL
 
                         using (SqlDataReader reader = await cmd.ExecuteReaderAsync().ConfigureAwait(false))
                         {
-                            Employee employee = this.Create(reader);
+                            Employee employee = await this.Create(reader);
                             retValEmployees.Add(employee);
                         }
                     }
@@ -194,7 +196,7 @@ namespace Timesheet.DAL
                         {
                             while (await reader.ReadAsync())
                             {
-                                retValeEmployee = this.Create(reader);
+                                retValeEmployee = await this.Create(reader);
                             }
                         }
                     }
@@ -209,19 +211,21 @@ namespace Timesheet.DAL
             return retValeEmployee;
         }
 
-        private Employee Create(SqlDataReader reader)
+        private async Task<Employee> Create(SqlDataReader reader)
         {
             Employee employee = new Employee();
             try
             {
-                employee.Id = Convert.ToInt32(reader["Id"]);
+                employee.Id = await SqlParamHelper.ReadReaderValue<int>(reader, "Id");
+                employee.UserId = await SqlParamHelper.ReadReaderValue<int>(reader, "UserId");
                 employee.UserId = Convert.ToInt32(reader["UserId"]);
-                employee.Role = (Role)Convert.ToInt32(reader["RoleId"]);
+                employee.Role = await SqlParamHelper.ReadReaderValue<Role>(reader, "RoleId");
                 //employee.ProjectId = Convert.ToInt32(reader["ProjectId"]);
-                employee.FirstName = reader["FirstName"].ToString();
-                employee.LastName = reader["LastName"].ToString();
-                employee.Adress = reader["Adress"].ToString();
-                //employee.DateOfBirth = Convert.ToDateTime(reader["DateOfBirth"]);
+                employee.FirstName = await SqlParamHelper.ReadReaderValue<string>(reader, "FirstName");
+                employee.LastName = await SqlParamHelper.ReadReaderValue<string>(reader, "LastName");
+                employee.Adress = await SqlParamHelper.ReadReaderValue<string>(reader, "Adress");
+                employee.Gender = await SqlParamHelper.StringToEnum<Gender>(reader, "Gender");
+                employee.DateOfBirth = await SqlParamHelper.ReadReaderValue<DateTime>(reader, "DateOfBirth");
 
             }
             catch (Exception ex)

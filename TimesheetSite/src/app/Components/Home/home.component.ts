@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { map } from 'rxjs/operators';
+import { HomeCard } from 'src/app/Model/card';
 import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
 
 @Component({
@@ -13,18 +14,18 @@ export class HomeComponent {
     map(({ matches }) => {
       if (matches) {
         return [
-          { title: 'Card 1', cols: 1, rows: 1 },
-          { title: 'Card 2', cols: 1, rows: 1 },
-          { title: 'Card 3', cols: 1, rows: 1 },
-          { title: 'Card 4', cols: 1, rows: 1 }
+          { title: 'Start your day', cols: 1, rows: 1, name: 'app-timesheet-card' },
+          { title: 'Your tasks', cols: 1, rows: 1, name: 'app-your-tasks' },
+          {
+            title: 'Your work time', cols: 1, rows: 1, name: 'app-last-days-work-card'
+          }
         ];
       }
 
       return [
-        { title: 'Card 1', cols: 1, rows: 1 },
-        { title: 'Card 2', cols: 1, rows: 1 },
-        { title: 'Card 3', cols: 2, rows: 1 },
-        { title: 'Card 4', cols: 1, rows: 1 }
+        { title: 'Start your day', cols: 1, rows: 1, name: 'app-timesheet-card' },
+        { title: 'Your tasks', cols: 1, rows: 1, name: 'app-your-tasks' },
+        { title: 'Your work time', cols: 2, rows: 1, name: 'app-last-days-work-card' },
       ];
     })
   );

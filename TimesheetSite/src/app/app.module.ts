@@ -10,8 +10,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RegistrationComponent } from './Components/Registration/registration.component';
 import { JwtModule } from '@auth0/angular-jwt';
-import { MatGridListModule, MatCardModule, MatMenuModule, MatIconModule, MatButtonModule } from '@angular/material';
+import { MatGridListModule, MatCardModule, MatMenuModule, MatIconModule, MatButtonModule, MatToolbarModule, MatSidenavModule, MatListModule } from '@angular/material';
 import { LayoutModule } from '@angular/cdk/layout';
+import { NavigationComponent } from './Components/Navigation/navigation.component';
+import { TimesheetCardComponent } from './Components/HomeCards/timesheet-card/timesheet-card.component';
+import { YourTasksComponent } from './Components/HomeCards/your-tasks-card/your-tasks.component';
+import { LastDaysWorkCardComponent } from './Components/HomeCards/last-days-work-card/last-days-work-card.component';
+
 
 
 
@@ -20,7 +25,11 @@ import { LayoutModule } from '@angular/cdk/layout';
     AppComponent,
     LoginComponent,
     HomeComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    NavigationComponent,
+    TimesheetCardComponent,
+    YourTasksComponent,
+    LastDaysWorkCardComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +51,10 @@ import { LayoutModule } from '@angular/cdk/layout';
     MatMenuModule,
     MatIconModule,
     MatButtonModule,
-    LayoutModule
+    LayoutModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatListModule
   ],
   providers: [],
   bootstrap: [AppComponent]

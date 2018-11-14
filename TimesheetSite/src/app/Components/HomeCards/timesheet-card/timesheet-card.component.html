@@ -1,0 +1,7 @@
+<div class="timesheet-card-container">
+  <button mat-raised-button color="primary" (click)="work()" class="btn-start-end-work">
+    <span *ngIf="!working">Start day!</span>
+    <span *ngIf="working">End day!</span>
+  </button>
+  <span *ngIf="working">Today work time: insert timer here </span>
+</div>

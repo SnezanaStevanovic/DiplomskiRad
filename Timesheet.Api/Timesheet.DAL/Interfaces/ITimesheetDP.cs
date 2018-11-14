@@ -9,9 +9,6 @@ namespace Timesheet.DAL.Interfaces
     {
         Task<List<Model.Timesheet>> PeriodTimeshetGet(DateTime startDate,
                                                       int numberOfDays,
-                                                      int employeeId)
-        {
-
-        }
+                                                      int employeeId);
     }
 }

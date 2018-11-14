@@ -1,0 +1,12 @@
+.timesheet-card-container{
+    margin-top: 50px;
+    display: grid;
+    grid-template-rows: 40px;
+    grid-template-columns: 80%;
+    justify-content: center;
+    row-gap: 20px;
+}
+
+.btn-start-end-work{
+    font-size: 28px;
+}

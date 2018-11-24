@@ -10,13 +10,13 @@ namespace Timesheet.Model
 
         public int EmployeeId { get; set; }
 
-        public DateTime Overtime { get; set; }
+        public DateTime? Overtime { get; set; }
 
-        public DateTime Pause { get; set; }
+        public DateTime? Pause { get; set; }
 
-        public DateTime StartTime { get; set; }
+        public DateTime? StartTime { get; set; }
 
-        public DateTime EndTime { get; set; }
+        public DateTime? EndTime { get; set; }
 
     }
 }

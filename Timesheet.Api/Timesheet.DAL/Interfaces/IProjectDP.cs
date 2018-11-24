@@ -8,8 +8,8 @@ namespace Timesheet.DAL.Interfaces
 {
     public interface IProjectDP
     {
-        Task Insert(ProjectTask project);
+        Task Insert(Project project);
 
-        Task<List<ProjectTask>> GetAll();
+        Task<List<Project>> GetAll();
     }
 }

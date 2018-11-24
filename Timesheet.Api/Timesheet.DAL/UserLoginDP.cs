@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
+using Timesheet.Common;
 using Timesheet.DAL.Interfaces;
 using Timesheet.Model;
 
@@ -69,7 +70,7 @@ namespace Timesheet.DAL
                         {
                             while (await reader.ReadAsync().ConfigureAwait(false))
                             {
-                                UserLogin dbUser = this.Create(reader);
+                                UserLogin dbUser = await this.Create(reader);
                                 allUsers.Add(dbUser);
                             }
                         }
@@ -81,25 +82,25 @@ namespace Timesheet.DAL
             catch (Exception ex)
             {
                 this.Logger.Error($"{ex.Message} StackTrace: {ex.StackTrace}");
-                throw;
+                
             }
 
             return allUsers;
         }
 
-        private UserLogin Create(SqlDataReader reader)
+        private async Task<UserLogin> Create(SqlDataReader reader)
         {
             UserLogin user = new UserLogin();
             try
             {
-                user.Id = Convert.ToInt32(reader["Id"]);
-                user.Email = reader["Email"].ToString();
-                user.Password = reader["Password"].ToString();
+                user.Id = await SqlParamHelper.ReadReaderValue<int>(reader,"Id");
+                user.Email = await SqlParamHelper.ReadReaderValue<string>(reader, "Email");
+                user.Password = await SqlParamHelper.ReadReaderValue<string>(reader, "Password");
             }
             catch (Exception ex)
             {
                 this.Logger.Error($"{ex.Message} StackTrace: {ex.StackTrace}");
-                throw;
+                
             }
 
             return user;
@@ -127,7 +128,7 @@ namespace Timesheet.DAL
             catch (Exception ex)
             {
                 this.Logger.Error($"{ex.Message} StackTrace: {ex.StackTrace}");
-                throw;
+                
             }
         }
 
@@ -149,7 +150,7 @@ namespace Timesheet.DAL
                         {
                             while (await reader.ReadAsync().ConfigureAwait(false))
                             {
-                                user = this.Create(reader);
+                                user = await this.Create(reader);
                             }
                         }
                     }
@@ -160,7 +161,7 @@ namespace Timesheet.DAL
             catch (Exception ex)
             {
                 this.Logger.Error($"{ex.Message} StackTrace: {ex.StackTrace}");
-                throw;
+                
             }
 
             return user;

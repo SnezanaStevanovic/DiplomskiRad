@@ -51,9 +51,9 @@ namespace Timesheet.DAL
             _config = config.Value;
         }
 
-        public async Task<List<ProjectTask>> GetAll()
+        public async Task<List<Project>> GetAll()
         {
-            List<ProjectTask> retValProjects = new List<ProjectTask>();
+            List<Project> retValProjects = new List<Project>();
             try
             {
                 using (SqlConnection connection = new SqlConnection(this._config.ConnectionString))
@@ -67,7 +67,7 @@ namespace Timesheet.DAL
                         {
                             while (reader != null)
                             {
-                                ProjectTask project = await this.Create(reader);
+                                Project project = await this.Create(reader);
                                 retValProjects.Add(project);
                             }
                         }
@@ -79,24 +79,22 @@ namespace Timesheet.DAL
             catch (Exception ex)
             {
                 this.Logger.Error($"ERROR ProjectDP.GetAll() method. Details: {ex.Message} StackTrace: {ex.StackTrace}");
-                throw;
             }
 
             return retValProjects;
         }
 
-        private async Task<ProjectTask> Create(SqlDataReader reader)
+        private async Task<Project> Create(SqlDataReader reader)
         {
-            ProjectTask project = new ProjectTask();
+            Project project = new Project();
             try
             {
                 try
                 {
                     project.Id = await SqlParamHelper.ReadReaderValue<int>(reader, "Id");
                     project.Name = await SqlParamHelper.ReadReaderValue<string>(reader, "Name");
-                    project.Description = await SqlParamHelper.ReadReaderValue<string>(reader, "Desription");
                     project.EstimatedTime = await SqlParamHelper.ReadReaderValue<DateTime>(reader, "EstimatedTime");
-                    project.StartDate = await SqlParamHelper.ReadReaderValue<DateTime>(reader, "StartDate");
+                    project.DateCreated = await SqlParamHelper.ReadReaderValue<DateTime>(reader, "DateCreated");
                     project.EndDate = await SqlParamHelper.ReadReaderValue<DateTime>(reader, "EndDate");
                     project.SpentTime = await SqlParamHelper.ReadReaderValue<DateTime>(reader, "SpentTime");
                     project.Progress = await SqlParamHelper.ReadReaderValue<string>(reader, "Progress");
@@ -105,7 +103,7 @@ namespace Timesheet.DAL
                 catch (Exception ex)
                 {
                     this.Logger.Error($"{ex.Message} StackTrace: {ex.StackTrace}");
-                    throw;
+                    
                 }
             }
             catch (Exception ex)
@@ -116,7 +114,7 @@ namespace Timesheet.DAL
             return project;
         }
 
-        public async Task Insert(ProjectTask project)
+        public async Task Insert(Project project)
         {
             try
             {
@@ -127,7 +125,7 @@ namespace Timesheet.DAL
                     {
                         cmd.Parameters.AddWithValue("@Name", project.Name);
                         cmd.Parameters.AddWithValue("@EstimatedTime", project.EstimatedTime == null ? DBNull.Value : (object)project.EstimatedTime);
-                        cmd.Parameters.AddWithValue("@StartDate", project.StartDate == null ? DBNull.Value : (object)project.StartDate);
+                        cmd.Parameters.AddWithValue("@DateCreated", project.DateCreated == null ? DBNull.Value : (object)project.DateCreated);
                         cmd.Parameters.AddWithValue("@EndDate", project.EndDate == null ? DBNull.Value : (object)project.EndDate);
                         cmd.Parameters.AddWithValue("@SpentTime", project.SpentTime == null ? DBNull.Value : (object)project.SpentTime);
                         cmd.Parameters.AddWithValue("@Progress", project.Progress == null ? DBNull.Value : (object)project.Progress);
@@ -143,7 +141,7 @@ namespace Timesheet.DAL
             catch (Exception ex)
             {
                 this.Logger.Error($"ERROR ProjectDP.Insert() method. Details: {ex.Message} StackTrace: {ex.StackTrace}");
-                throw;
+                
             }
         }
     }

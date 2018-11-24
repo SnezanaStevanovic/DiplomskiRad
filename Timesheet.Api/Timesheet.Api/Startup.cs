@@ -63,9 +63,11 @@ namespace Timesheet.Api
 
             services.AddSingleton<IUserLoginDP, UserLoginDP>();
             services.AddSingleton<IEmployeeDP, EmployeeDP>();
+            services.AddSingleton<ITimesheetDP, TimesheetDP>();
             services.AddSingleton<ITokenService, TokenService>();
             services.AddSingleton<IHashService, HashService>();
             services.AddSingleton<IUserService, UserService>();
+            services.AddSingleton<ITimesheetService, TimesheetService>();
 
             services.AddCors(options =>
             {

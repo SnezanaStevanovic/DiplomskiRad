@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Timesheet.Model;
 
 namespace Timesheet.DAL.Interfaces
 {
     public interface ITaskDP
     {
-        Task Insert(Task task);
+        Task Insert(ProjectTask task);
 
-        List<Task> TasksPerProjectGet(int projectId);
+        Task<List<ProjectTask>> TasksPerProjectGet(int projectId);
     }
 }

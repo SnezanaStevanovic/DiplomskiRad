@@ -8,24 +8,22 @@ import { Chart } from 'chart.js';
   templateUrl: './last-days-work-card.component.html',
   styleUrls: ['./last-days-work-card.component.css']
 })
-export class LastDaysWorkCardComponent implements OnInit, AfterViewInit {
-
+export class LastDaysWorkCardComponent implements OnInit {
 
   constructor() { }
 
   chart = [];
 
-  testData = [{ day: 'ponedeljak', workTime: 8 }, { day: 'utorak', workTime: 7 }, { day: 'sreda', workTime: 6 }, { day: 'cetvrtak', workTime: 9 }]
+  testData = [{ day: 'ponedeljak', workTime: 8 },
+  { day: 'utorak', workTime: 7 },
+  { day: 'sreda', workTime: 6 },
+  { day: 'cetvrtak', workTime: 9 }];
 
-
-  ngOnInit() {
-  }
-
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     this.chart = new Chart('canvas', {
       type: 'line',
       data: {
-        labels: ["Ponedeljak", "Utorak", "Sreda", "Cetvrtak", "Petak", "Supota"],
+        labels: ["Ponedeljak", "Utorak", "Sreda", "Cetvrtak", "Petak", "Subota"],
         datasets: [
           {
             data: [8, 9, 8, 7, 6, 8],
@@ -53,6 +51,6 @@ export class LastDaysWorkCardComponent implements OnInit, AfterViewInit {
         maintainAspectRatio: false
       }
     });
-  }
 
+  }
 }

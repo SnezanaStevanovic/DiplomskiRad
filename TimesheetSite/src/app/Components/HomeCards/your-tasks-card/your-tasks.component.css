@@ -1,0 +1,40 @@
+.your-tasks-container {
+    display: grid;
+    grid-template-columns: 90%;
+    grid-template-rows: auto;
+    justify-content: center;
+}
+
+.one-task {
+    width: 100%;
+    display: grid;
+    grid-template-areas: "a b c";
+    grid-template-columns: auto auto 1fr;
+}
+
+.icon {
+    grid-area: a;
+}
+
+.name-es-time-container {
+    grid-area: b;
+    display: grid;
+    margin-left: 5px;
+}
+
+.name{
+    justify-self: start;
+    margin:0;
+}
+.estimated-time {
+    justify-self: start;
+    margin: 0;
+}
+
+.type {
+    grid-area: c;
+    justify-self: end;
+    margin-right: 10px;
+    align-self: center;
+}
+

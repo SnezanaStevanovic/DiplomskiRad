@@ -16,6 +16,7 @@ import { NavigationComponent } from './Components/Navigation/navigation.componen
 import { TimesheetCardComponent } from './Components/HomeCards/timesheet-card/timesheet-card.component';
 import { YourTasksComponent } from './Components/HomeCards/your-tasks-card/your-tasks.component';
 import { LastDaysWorkCardComponent } from './Components/HomeCards/last-days-work-card/last-days-work-card.component';
+import { TimerComponentComponent } from './timer-component/timer-component.component';
 
 
 
@@ -29,7 +30,8 @@ import { LastDaysWorkCardComponent } from './Components/HomeCards/last-days-work
     NavigationComponent,
     TimesheetCardComponent,
     YourTasksComponent,
-    LastDaysWorkCardComponent
+    LastDaysWorkCardComponent,
+    TimerComponentComponent
   ],
   imports: [
     BrowserModule,

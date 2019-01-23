@@ -1,3 +1,15 @@
-<p>
-  your-tasks works!
-</p>
+<div class="your-tasks-container">
+  <mat-list dense>
+    <mat-list-item class="list-item" *ngFor="let task of tasks">
+      <div class="one-task">
+        <mat-icon class="icon" mat-list-icon>assignment</mat-icon>
+        <div class="name-es-time-container">
+          <p mat-line class="name">{{task.name}}</p>
+          <p mat-line class="estimated-time"> {{task.estimatedTime | date}} </p>
+        </div>
+        <span class="type">{{task.type}}</span>
+      </div>
+      <mat-divider></mat-divider>
+    </mat-list-item>
+  </mat-list>
+</div>

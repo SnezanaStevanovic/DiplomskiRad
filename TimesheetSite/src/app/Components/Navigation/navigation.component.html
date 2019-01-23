@@ -8,13 +8,26 @@
       <a mat-list-item href="#">Link 3</a>
     </mat-nav-list>
   </mat-sidenav>
-  <mat-sidenav-content>
+
+  <mat-sidenav-content class="sidenav-content">
     <mat-toolbar color="primary">
       <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       <span>TimesheetSite</span>
+      <ng-container class="user-settings">
+        <button mat-button [matMenuTriggerFor]="menu">User</button>
+        <mat-menu [overlapTrigger]="false" #menu="matMenu">
+          <button mat-menu-item>Item 1</button>
+          <button mat-menu-item>Item 2</button>
+          <button mat-menu-item>Item 3</button>
+        </mat-menu>
+      </ng-container>
+
     </mat-toolbar>
-    <router-outlet></router-outlet>
+    <ng-container>
+      <router-outlet></router-outlet>
+    </ng-container>
+
   </mat-sidenav-content>
 </mat-sidenav-container>

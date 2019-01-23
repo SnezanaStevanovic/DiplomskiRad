@@ -18,7 +18,7 @@ const appRoutes: Routes = [
         ]
     },
     // otherwise redirect to home
-    { path: '**', redirectTo: '/main', pathMatch: 'full' }
+    { path: '**', redirectTo: '/main/home', pathMatch: 'full' }
 ];
 
 

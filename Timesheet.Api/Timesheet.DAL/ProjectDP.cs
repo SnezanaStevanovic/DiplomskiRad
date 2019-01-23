@@ -43,6 +43,33 @@ namespace Timesheet.DAL
                 @Progress  
               )
             ";
+
+        private const string GET_BY_ID =
+            @"SELECT 
+                     Name,
+                     EstimatedTime,
+                     StartDate,
+                     EndDate,
+                     SpentTime,
+                     Progress
+               FROM
+                     Project
+               WHERE Id = @ProjectId;
+             ";
+
+        private const string GET_ALL_PROJECTS_FOR_EMPLOYEE =
+            @"SELECT 
+                     Name,
+                     EstimatedTime,
+                     StartDate,
+                     EndDate,
+                     SpentTime,
+                     Progress
+             FROM Project p 
+             INNER JOIN EmployeeProject ep
+             ON p.Id = ep.ProjectId
+             WHERE ep.EmployeeId = @EmployeeId";
+
         #endregion
 
         private readonly AppSettings _config;
@@ -51,7 +78,7 @@ namespace Timesheet.DAL
             _config = config.Value;
         }
 
-        public async Task<List<Project>> GetAll()
+        public async Task<List<Project>> GetAllAsync()
         {
             List<Project> retValProjects = new List<Project>();
             try
@@ -103,7 +130,7 @@ namespace Timesheet.DAL
                 catch (Exception ex)
                 {
                     this.Logger.Error($"{ex.Message} StackTrace: {ex.StackTrace}");
-                    
+
                 }
             }
             catch (Exception ex)
@@ -114,7 +141,7 @@ namespace Timesheet.DAL
             return project;
         }
 
-        public async Task Insert(Project project)
+        public async Task InsertAsync(Project project)
         {
             try
             {
@@ -141,8 +168,75 @@ namespace Timesheet.DAL
             catch (Exception ex)
             {
                 this.Logger.Error($"ERROR ProjectDP.Insert() method. Details: {ex.Message} StackTrace: {ex.StackTrace}");
-                
+
             }
+        }
+
+        public async Task<Project> GetByIdAsync(int projectId)
+        {
+            Project project = new Project();
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(this._config.ConnectionString))
+                {
+                    await connection.OpenAsync()
+                                    .ConfigureAwait(false);
+
+                    using (SqlCommand cmd = new SqlCommand(GET_BY_ID, connection))
+                    {
+                        using (SqlDataReader reader = await cmd.ExecuteReaderAsync().ConfigureAwait(false))
+                        {
+                            while (reader != null)
+                            {
+                                project = await this.Create(reader);
+                            }
+                        }
+                    }
+
+                    connection.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error($"{ex}");
+            }
+
+            return project;
+        }
+
+        public async Task<List<Project>> GetAllProjectsForEmployee(int employeeId)
+        {
+            List<Project> retValProjects = new List<Project>();
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(this._config.ConnectionString))
+                {
+                    await connection.OpenAsync()
+                                    .ConfigureAwait(false);
+
+                    using (SqlCommand cmd = new SqlCommand(GET_ALL_PROJECTS_FOR_EMPLOYEE, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@EmployeeId", employeeId);
+
+                        using (SqlDataReader reader = await cmd.ExecuteReaderAsync().ConfigureAwait(false))
+                        {
+                            while (reader != null)
+                            {
+                                Project project = await this.Create(reader);
+                                retValProjects.Add(project);
+                            }
+                        }
+                    }
+
+                    connection.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                this.Logger.Error($"ERROR ProjectDP.GetAll() method. Details: {ex.Message} StackTrace: {ex.StackTrace}");
+            }
+
+            return retValProjects;
         }
     }
 }

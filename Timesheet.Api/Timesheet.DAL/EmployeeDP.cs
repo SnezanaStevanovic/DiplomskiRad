@@ -50,7 +50,7 @@ namespace Timesheet.DAL
                              @Gender,
                              @ProjectId,
                              @Role
-                            )";
+                            );";
 
         private const string GET_EMPLOYEE =
            @"
@@ -71,10 +71,11 @@ namespace Timesheet.DAL
             @"
                 SELECT 
                         * 
-                FROM
-                    EMPLOYEE
+                FROM EMPLOYEE emp
+                INNER JOIN EmployeeProject ep
+                ON emp.Id = ep.EmployeeId
                 WHERE
-                     ProjectId = @ProjectId
+                     ep.ProjectId = @ProjectId
             ";
         #endregion
 
@@ -84,7 +85,7 @@ namespace Timesheet.DAL
         }
 
 
-        public async Task<List<Employee>> GetAll()
+        public async Task<List<Employee>> GetAllAsync()
         {
             List<Employee> retValEmployees = new List<Employee>();
             try
@@ -112,7 +113,7 @@ namespace Timesheet.DAL
             return retValEmployees;
         }
 
-        public async Task Insert(Employee employee)
+        public async Task InsertAsync(Employee employee)
         {
             try
             {
@@ -146,7 +147,7 @@ namespace Timesheet.DAL
 
         }
 
-        public async Task<List<Employee>> ProjectEmployeesGet(int projectId)
+        public async Task<List<Employee>> ProjectEmployeesGetAsync(int projectId)
         {
             List<Employee> retValEmployees = new List<Employee>();
             try
@@ -170,14 +171,14 @@ namespace Timesheet.DAL
             }
             catch (Exception ex)
             {
-                Logger.Error($"ERROR EmployeeDP.GetAll() method. Details: {ex}");
+                Logger.Error($"ERROR EmployeeDP.ProjectEmployeesGet() method. Details: {ex}");
             }
 
             return retValEmployees;
         }
 
-        public async Task<Employee> GetEmployee(string email,
-                                                string hashPass)
+        public async Task<Employee> GetEmployeeAsync(string email,
+                                                     string hashPass)
         {
             Employee retValeEmployee = null;
             try

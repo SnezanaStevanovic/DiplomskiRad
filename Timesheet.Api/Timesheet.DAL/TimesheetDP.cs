@@ -61,9 +61,9 @@ namespace Timesheet.DAL
             _appSettings = appSetiings.Value;
         }
 
-        public async Task<List<Model.Timesheet>> PeriodTimeshetGet(int employeeId,
-                                                                   DateTime startDateTime,
-                                                                   DateTime endDateTime)
+        public async Task<List<Model.Timesheet>> PeriodTimeshetGetAsync(int employeeId,
+                                                                        DateTime startDateTime,
+                                                                        DateTime endDateTime)
         {
             List<Model.Timesheet> retValue = new List<Model.Timesheet>();
             try
@@ -92,7 +92,7 @@ namespace Timesheet.DAL
             }
             catch (Exception ex)
             {
-                Logger.Error($"ERROR: TimesheetDP.");
+                Logger.Error($"ERROR: TimesheetDP.PeriodTimeshetGetAsync(). Exception: {ex}");
             }
 
             return retValue;
@@ -120,8 +120,8 @@ namespace Timesheet.DAL
             return timesheet;
         }
 
-        public async Task InsertStartTime(int EmployeeId,
-                                          DateTime StartTime)
+        public async Task InsertStartTimeAsync(int EmployeeId,
+                                               DateTime StartTime)
         {
             try
             {
@@ -148,10 +148,10 @@ namespace Timesheet.DAL
             }
         }
 
-        public async Task UpdateEndTime(int EmployeeId,
-                                        DateTime Pause,
-                                        DateTime Overtime,
-                                        DateTime EndTime)
+        public async Task UpdateEndTimeAsync(int EmployeeId,
+                                             DateTime Pause,
+                                             DateTime Overtime,
+                                             DateTime EndTime)
         {
             try
             {

@@ -54,7 +54,7 @@ namespace Timesheet.DAL
             this._config = config.Value;
         }
 
-        public async Task<List<UserLogin>> GetAll()
+        public async Task<List<UserLogin>> GetAllAsync()
         {
             List<UserLogin> allUsers = new List<UserLogin>();
             try
@@ -106,7 +106,7 @@ namespace Timesheet.DAL
             return user;
         }
 
-        public async Task Insert(UserLogin user)
+        public async Task InsertAsync(UserLogin user)
         {
             try
             {
@@ -132,7 +132,7 @@ namespace Timesheet.DAL
             }
         }
 
-        public async Task<UserLogin> GetUserByEmail(string email)
+        public async Task<UserLogin> GetUserByEmailAsync(string email)
         {
             UserLogin user = null;
             try

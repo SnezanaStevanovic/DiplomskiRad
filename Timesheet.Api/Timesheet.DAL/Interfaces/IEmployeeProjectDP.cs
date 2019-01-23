@@ -6,10 +6,10 @@ using Timesheet.Model;
 
 namespace Timesheet.DAL.Interfaces
 {
-    public interface ITaskDP
+    public interface IEmployeeProjectDP
     {
-        Task InsertAsync(ProjectTask task);
+        Task InsertAsync(EmployeeProject employeeProject);
 
-        Task<List<ProjectTask>> TasksPerProjectGetAsync(int projectId);
+        Task RemoveAsync(EmployeeProject employeeProject);
     }
 }

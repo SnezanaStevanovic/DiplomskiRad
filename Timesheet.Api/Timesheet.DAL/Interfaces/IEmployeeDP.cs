@@ -8,13 +8,13 @@ namespace Timesheet.DAL.Interfaces
 {
     public interface IEmployeeDP
     {
-        Task Insert(Employee employee);
+        Task InsertAsync(Employee employee);
 
-        Task<List<Employee>> GetAll();
+        Task<List<Employee>> GetAllAsync();
 
-        Task<Employee> GetEmployee(string email,
-                                   string hashPass);
+        Task<Employee> GetEmployeeAsync(string email,
+                                        string hashPass);
 
-        Task<List<Employee>> ProjectEmployeesGet(int projectId);
+        Task<List<Employee>> ProjectEmployeesGetAsync(int projectId);
     }
 }

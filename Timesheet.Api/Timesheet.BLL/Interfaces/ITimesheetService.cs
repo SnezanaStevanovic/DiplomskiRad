@@ -3,15 +3,22 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Timesheet.Model.APIModel;
+using Model = Timesheet.Model;
 
 namespace Timesheet.BLL.Interfaces
 {
     public interface ITimesheetService
     {
-        Task<BaseResponse> StartTimeSet(TimesheetStartTimeRequest startTimeRequest);
+        Task StartTimeSetAsync(int employeeId,
+                               DateTime startDateTime);
 
-        Task<BaseResponse> EndTimeSet(TimesheetEndTimeRequest endTimeRequest);
+        Task EndTimeSetAsync(int employeeId,
+                             DateTime endDateTime,
+                             DateTime overtime,
+                             DateTime pauseTime);
 
-        Task<PeriodTimeheetGetResponse> PeriodTimesheetGet(PeriodTimeheetGetRequest periodTimeheetGetRequest);
+        Task<List<Model.Timesheet>> PeriodTimesheetGetAsync(int employeeId,
+                                                            DateTime startDate,
+                                                            DateTime endDate);
     }
 }

@@ -8,11 +8,11 @@ namespace Timesheet.DAL.Interfaces
 {
     public interface IUserLoginDP
     {
-        Task Insert(UserLogin user);
+        Task InsertAsync(UserLogin user);
 
-        Task<List<UserLogin>> GetAll();
+        Task<List<UserLogin>> GetAllAsync();
 
-        Task<UserLogin> GetUserByEmail(string email);
+        Task<UserLogin> GetUserByEmailAsync(string email);
 
     }
 }

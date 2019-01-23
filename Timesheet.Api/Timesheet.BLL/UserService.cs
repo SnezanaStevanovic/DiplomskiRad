@@ -16,6 +16,8 @@ namespace Timesheet.BLL
         private readonly AppSettings _appSettings;
         private readonly IHashService _hashService;
         private readonly ITokenService _tokenService;
+        private readonly IEmployeeService _employeeService;
+        private readonly IEmployeeProjectService _employeeProjectService;
 
         private readonly IUserLoginDP _userLoginDP;
         private readonly IEmployeeDP _employeeDP;
@@ -23,12 +25,16 @@ namespace Timesheet.BLL
         public UserService(IOptions<AppSettings> appSettings,
                            IHashService hashService,
                            ITokenService tokenService,
+                           IEmployeeService employeeService,
+                           IEmployeeProjectService employeeProjectService,
                            IUserLoginDP userLoginDP,
                            IEmployeeDP employeeDP)
         {
             _appSettings = appSettings.Value;
             _hashService = hashService;
             _tokenService = tokenService;
+            _employeeService = employeeService;
+            _employeeProjectService = employeeProjectService;
             _userLoginDP = userLoginDP;
             _employeeDP = employeeDP;
         }
@@ -38,7 +44,7 @@ namespace Timesheet.BLL
 
             try
             {
-                UserLogin registeredUser = await _userLoginDP.GetUserByEmail(registrationRequest.Email)
+                UserLogin registeredUser = await _userLoginDP.GetUserByEmailAsync(registrationRequest.Email)
                                                              .ConfigureAwait(false);
 
                 if (registeredUser != null)
@@ -57,9 +63,10 @@ namespace Timesheet.BLL
                     Password = hashPass,
                 };
 
-                await this._userLoginDP.Insert(registeredUser)
+                await this._userLoginDP.InsertAsync(registeredUser)
                                        .ConfigureAwait(false);
-                foreach(int projectId in registrationRequest.ProjectIds)
+
+                foreach (int projectId in registrationRequest.ProjectIds)
                 {
                     Employee newEmployee = new Employee
                     {
@@ -69,18 +76,21 @@ namespace Timesheet.BLL
                         DateOfBirth = registrationRequest.DateOfBirth,
                         Gender = registrationRequest.Gender,
                         Role = registrationRequest.Role,
-                        UserId = registeredUser.Id,
-                        ProjectId = projectId
+                        UserId = registeredUser.Id
                     };
 
-                    await this._employeeDP.Insert(newEmployee)
+                    await _employeeService.AddNewAsync(newEmployee)
                                           .ConfigureAwait(false);
+
+                    await _employeeProjectService.AddNewAsync(newEmployee.Id,
+                                                              projectId)
+                                                 .ConfigureAwait(false);
                 }
-                
 
 
                 baseResponse.Success = true;
                 baseResponse.Message = "Registration successful";
+
                 return baseResponse;
 
             }
@@ -89,10 +99,10 @@ namespace Timesheet.BLL
                 Logger.Error($"ERROR: {ex.StackTrace}");
                 baseResponse.Success = false;
                 baseResponse.Message = "Registration failed";
-                return baseResponse; 
+                return baseResponse;
             }
 
-           
+
         }
 
         public async Task<LoginResponse> Login(LoginRequest loginRequest)
@@ -104,7 +114,7 @@ namespace Timesheet.BLL
                 string cryptedPass = $"{loginRequest.Password}{_appSettings.PasswordSalt}";
                 string hashPass = _hashService.GetMd5Hash(cryptedPass);
 
-                Employee existingEmployee = await _employeeDP.GetEmployee(loginRequest.Email,
+                Employee existingEmployee = await _employeeDP.GetEmployeeAsync(loginRequest.Email,
                                                                           hashPass)
                                                              .ConfigureAwait(false);
 

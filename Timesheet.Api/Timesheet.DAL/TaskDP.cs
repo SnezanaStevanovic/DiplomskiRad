@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using log4net;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -12,6 +13,8 @@ namespace Timesheet.DAL
 {
     public class TaskDP : ITaskDP
     {
+        private ILog Logger { get; } = LogManager.GetLogger(typeof(TaskDP));
+
         private readonly AppSettings _appSettings;
 
         #region SqlQueries
@@ -60,7 +63,7 @@ namespace Timesheet.DAL
         {
             _appSettings = appSettings.Value;
         }
-        public async Task Insert(ProjectTask task)
+        public async Task InsertAsync(ProjectTask task)
         {
             try
             {
@@ -87,11 +90,11 @@ namespace Timesheet.DAL
             }
             catch (Exception ex)
             {
-
+                Logger.Error($"{ex}");
             }
         }
 
-        public async Task<List<ProjectTask>> TasksPerProjectGet(int projectId)
+        public async Task<List<ProjectTask>> TasksPerProjectGetAsync(int projectId)
         {
             List<ProjectTask> allTasksForProject = new List<ProjectTask>();
             try
@@ -118,7 +121,7 @@ namespace Timesheet.DAL
             }
             catch (Exception ex)
             {
-
+                Logger.Error($"{ex}");
             }
 
             return allTasksForProject;
@@ -140,7 +143,7 @@ namespace Timesheet.DAL
             }
             catch (Exception ex)
             {
-
+                Logger.Error($"{ex}");
             }
 
             return projectTask;

@@ -6,8 +6,8 @@ namespace Timesheet.Model
 {
     public enum TaskType
     {
-        BUG,
-        FEATURE,
-        SUPPORT
+        FEATURE = 1, 
+        BUG = 2,
+        SUPPORT = 3
     }
 }

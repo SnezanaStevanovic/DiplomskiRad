@@ -1,3 +1,3 @@
-INSERT [Role] ([Id], [Name]) VALUES (1, 'Admin')
-INSERT [Role] ([Id], [Name]) VALUES (2, 'ProjectManager')
-INSERT [Role] ([Id], [Name]) VALUES (3, 'Employee')
+INSERT [Role] ( [Name]) VALUES ('Admin')
+INSERT [Role] ( [Name]) VALUES ('ProjectManager')
+INSERT [Role] ( [Name]) VALUES ('Employee')

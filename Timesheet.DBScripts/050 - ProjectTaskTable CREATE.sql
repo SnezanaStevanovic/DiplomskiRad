@@ -4,7 +4,7 @@ CREATE TABLE [ProjectTask](
 	[Description] [nvarchar](max) NULL,
 	[Type] [int] NOT NULL,
 	[StartDate] [datetime] NOT NULL,
-	[EndDate] [datetime] NOT NULL,
+	[EndDate] [datetime] NULL,
 	[Progress] [varchar] (10) NULL,
 	[EstimatedTime] [datetime] NULL,
 	[SpentTime] [datetime] NULL,

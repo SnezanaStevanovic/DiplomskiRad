@@ -3,7 +3,7 @@ CREATE TABLE Project(
 	[Name] [varchar](100) NOT NULL,
 	[EstimatedTime] [datetime] NULL,
 	[SpentTime] [datetime] NULL,
-	[DateCreated] [datetime] NULL,
+	[DateCreated] [datetime] NOT NULL,
 	[EndDate] [datetime] NULL,
 	[Progress] [varchar] (10) NULL
  CONSTRAINT [PK_Project] PRIMARY KEY CLUSTERED 

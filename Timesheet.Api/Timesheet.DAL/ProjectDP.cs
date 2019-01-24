@@ -28,7 +28,7 @@ namespace Timesheet.DAL
               (
                 Name,
                 EstimatedTime,
-                StartDate,
+                DateCreated,
                 EndDate,
                 SpentTime,
                 Progress
@@ -37,7 +37,7 @@ namespace Timesheet.DAL
               (
                 @Name,
                 @EstimatedTime,
-                @StartDate,
+                @DateCreated,
                 @EndDate,
                 @SpentTime,
                 @Progress  
@@ -46,9 +46,10 @@ namespace Timesheet.DAL
 
         private const string GET_BY_ID =
             @"SELECT 
+                     Id,
                      Name,
                      EstimatedTime,
-                     StartDate,
+                     DateCreated,
                      EndDate,
                      SpentTime,
                      Progress
@@ -59,16 +60,17 @@ namespace Timesheet.DAL
 
         private const string GET_ALL_PROJECTS_FOR_EMPLOYEE =
             @"SELECT 
-                     Name,
-                     EstimatedTime,
-                     StartDate,
-                     EndDate,
-                     SpentTime,
-                     Progress
+                     p.Id,
+                     p.Name,
+                     p.EstimatedTime,
+                     p.DateCreated,
+                     p.EndDate,
+                     p.SpentTime,
+                     p.Progress
              FROM Project p 
              INNER JOIN EmployeeProject ep
              ON p.Id = ep.ProjectId
-             WHERE ep.EmployeeId = @EmployeeId";
+             WHERE ep.EmployeeId =  @EmployeeId";
 
         #endregion
 
@@ -92,7 +94,7 @@ namespace Timesheet.DAL
                     {
                         using (SqlDataReader reader = await cmd.ExecuteReaderAsync().ConfigureAwait(false))
                         {
-                            while (reader != null)
+                            while (await reader.ReadAsync())
                             {
                                 Project project = await this.Create(reader);
                                 retValProjects.Add(project);
@@ -116,26 +118,19 @@ namespace Timesheet.DAL
             Project project = new Project();
             try
             {
-                try
-                {
-                    project.Id = await SqlParamHelper.ReadReaderValue<int>(reader, "Id");
-                    project.Name = await SqlParamHelper.ReadReaderValue<string>(reader, "Name");
-                    project.EstimatedTime = await SqlParamHelper.ReadReaderValue<DateTime>(reader, "EstimatedTime");
-                    project.DateCreated = await SqlParamHelper.ReadReaderValue<DateTime>(reader, "DateCreated");
-                    project.EndDate = await SqlParamHelper.ReadReaderValue<DateTime>(reader, "EndDate");
-                    project.SpentTime = await SqlParamHelper.ReadReaderValue<DateTime>(reader, "SpentTime");
-                    project.Progress = await SqlParamHelper.ReadReaderValue<string>(reader, "Progress");
+                project.Id = await SqlParamHelper.ReadReaderValue<int>(reader, "Id");
+                project.Name = await SqlParamHelper.ReadReaderValue<string>(reader, "Name");
+                project.EstimatedTime = await SqlParamHelper.ReadReaderValue<DateTime>(reader, "EstimatedTime");
+                project.DateCreated = await SqlParamHelper.ReadReaderValue<DateTime>(reader, "DateCreated");
+                project.EndDate = await SqlParamHelper.ReadReaderValue<DateTime>(reader, "EndDate");
+                project.SpentTime = await SqlParamHelper.ReadReaderValue<DateTime>(reader, "SpentTime");
+                project.Progress = await SqlParamHelper.ReadReaderValue<string>(reader, "Progress");
 
-                }
-                catch (Exception ex)
-                {
-                    this.Logger.Error($"{ex.Message} StackTrace: {ex.StackTrace}");
-
-                }
             }
             catch (Exception ex)
             {
-                this.Logger.Error($"ERROR ProjectDP.Create() method. Details: {ex.Message} StackTrace: {ex.StackTrace}");
+                Logger.Error($"{ex}");
+                throw;
             }
 
             return project;
@@ -152,14 +147,13 @@ namespace Timesheet.DAL
                     {
                         cmd.Parameters.AddWithValue("@Name", project.Name);
                         cmd.Parameters.AddWithValue("@EstimatedTime", project.EstimatedTime == null ? DBNull.Value : (object)project.EstimatedTime);
-                        cmd.Parameters.AddWithValue("@DateCreated", project.DateCreated == null ? DBNull.Value : (object)project.DateCreated);
+                        cmd.Parameters.AddWithValue("@DateCreated", DateTime.UtcNow);
                         cmd.Parameters.AddWithValue("@EndDate", project.EndDate == null ? DBNull.Value : (object)project.EndDate);
                         cmd.Parameters.AddWithValue("@SpentTime", project.SpentTime == null ? DBNull.Value : (object)project.SpentTime);
                         cmd.Parameters.AddWithValue("@Progress", project.Progress == null ? DBNull.Value : (object)project.Progress);
 
 
-                        await cmd.ExecuteNonQueryAsync()
-                                 .ConfigureAwait(false);
+                        await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
                     }
 
                     connection.Close();
@@ -167,8 +161,8 @@ namespace Timesheet.DAL
             }
             catch (Exception ex)
             {
-                this.Logger.Error($"ERROR ProjectDP.Insert() method. Details: {ex.Message} StackTrace: {ex.StackTrace}");
-
+                Logger.Error($"{ex}");
+                throw;
             }
         }
 
@@ -184,9 +178,11 @@ namespace Timesheet.DAL
 
                     using (SqlCommand cmd = new SqlCommand(GET_BY_ID, connection))
                     {
+                        cmd.Parameters.AddWithValue("@ProjectId", projectId);
+
                         using (SqlDataReader reader = await cmd.ExecuteReaderAsync().ConfigureAwait(false))
                         {
-                            while (reader != null)
+                            while (await reader.ReadAsync())
                             {
                                 project = await this.Create(reader);
                             }
@@ -199,6 +195,7 @@ namespace Timesheet.DAL
             catch (Exception ex)
             {
                 Logger.Error($"{ex}");
+                throw;
             }
 
             return project;
@@ -220,7 +217,7 @@ namespace Timesheet.DAL
 
                         using (SqlDataReader reader = await cmd.ExecuteReaderAsync().ConfigureAwait(false))
                         {
-                            while (reader != null)
+                            while (await reader.ReadAsync())
                             {
                                 Project project = await this.Create(reader);
                                 retValProjects.Add(project);
@@ -233,7 +230,8 @@ namespace Timesheet.DAL
             }
             catch (Exception ex)
             {
-                this.Logger.Error($"ERROR ProjectDP.GetAll() method. Details: {ex.Message} StackTrace: {ex.StackTrace}");
+                this.Logger.Error($"{ex}");
+                throw;
             }
 
             return retValProjects;

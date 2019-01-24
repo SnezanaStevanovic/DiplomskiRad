@@ -23,14 +23,13 @@ namespace Timesheet.Api.Controllers
             _timesheetService = timesheetService;
         }
 
-        [HttpPost("startTimeUpdate")]
-        public async Task<IActionResult> TimesheetStartTimeSet([FromBody]TimesheetStartTimeRequest request)
+        [HttpPost("addStartTime")]
+        public async Task<IActionResult> TimesheetStartTimeSet([FromBody]int employeeId)
         {
             BaseResponse response = new BaseResponse();
             try
             {
-                await _timesheetService.StartTimeSetAsync(request.EmployeeId,
-                                                          request.StartTime)
+                await _timesheetService.StartTimeSetAsync(employeeId)
                                        .ConfigureAwait(false);
 
                 response.Message = "StartTime updated successfully";
@@ -38,7 +37,7 @@ namespace Timesheet.Api.Controllers
             }
             catch (Exception ex)
             {
-                response.Message = "TimesheetStartTimeSet() method failed";
+                response.Message = "Method failed";
                 response.Success = false;
 
                 Logger.Error($"{ex}");
@@ -55,17 +54,27 @@ namespace Timesheet.Api.Controllers
 
             try
             {
-                await _timesheetService.EndTimeSetAsync(request.EmployeeId,
-                                                        request.EndTime,
-                                                        request.Overtime,
-                                                        request.Pause).ConfigureAwait(false);
+                bool isUpdated = await _timesheetService.EndTimeSetAsync(request.EmployeeId,
+                                                                         request.EndTime,
+                                                                         request.Overtime,
+                                                                         request.Pause)
+                                                        .ConfigureAwait(false);
 
-                response.Message = "EndTime updated successfully";
-                response.Success = true;
+                if (isUpdated)
+                {
+                    response.Message = "EndTime updated successfully";
+                    response.Success = true;
+                }
+                else
+                {
+                    response.Message = "Do not exist timesheet record for this employee.";
+                    response.Success = false;
+                }
+
             }
             catch (Exception ex)
             {
-                response.Message = "TimesheetEndTimeSet() method failed";
+                response.Message = "Method execution failed";
                 response.Success = false;
 
                 Logger.Error($"{ex}");
@@ -85,11 +94,20 @@ namespace Timesheet.Api.Controllers
                                                                                                   request.EndDate)
                                                                          .ConfigureAwait(false);
 
-                response.Success = true;
+                if (response.AllTimesheetsForPeriod.Count > 0)
+                {
+                    response.Success = true;
+                }
+                else
+                {
+                    response.Success = true;
+                    response.Message = "Do no exist timesheet record in this time interval";
+                }
+
             }
             catch (Exception ex)
             {
-                response.Message = $"PeriodTimesheetGet() method failed";
+                response.Message = $"Method execution failed";
                 response.Success = false;
 
                 Logger.Error($"{ex}");

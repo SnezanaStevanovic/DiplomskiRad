@@ -48,6 +48,7 @@ namespace Timesheet.BLL
             catch (Exception ex)
             {
                 Logger.Error($"ERROR: Error in TokenService.TokenCreate: {ex}");
+                throw;
             }
 
             return retValToken;

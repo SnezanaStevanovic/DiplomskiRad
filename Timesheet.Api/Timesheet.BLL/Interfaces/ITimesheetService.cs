@@ -9,13 +9,12 @@ namespace Timesheet.BLL.Interfaces
 {
     public interface ITimesheetService
     {
-        Task StartTimeSetAsync(int employeeId,
-                               DateTime startDateTime);
+        Task StartTimeSetAsync(int employeeId);
 
-        Task EndTimeSetAsync(int employeeId,
-                             DateTime endDateTime,
-                             DateTime overtime,
-                             DateTime pauseTime);
+        Task<bool> EndTimeSetAsync(int employeeId,
+                                   DateTime endDateTime,
+                                   DateTime overtime,
+                                   DateTime pauseTime);
 
         Task<List<Model.Timesheet>> PeriodTimesheetGetAsync(int employeeId,
                                                             DateTime startDate,

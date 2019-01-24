@@ -67,6 +67,7 @@ namespace Timesheet.Api
             services.AddSingleton<IProjectDP, ProjectDP>();
             services.AddSingleton<IEmployeeProjectDP, EmployeeProjectDP>();
             services.AddSingleton<ITaskDP, TaskDP>();
+            services.AddSingleton<ITaskService, TaskService>();
             services.AddSingleton<ITokenService, TokenService>();
             services.AddSingleton<IHashService, HashService>();
             services.AddSingleton<IUserService, UserService>();

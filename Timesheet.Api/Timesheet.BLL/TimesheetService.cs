@@ -21,23 +21,19 @@ namespace Timesheet.BLL
             _timesheetDP = timesheetDP;
         }
 
-        public async Task EndTimeSetAsync(int employeeId,
-                                          DateTime endDateTime,
-                                          DateTime overtime,
-                                          DateTime pauseTime)
+        public async Task<bool> EndTimeSetAsync(int employeeId,
+                                                DateTime endDateTime,
+                                                DateTime overtime,
+                                                DateTime pauseTime)
         {
-            try
-            {
-                await _timesheetDP.UpdateEndTimeAsync(employeeId,
-                                                      endDateTime,
-                                                      pauseTime,
-                                                      overtime).ConfigureAwait(false);
 
-            }
-            catch (Exception ex)
-            {
-                Logger.Error($"{ex}");
-            }
+            bool retVal = await _timesheetDP.UpdateEndTimeAsync(employeeId,
+                                                                endDateTime,
+                                                                pauseTime,
+                                                                overtime)
+                                            .ConfigureAwait(false);
+
+            return retVal;
 
         }
 
@@ -45,35 +41,20 @@ namespace Timesheet.BLL
                                                                          DateTime startDate,
                                                                          DateTime endDate)
         {
-            List<Model.Timesheet> retValue = new List<Model.Timesheet>();
-
-            try
-            {
-                retValue = await _timesheetDP.PeriodTimeshetGetAsync(employeeId,
-                                                                     startDate,
-                                                                     endDate).ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error($"{ex}");
-            }
+            List<Model.Timesheet> retValue = await _timesheetDP.PeriodTimeshetGetAsync(employeeId,
+                                                                                       startDate,
+                                                                                       endDate)
+                                                               .ConfigureAwait(false);
 
             return retValue;
         }
 
-        public async Task StartTimeSetAsync(int employeeId,
-                                            DateTime startDateTime)
+        public async Task StartTimeSetAsync(int employeeId)
         {
-            try
-            {
-                await _timesheetDP.InsertStartTimeAsync(employeeId,
-                                                        startDateTime).ConfigureAwait(false);
 
-            }
-            catch (Exception ex)
-            {
-                Logger.Error($"{ex}");
-            }
+            await _timesheetDP.AddStartTimeAsync(employeeId)
+                              .ConfigureAwait(false);
+
 
         }
 

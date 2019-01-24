@@ -73,33 +73,34 @@ namespace Timesheet.Api.Controllers
         }
 
         [HttpGet("EmployeeGet/{email}/{pass}")]
-        public async Task<IActionResult> GetEmployeeAsync(string email, string pass)
-        {
-            GetEmployeeResponse response = new GetEmployeeResponse();
-            try
-            {
-                response.Employee = await _employeeService.GetAsync(email,
-                                                                    pass)
-                                                          .ConfigureAwait(false);
+        //public async Task<IActionResult> GetEmployeeAsync(string email, string pass)
+        //{
+        //    GetEmployeeResponse response = new GetEmployeeResponse();
+        //    try
+        //    {
+        //        response.Employee = await _employeeService.GetAsync(email,
+        //                                                            pass)
+        //                                                  .ConfigureAwait(false);
 
-                response.Message = "Method executed successfully";
-                response.Success = true;
-            }
-            catch (Exception ex)
-            {
-                response.Message = "Method GetEmployeeAsync() failed";
-                response.Success = false;
+        //        response.Message = "Method executed successfully";
+        //        response.Success = true;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        response.Message = "Method GetEmployeeAsync() failed";
+        //        response.Success = false;
 
-                Logger.Error($"{ex}");
-            }
+        //        Logger.Error($"{ex}");
+        //    }
 
-            return Ok(response);
-        }
+        //    return Ok(response);
+        //}
 
-        [HttpPost("addNew")]
-        public async Task AddNewEmployee([FromBody] AddNewEmployeeRequest request)
+        [HttpPost("AddNew")]
+        public async Task<IActionResult> AddNewEmployee([FromBody] AddNewEmployeeRequest request)
         {
             BaseResponse response = new BaseResponse();
+
             try
             {
                 await _employeeService.AddNewAsync(request)
@@ -119,6 +120,8 @@ namespace Timesheet.Api.Controllers
 
                 Logger.Error($"{ex}");
             }
+
+            return Ok(response);
         }
     }
 }

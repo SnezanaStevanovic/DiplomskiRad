@@ -81,8 +81,9 @@ namespace Timesheet.DAL
             }
             catch (Exception ex)
             {
-                this.Logger.Error($"{ex.Message} StackTrace: {ex.StackTrace}");
-                
+                this.Logger.Error($"{ex}");
+                throw;
+
             }
 
             return allUsers;
@@ -99,8 +100,8 @@ namespace Timesheet.DAL
             }
             catch (Exception ex)
             {
-                this.Logger.Error($"{ex.Message} StackTrace: {ex.StackTrace}");
-                
+                Logger.Error($"{ex}");
+                throw;
             }
 
             return user;
@@ -127,8 +128,9 @@ namespace Timesheet.DAL
             }
             catch (Exception ex)
             {
-                this.Logger.Error($"{ex.Message} StackTrace: {ex.StackTrace}");
-                
+                Logger.Error($"{ex}");
+                throw;
+
             }
         }
 
@@ -160,8 +162,8 @@ namespace Timesheet.DAL
             }
             catch (Exception ex)
             {
-                this.Logger.Error($"{ex.Message} StackTrace: {ex.StackTrace}");
-                
+                this.Logger.Error($"{ex}");
+                throw;
             }
 
             return user;

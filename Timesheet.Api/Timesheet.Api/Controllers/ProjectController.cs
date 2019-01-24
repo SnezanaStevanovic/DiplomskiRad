@@ -82,7 +82,7 @@ namespace Timesheet.Api.Controllers
             }
             catch (Exception ex)
             {
-                response.Message = "GetEmployeeProjects() method execution failed";
+                response.Message = "Method execution failed";
                 response.Success = false;
 
                 Logger.Error($"{ex}");
@@ -91,7 +91,7 @@ namespace Timesheet.Api.Controllers
             return Ok(response);
         }
 
-        [HttpPost()]
+        [HttpPost("AddNew")]
         public async Task<IActionResult> AddNew([FromBody] AddNewProjectRequest request)
         {
             BaseResponse response = new BaseResponse();

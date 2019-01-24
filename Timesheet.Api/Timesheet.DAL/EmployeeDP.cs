@@ -37,9 +37,9 @@ namespace Timesheet.DAL
                                 Adress,
                                 DateOfBirth,
                                 Gender,
-                                ProjectId,
-                                Role
+                                RoleId
                            )
+               OUTPUT INSERTED.ID
                VALUES
                            (
                              @FirstName,
@@ -48,8 +48,7 @@ namespace Timesheet.DAL
                              @Adress,
                              @DateOfBirth,
                              @Gender,
-                             @ProjectId,
-                             @Role
+                             @RoleId
                             );";
 
         private const string GET_EMPLOYEE =
@@ -98,8 +97,11 @@ namespace Timesheet.DAL
                     {
                         using (SqlDataReader reader = await cmd.ExecuteReaderAsync().ConfigureAwait(false))
                         {
-                            Employee employee = await this.Create(reader);
-                            retValEmployees.Add(employee);
+                            while (await reader.ReadAsync())
+                            {
+                                Employee employee = await this.Create(reader);
+                                retValEmployees.Add(employee);
+                            }
                         }
                     }
                     connection.Close();
@@ -108,6 +110,7 @@ namespace Timesheet.DAL
             catch (Exception ex)
             {
                 Logger.Error($"ERROR EmployeeDP.GetAll() method. Details: {ex}");
+                throw;
             }
 
             return retValEmployees;
@@ -125,16 +128,16 @@ namespace Timesheet.DAL
                     {
 
                         cmd.Parameters.AddWithValue("@UserId", employee.UserId);
-                        cmd.Parameters.AddWithValue("@Role", employee.Role);
-                      //  cmd.Parameters.AddWithValue("@ProjectId", employee.ProjectId);
+                        cmd.Parameters.AddWithValue("@RoleId", employee.Role);
+                        //  cmd.Parameters.AddWithValue("@ProjectId", employee.ProjectId);
                         cmd.Parameters.AddWithValue("@FirstName", employee.FirstName);
                         cmd.Parameters.AddWithValue("@LastName", employee.LastName);
                         cmd.Parameters.AddWithValue("@DateOfBirth", employee.DateOfBirth == null ? DBNull.Value : (object)employee.DateOfBirth);
                         cmd.Parameters.AddWithValue("@Gender", employee.Gender == null ? DBNull.Value : (object)employee.Gender);
                         cmd.Parameters.AddWithValue("@Adress", employee.Adress == null ? DBNull.Value : (object)employee.Adress);
 
-                        await cmd.ExecuteNonQueryAsync()
-                                 .ConfigureAwait(false);
+                        employee.Id = (int)await cmd.ExecuteScalarAsync()
+                                                    .ConfigureAwait(false);
                     }
 
                     connection.Close();
@@ -142,7 +145,8 @@ namespace Timesheet.DAL
             }
             catch (Exception ex)
             {
-                Logger.Error($"ERROR EmployeeDP.Insert() method. Details: {ex}");
+                Logger.Error($"{ex}");
+                throw;
             }
 
         }
@@ -162,8 +166,11 @@ namespace Timesheet.DAL
 
                         using (SqlDataReader reader = await cmd.ExecuteReaderAsync().ConfigureAwait(false))
                         {
-                            Employee employee = await this.Create(reader);
-                            retValEmployees.Add(employee);
+                            while (await reader.ReadAsync())
+                            {
+                                Employee employee = await this.Create(reader);
+                                retValEmployees.Add(employee);
+                            }
                         }
                     }
                     connection.Close();
@@ -172,6 +179,7 @@ namespace Timesheet.DAL
             catch (Exception ex)
             {
                 Logger.Error($"ERROR EmployeeDP.ProjectEmployeesGet() method. Details: {ex}");
+                throw;
             }
 
             return retValEmployees;
@@ -207,6 +215,7 @@ namespace Timesheet.DAL
             catch (Exception ex)
             {
                 Logger.Error($"ERROR EmployeeDP.GetEmployee() method. Details: {ex}");
+                throw;
             }
 
             return retValeEmployee;
@@ -232,6 +241,7 @@ namespace Timesheet.DAL
             catch (Exception ex)
             {
                 Logger.Error($"ERROR EmployeeDP.Create() method. Details: {ex}");
+                throw;
             }
 
             return employee;

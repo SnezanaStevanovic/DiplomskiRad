@@ -74,8 +74,8 @@ namespace Timesheet.DAL
                     using (SqlCommand cmd = new SqlCommand(PERIOD_TIMESHEET_GET, connection))
                     {
                         cmd.Parameters.AddWithValue("@EmployeeId", employeeId);
-                        cmd.Parameters.AddWithValue("@EndDateTime", endDateTime == null ? DBNull.Value : (object)endDateTime);
-                        cmd.Parameters.AddWithValue("@StartDateTime", startDateTime == null ? DBNull.Value : (object)startDateTime);
+                        cmd.Parameters.AddWithValue("@EndDateTime", endDateTime == DateTime.MinValue ? DBNull.Value : (object)endDateTime);
+                        cmd.Parameters.AddWithValue("@StartDateTime", startDateTime == DateTime.MinValue ? DBNull.Value : (object)startDateTime);
 
                         using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
                         {
@@ -92,7 +92,8 @@ namespace Timesheet.DAL
             }
             catch (Exception ex)
             {
-                Logger.Error($"ERROR: TimesheetDP.PeriodTimeshetGetAsync(). Exception: {ex}");
+                Logger.Error($"{ex}");
+                throw;
             }
 
             return retValue;
@@ -113,15 +114,15 @@ namespace Timesheet.DAL
             }
             catch (Exception ex)
             {
-                this.Logger.Error($"{ex.Message} StackTrace: {ex.StackTrace}");
+                this.Logger.Error($"{ex}");
+                throw;
 
             }
 
             return timesheet;
         }
 
-        public async Task InsertStartTimeAsync(int EmployeeId,
-                                               DateTime StartTime)
+        public async Task AddStartTimeAsync(int employeeId)
         {
             try
             {
@@ -132,11 +133,10 @@ namespace Timesheet.DAL
 
                     using (SqlCommand cmd = new SqlCommand(INSERT_START_TIME, connection))
                     {
-                        cmd.Parameters.AddWithValue("@EmployeeId", EmployeeId);
-                        cmd.Parameters.AddWithValue("@StartTime", StartTime == null ? DBNull.Value : (object)StartTime);
+                        cmd.Parameters.AddWithValue("@EmployeeId", employeeId);
+                        cmd.Parameters.AddWithValue("@StartTime", DateTime.UtcNow);
 
-                        await cmd.ExecuteNonQueryAsync()
-                                 .ConfigureAwait(false);
+                        await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
                     }
 
                     connection.Close();
@@ -144,15 +144,18 @@ namespace Timesheet.DAL
             }
             catch (Exception ex)
             {
-                Logger.Error($"ERROR: TimesheetDP.InsertStartTime(). Details: {ex.StackTrace}");
+                Logger.Error($"{ex}");
+                throw;
             }
+
         }
 
-        public async Task UpdateEndTimeAsync(int EmployeeId,
-                                             DateTime Pause,
-                                             DateTime Overtime,
-                                             DateTime EndTime)
+        public async Task<bool> UpdateEndTimeAsync(int EmployeeId,
+                                                   DateTime Pause,
+                                                   DateTime Overtime,
+                                                   DateTime EndTime)
         {
+            bool retVal = false;
             try
             {
                 using (SqlConnection connection = new SqlConnection(_appSettings.ConnectionString))
@@ -167,8 +170,11 @@ namespace Timesheet.DAL
                         cmd.Parameters.AddWithValue("@Overtime", Overtime == null ? DBNull.Value : (object)Overtime);
                         cmd.Parameters.AddWithValue("@Pause", Pause == null ? DBNull.Value : (object)Pause);
 
-                        await cmd.ExecuteNonQueryAsync()
-                                 .ConfigureAwait(false);
+                        int affeectedRows = await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
+                        if (affeectedRows > 0)
+                        {
+                            retVal = true;
+                        }
                     }
 
                     connection.Close();
@@ -176,8 +182,11 @@ namespace Timesheet.DAL
             }
             catch (Exception ex)
             {
-                Logger.Error($"ERROR: TimesheetDP.UpdateEndTime(). Details: {ex.StackTrace}");
+                Logger.Error($"{ex}");
+                throw;
             }
+
+            return retVal;
         }
     }
 }

@@ -66,6 +66,7 @@ namespace Timesheet.DAL
             catch (Exception ex)
             {
                 Logger.Error($"{ex}");
+                throw;
             }
         }
 
@@ -91,6 +92,7 @@ namespace Timesheet.DAL
             catch (Exception ex)
             {
                 Logger.Error($"{ex}");
+                throw;
             }
         }
     }

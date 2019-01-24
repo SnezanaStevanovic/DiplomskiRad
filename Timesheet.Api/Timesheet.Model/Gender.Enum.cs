@@ -6,7 +6,7 @@ namespace Timesheet.Model
 {
     public enum Gender
     {
-        MALE,
-        FEMALE
+        Male,
+        Female
     }
 }

@@ -22,31 +22,16 @@ namespace Timesheet.BLL
 
         public async Task AddNewAsync(Employee employee)
         {
-            try
-            {
-                await _employeeDP.InsertAsync(employee)
-                                 .ConfigureAwait(false);
 
-            }
-            catch (Exception ex)
-            {
-                Logger.Error($"{ex}");
-            }
+            await _employeeDP.InsertAsync(employee)
+                             .ConfigureAwait(false);
+
         }
 
         public async Task<List<Employee>> GetAllAsync()
         {
-            List<Employee> employees = new List<Employee>();
-
-            try
-            {
-                employees = await _employeeDP.GetAllAsync()
-                                             .ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error($"{ex}");
-            }
+            List<Employee> employees = await _employeeDP.GetAllAsync()
+                                                        .ConfigureAwait(false);
 
             return employees;
         }
@@ -54,33 +39,17 @@ namespace Timesheet.BLL
         public async Task<Employee> GetAsync(string email,
                                              string password)
         {
-            Employee employee = new Employee();
 
-            try
-            {
-                employee = await _employeeDP.GetEmployeeAsync(email, password)
-                                            .ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error($"{ex}");
-            }
+            Employee employee = await _employeeDP.GetEmployeeAsync(email, password)
+                                                 .ConfigureAwait(false);
 
             return employee;
         }
 
         public async Task<List<Employee>> ProjectEmployeesGetAsync(int projectId)
         {
-            List<Employee> projectEmployees = new List<Employee>();
-            try
-            {
-                projectEmployees = await _employeeDP.ProjectEmployeesGetAsync(projectId)
-                                                    .ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error($"{ex}");
-            }
+            List<Employee> projectEmployees = await _employeeDP.ProjectEmployeesGetAsync(projectId)
+                                                               .ConfigureAwait(false);
 
             return projectEmployees;
         }

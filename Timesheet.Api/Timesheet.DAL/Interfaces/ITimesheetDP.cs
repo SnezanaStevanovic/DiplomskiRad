@@ -11,12 +11,11 @@ namespace Timesheet.DAL.Interfaces
                                                            DateTime startDate,
                                                            DateTime endDate);
 
-        Task InsertStartTimeAsync(int EmployeeId,
-                                  DateTime StartTime);
+        Task AddStartTimeAsync(int employeeId);
 
-        Task UpdateEndTimeAsync(int EmployeeId,
-                                DateTime Pause,
-                                DateTime Overtime,
-                                DateTime EndTime);
+        Task<bool> UpdateEndTimeAsync(int EmployeeId,
+                                      DateTime Pause,
+                                      DateTime Overtime,
+                                      DateTime EndTime);
     }
 }

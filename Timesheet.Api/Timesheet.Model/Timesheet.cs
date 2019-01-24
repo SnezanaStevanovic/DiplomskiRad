@@ -14,7 +14,7 @@ namespace Timesheet.Model
 
         public DateTime? Pause { get; set; }
 
-        public DateTime? StartTime { get; set; }
+        public DateTime StartTime { get; set; }
 
         public DateTime? EndTime { get; set; }
 

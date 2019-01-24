@@ -14,7 +14,7 @@ namespace Timesheet.Model
 
         public DateTime? SpentTime { get; set; }
 
-        public DateTime? DateCreated { get; set; }
+        public DateTime DateCreated { get; set; }
 
         public DateTime? EndDate { get; set; }
 

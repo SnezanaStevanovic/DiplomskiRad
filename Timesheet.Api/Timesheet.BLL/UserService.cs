@@ -115,7 +115,7 @@ namespace Timesheet.BLL
                 string hashPass = _hashService.GetMd5Hash(cryptedPass);
 
                 Employee existingEmployee = await _employeeDP.GetEmployeeAsync(loginRequest.Email,
-                                                                          hashPass)
+                                                                               hashPass)
                                                              .ConfigureAwait(false);
 
                 if (existingEmployee == null)

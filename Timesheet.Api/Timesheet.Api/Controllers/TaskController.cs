@@ -8,7 +8,7 @@ using Timesheet.Model.APIModel;
 
 namespace Timesheet.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Task")]
     [ApiController]
     public class TaskController : ControllerBase
     {
@@ -25,17 +25,18 @@ namespace Timesheet.Api.Controllers
         }
 
         [HttpGet("GetAllTasksPerProject/{projectId}")]
-        public async Task<IActionResult> TasksPerProjectGet([FromQuery]int projectId)
+        public async Task<IActionResult> TasksPerProjectGet(int projectId)
         {
             TasksPerProjectResponse response = new TasksPerProjectResponse();
             try
             {
-                response.ProjectTasks = await _taskDP.TasksPerProjectGetAsync(projectId).ConfigureAwait(false);
+                response.ProjectTasks = await _taskDP.TasksPerProjectGetAsync(projectId)
+                                                     .ConfigureAwait(false);
                 response.Success = true;
             }
             catch (Exception ex)
             {
-                response.Message = "TasksPerProjectGet() method failed";
+                response.Message = "Method execution failed";
                 response.Success = false;
 
                 Logger.Error($"{ex}");
@@ -44,7 +45,7 @@ namespace Timesheet.Api.Controllers
             return Ok(response);
         }
 
-        [HttpPost("AddNewTask")]
+        [HttpPost("AddNew")]
         public async Task<IActionResult> AddNewTask([FromBody]AddNewTaskRequest request)
         {
             BaseResponse response = new BaseResponse();
@@ -57,7 +58,7 @@ namespace Timesheet.Api.Controllers
             }
             catch (Exception ex)
             {
-                response.Message = "AddNewTask() method failed";
+                response.Message = "Method execution failed";
                 response.Success = false;
 
                 Logger.Error($"{ex}");

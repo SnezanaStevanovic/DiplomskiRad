@@ -23,17 +23,8 @@ namespace Timesheet.BLL
 
         public async Task<List<ProjectTask>> TasksPerProjectGetAsync(int projectId)
         {
-            List<ProjectTask> projectTasks = new List<ProjectTask>();
-
-            try
-            {
-                projectTasks = await _taskDP.TasksPerProjectGetAsync(projectId);
-                
-            }
-            catch (Exception ex)
-            {
-                Logger.Error($"{ex}");
-            }
+            List<ProjectTask> projectTasks = await _taskDP.TasksPerProjectGetAsync(projectId)
+                                                          .ConfigureAwait(false);
 
             return projectTasks;
         }

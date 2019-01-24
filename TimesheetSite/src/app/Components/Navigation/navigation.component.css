@@ -1,12 +1,18 @@
 .sidenav-container {
   height: 100%;
+  overflow: unset;
 }
-
+.sidenav-content{
+  overflow: unset;
+}
 .sidenav {
   width: 300px;
 }
 
 .mat-toolbar.mat-primary {
-  position: sticky;
+  position:sticky;
   top: 0;
+  z-index: 999;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }

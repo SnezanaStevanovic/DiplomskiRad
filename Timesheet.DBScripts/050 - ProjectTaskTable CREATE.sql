@@ -3,9 +3,9 @@ CREATE TABLE [ProjectTask](
 	[Name] [nvarchar](50) NOT NULL,
 	[Description] [nvarchar](max) NULL,
 	[Type] [int] NOT NULL,
-	[DateCreated] [datetime] NOT NULL,
-	[EndDate] [datetime] NOT NULL,
-	[Progress] [varchar] (10) NULL,
+	[StartDate] [datetime] NOT NULL,
+	[EndDate] [datetime] NULL,
+	[Progress] int NULL,
 	[EstimatedTime] [datetime] NULL,
 	[SpentTime] [datetime] NULL,
 	[ProjectId] [int] NOT NULL

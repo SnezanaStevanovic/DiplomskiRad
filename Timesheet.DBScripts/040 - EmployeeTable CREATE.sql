@@ -6,8 +6,7 @@ CREATE TABLE Employee(
 	[RoleId] [int] NOT NULL,
 	[Adress] [nvarchar](50) NULL,
 	[Gender] [nvarchar] (10) NULL,
-	[DateOfBirth] [datetime] NULL,
-	[ProjectId] [int] NOT NULL
+	[DateOfBirth] [datetime] NULL	
  CONSTRAINT [PK_Employee] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -19,7 +18,4 @@ REFERENCES [UserLogin] ([Id])
 GO
 ALTER TABLE [Employee]  WITH CHECK ADD  CONSTRAINT [FK_Employee_Role] FOREIGN KEY([RoleId])
 REFERENCES [Role] ([Id])
-GO
-ALTER TABLE [Employee]  WITH CHECK ADD  CONSTRAINT [FK_Employee_Project] FOREIGN KEY([ProjectId])
-REFERENCES [Project] ([Id])
 GO

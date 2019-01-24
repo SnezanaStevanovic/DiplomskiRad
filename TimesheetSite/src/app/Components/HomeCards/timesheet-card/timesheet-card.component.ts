@@ -17,8 +17,7 @@ export class TimesheetCardComponent implements OnInit {
   work(): void {
     if (this.working) {
       this.working = false;
-    }
-    else {
+    } else {
       this.working = true;
     }
   }

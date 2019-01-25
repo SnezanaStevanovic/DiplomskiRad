@@ -10,5 +10,7 @@ namespace Timesheet.BLL.Interfaces
     public interface ITaskService
     {
         Task<List<ProjectTask>> TasksPerProjectGetAsync(int projectId);
+
+      
     }
 }

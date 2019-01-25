@@ -13,6 +13,8 @@ namespace Timesheet.DAL.Interfaces
 
         Task AddStartTimeAsync(int employeeId);
 
+        Task UpdateEndTimeAsync(int employeeId);
+
         Task<bool> UpdateEndTimeAsync(int EmployeeId,
                                       DateTime Pause,
                                       DateTime Overtime,

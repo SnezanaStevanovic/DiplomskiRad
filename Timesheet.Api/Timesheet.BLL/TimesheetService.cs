@@ -49,7 +49,7 @@ namespace Timesheet.BLL
             return retValue;
         }
 
-        public async Task StartTimeSetAsync(int employeeId)
+        public async Task SetStartTimeForEmployee(int employeeId)
         {
 
             await _timesheetDP.AddStartTimeAsync(employeeId)
@@ -58,5 +58,12 @@ namespace Timesheet.BLL
 
         }
 
+
+        public async Task SetEndTimeForEmployee(int employeeId)
+        {
+            await _timesheetDP.UpdateEndTimeAsync(employeeId)
+                              .ConfigureAwait(false);
+
+        }
     }
 }

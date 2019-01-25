@@ -42,6 +42,20 @@ namespace Timesheet.DAL
                 );
              ";
 
+        private string INSERT_END_TIME =
+            @"INSERT INTO
+                   Timesheet
+              (
+               EmployeeId,
+               EndTime
+              )
+              VALUES
+              (
+                @EmployeeId,
+                @EndTime
+                );
+             ";
+
         private string UPDATE_END_TIME =
            @"
              UPDATE 
@@ -50,6 +64,16 @@ namespace Timesheet.DAL
                 EndTime = @EndTime, 
                 Pause = @Pause,
                 Overtime = @Overtime
+             WHERE 
+                EmployeeId = @EmployeeId;
+             ";
+
+        private string UPDATE_ONLY_END_TIME =
+           @"
+             UPDATE 
+                  Timesheet
+             SET 
+                EndTime = @EndTime 
              WHERE 
                 EmployeeId = @EmployeeId;
              ";
@@ -149,6 +173,35 @@ namespace Timesheet.DAL
             }
 
         }
+
+        public async Task UpdateEndTimeAsync(int employeeId)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_appSettings.ConnectionString))
+                {
+                    await connection.OpenAsync()
+                                    .ConfigureAwait(false);
+
+                    using (SqlCommand cmd = new SqlCommand(UPDATE_ONLY_END_TIME, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@EmployeeId", employeeId);
+                        cmd.Parameters.AddWithValue("@EndTime", DateTime.UtcNow);
+
+                        await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
+                    }
+
+                    connection.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error($"{ex}");
+                throw;
+            }
+
+        }
+
 
         public async Task<bool> UpdateEndTimeAsync(int EmployeeId,
                                                    DateTime Pause,

@@ -23,16 +23,40 @@ namespace Timesheet.Api.Controllers
             _timesheetService = timesheetService;
         }
 
-        [HttpPost("addStartTime")]
+        [HttpPost("setStartTime")]
         public async Task<IActionResult> TimesheetStartTimeSet([FromBody]int employeeId)
         {
             BaseResponse response = new BaseResponse();
             try
             {
-                await _timesheetService.StartTimeSetAsync(employeeId)
+                await _timesheetService.SetStartTimeForEmployee(employeeId)
                                        .ConfigureAwait(false);
 
                 response.Message = "StartTime updated successfully";
+                response.Success = true;
+            }
+            catch (Exception ex)
+            {
+                response.Message = "Method failed";
+                response.Success = false;
+
+                Logger.Error($"{ex}");
+            }
+
+            return Ok(response);
+
+        }
+
+        [HttpPost("setEndTime")]
+        public async Task<IActionResult> TimesheetEndTimeSet([FromBody]int employeeId)
+        {
+            BaseResponse response = new BaseResponse();
+            try
+            {
+                await _timesheetService.SetEndTimeForEmployee(employeeId)
+                                       .ConfigureAwait(false);
+
+                response.Message = "EndTime updated successfully";
                 response.Success = true;
             }
             catch (Exception ex)

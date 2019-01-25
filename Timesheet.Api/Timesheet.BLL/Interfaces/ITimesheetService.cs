@@ -9,7 +9,9 @@ namespace Timesheet.BLL.Interfaces
 {
     public interface ITimesheetService
     {
-        Task StartTimeSetAsync(int employeeId);
+        Task SetStartTimeForEmployee(int employeeId);
+
+        Task SetEndTimeForEmployee(int employeeId);
 
         Task<bool> EndTimeSetAsync(int employeeId,
                                    DateTime endDateTime,

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 
@@ -17,7 +18,7 @@ namespace Timesheet.Common
 
         public static DateTime? DateTimeGet(SqlDataReader reader, string columnName)
         {
-           var sqlDateTime = reader[columnName];
+            var sqlDateTime = reader[columnName];
 
             DateTime? dt = (sqlDateTime == System.DBNull.Value)
                             ? (DateTime?)null
@@ -35,6 +36,19 @@ namespace Timesheet.Common
 
             return default(T);
 
+        }
+
+        public async static Task<DateTime?> ReadReaderDateTimeNullableValue(SqlDataReader reader,
+                                                                            string columnName)
+        {
+            DateTime? retDateTime = null;
+
+            if (!await reader.IsDBNullAsync(reader.GetOrdinal(columnName)))
+            {
+                retDateTime = (DateTime)reader[columnName];
+            }
+
+            return retDateTime;
         }
 
     }

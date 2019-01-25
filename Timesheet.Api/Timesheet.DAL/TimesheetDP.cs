@@ -106,10 +106,10 @@ namespace Timesheet.DAL
             {
                 timesheet.Id = await SqlParamHelper.ReadReaderValue<int>(reader, "Id");
                 timesheet.EmployeeId = await SqlParamHelper.ReadReaderValue<int>(reader, "EmployeeId");
-                timesheet.Overtime = await SqlParamHelper.ReadReaderValue<DateTime>(reader, "Overtime");
-                timesheet.Pause = await SqlParamHelper.ReadReaderValue<DateTime>(reader, "Pause");
+                timesheet.Overtime = await SqlParamHelper.ReadReaderDateTimeNullableValue(reader, "Overtime");
+                timesheet.Pause = await SqlParamHelper.ReadReaderDateTimeNullableValue(reader, "Pause");
                 timesheet.StartTime = await SqlParamHelper.ReadReaderValue<DateTime>(reader, "StartTime");
-                timesheet.EndTime = await SqlParamHelper.ReadReaderValue<DateTime>(reader, "EndTime");
+                timesheet.EndTime = await SqlParamHelper.ReadReaderDateTimeNullableValue(reader, "EndTime");
 
             }
             catch (Exception ex)

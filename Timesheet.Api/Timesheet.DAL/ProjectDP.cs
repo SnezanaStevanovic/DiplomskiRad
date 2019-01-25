@@ -108,6 +108,7 @@ namespace Timesheet.DAL
             catch (Exception ex)
             {
                 this.Logger.Error($"ERROR ProjectDP.GetAll() method. Details: {ex.Message} StackTrace: {ex.StackTrace}");
+                throw;
             }
 
             return retValProjects;
@@ -120,10 +121,10 @@ namespace Timesheet.DAL
             {
                 project.Id = await SqlParamHelper.ReadReaderValue<int>(reader, "Id");
                 project.Name = await SqlParamHelper.ReadReaderValue<string>(reader, "Name");
-                project.EstimatedTime = await SqlParamHelper.ReadReaderValue<DateTime>(reader, "EstimatedTime");
+                project.EstimatedTime = await SqlParamHelper.ReadReaderDateTimeNullableValue(reader, "EstimatedTime");
                 project.DateCreated = await SqlParamHelper.ReadReaderValue<DateTime>(reader, "DateCreated");
-                project.EndDate = await SqlParamHelper.ReadReaderValue<DateTime>(reader, "EndDate");
-                project.SpentTime = await SqlParamHelper.ReadReaderValue<DateTime>(reader, "SpentTime");
+                project.EndDate = await SqlParamHelper.ReadReaderDateTimeNullableValue(reader, "EndDate");
+                project.SpentTime = await SqlParamHelper.ReadReaderDateTimeNullableValue(reader, "SpentTime");
                 project.Progress = await SqlParamHelper.ReadReaderValue<string>(reader, "Progress");
 
             }

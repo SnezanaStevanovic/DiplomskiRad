@@ -235,7 +235,7 @@ namespace Timesheet.DAL
                 employee.LastName = await SqlParamHelper.ReadReaderValue<string>(reader, "LastName");
                 employee.Adress = await SqlParamHelper.ReadReaderValue<string>(reader, "Adress");
                 employee.Gender = await SqlParamHelper.StringToEnum<Gender>(reader, "Gender");
-                employee.DateOfBirth = await SqlParamHelper.ReadReaderValue<DateTime>(reader, "DateOfBirth");
+                employee.DateOfBirth = await SqlParamHelper.ReadReaderDateTimeNullableValue(reader, "DateOfBirth");
 
             }
             catch (Exception ex)

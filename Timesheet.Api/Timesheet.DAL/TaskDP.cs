@@ -139,8 +139,9 @@ namespace Timesheet.DAL
                 projectTask.Name = await SqlParamHelper.ReadReaderValue<string>(reader, "Name");
                 projectTask.Progress = await SqlParamHelper.ReadReaderValue<int>(reader, "Progress");
                 projectTask.ProjectId = await SqlParamHelper.ReadReaderValue<int>(reader, "ProjectId");
-                projectTask.SpentTime = await SqlParamHelper.ReadReaderValue<DateTime>(reader, "SpentTime");
+                projectTask.SpentTime = await SqlParamHelper.ReadReaderDateTimeNullableValue(reader, "SpentTime");
                 projectTask.StartDate = await SqlParamHelper.ReadReaderValue<DateTime>(reader, "StartDate");
+                projectTask.EndDate = await SqlParamHelper.ReadReaderDateTimeNullableValue(reader, "EndDate");
                 projectTask.Type = await SqlParamHelper.ReadReaderValue<TaskType>(reader, "Type");
             }
             catch (Exception ex)

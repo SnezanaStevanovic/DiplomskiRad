@@ -14,5 +14,12 @@
   top: 0;
   z-index: 999;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-areas: "a b";
+  grid-template-columns:  1fr auto;
+}
+
+.user-settings {
+  grid-area: b;
+  justify-self: end;
+  align-self: end;
 }

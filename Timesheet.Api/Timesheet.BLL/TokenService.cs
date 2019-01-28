@@ -22,19 +22,23 @@ namespace Timesheet.BLL
             _appSettings = appSettings.Value;
         }
 
-        public string TokenCreate(string email, string role)
+        public string TokenCreate(string email, Role role, int employeeId)
         {
             string retValToken = string.Empty;
             try
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+
+                int roleVal = (int)role;
+
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = new ClaimsIdentity(new Claim[]
                     {
-                        new Claim (ClaimTypes.Role, role),
-                        new Claim (ClaimTypes.Name, email)
+                        new Claim (ClaimTypes.Role, roleVal.ToString()),
+                        new Claim (ClaimTypes.Name, email),
+                        new Claim(ClaimTypes.NameIdentifier,employeeId.ToString())
 
                     }),
                     Expires = DateTime.UtcNow.AddMinutes(30),

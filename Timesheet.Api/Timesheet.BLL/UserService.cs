@@ -127,7 +127,8 @@ namespace Timesheet.BLL
                 loginResponse.Success = true;
                 loginResponse.Message = "Login successful";
                 loginResponse.Token = _tokenService.TokenCreate(loginRequest.Email,
-                                                                existingEmployee.Role.ToString());
+                                                                existingEmployee.Role,
+                                                                existingEmployee.Id);
             }
             catch (Exception ex)
             {

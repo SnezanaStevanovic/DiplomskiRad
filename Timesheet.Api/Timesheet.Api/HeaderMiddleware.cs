@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Timesheet.BLL.Interfaces;
+using Timesheet.Model;
 
 namespace Timesheet.Api
 {
@@ -23,36 +24,39 @@ namespace Timesheet.Api
             _tokenService = tokenService;
         }
 
-        public Task Invoke(HttpContext httpContext)
+        public async Task Invoke(HttpContext httpContext)
         {
-            string authHeader = (string)httpContext.Request.Headers["access-token"];
 
-            if(!string.IsNullOrEmpty(authHeader))
+            var authenticateInfo = await httpContext.AuthenticateAsync("Bearer");
+
+            ClaimsPrincipal bearerTokenIdentity = authenticateInfo?.Principal;
+
+            if (bearerTokenIdentity != null)
             {
-                string userEmail = String.Empty;
-                string role = String.Empty;
+               
+                    string userEmail = bearerTokenIdentity.FindFirst(ClaimTypes.Name).Value;
+                    string roleIdentifier = bearerTokenIdentity.FindFirst(ClaimTypes.Role).Value;
 
-                var tokenFromHeader = httpContext.GetTokenAsync("access-token")
-                                                 .ConfigureAwait(false);
+                    Role role = (Role)Convert.ToInt32(roleIdentifier);
 
-                var identity = httpContext.User.Identity as ClaimsIdentity;
+                    int employeeId = Convert.ToInt32(bearerTokenIdentity.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-                if (identity != null)
+                    string token = _tokenService.TokenCreate(userEmail,
+                                         role,
+                                         employeeId);
+
+                httpContext.Response.OnStarting((state) =>
                 {
-                    userEmail = identity.FindFirst(ClaimTypes.Name).Value;
-                    role = identity.FindFirst(ClaimTypes.Role).Value;
-                }
+                    
+                     httpContext.Response.Headers.Add("access-control-expose-headers" ,"access-token");
 
-                string token = _tokenService.TokenCreate(userEmail,
-                                                         role);
-                httpContext.Response
-                           .Headers
-                           .Add("access-token",
-                                 token);
+                    httpContext.Response.Headers.Add("access-token",token);
 
+                    return Task.FromResult(0);
+                }, null);                     
             }
 
-            return _next(httpContext);
+            await _next(httpContext);
         }
     }
 

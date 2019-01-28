@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using log4net;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Timesheet.BLL.Interfaces;
@@ -12,6 +13,7 @@ namespace Timesheet.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class TimesheetController : ControllerBase
     {
         private ILog Logger { get; } = LogManager.GetLogger(typeof(TimesheetController));

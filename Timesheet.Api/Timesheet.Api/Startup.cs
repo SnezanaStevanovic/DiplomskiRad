@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Swashbuckle.AspNetCore.Swagger;
 using System.Text;
 using Timesheet.BLL;
 using Timesheet.BLL.Interfaces;
@@ -76,7 +77,10 @@ namespace Timesheet.Api
             services.AddSingleton<IProjectService, ProjectService>();
             services.AddSingleton<IEmployeeProjectService, EmployeeProjectService>();
 
-
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+            });
 
             services.AddCors(options =>
             {
@@ -97,11 +101,17 @@ namespace Timesheet.Api
             {
 
                 app.UseDeveloperExceptionPage();
+
             }
             else
             {
                 app.UseHsts();
             }
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
 
             app.UseAuthentication();
             app.UseCors("AllowAll");

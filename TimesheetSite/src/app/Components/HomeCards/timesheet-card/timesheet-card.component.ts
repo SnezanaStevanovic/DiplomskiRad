@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TimesheetService } from 'src/app/Services/timesheet.service';
 
 @Component({
   selector: 'app-timesheet-card',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TimesheetCardComponent implements OnInit {
 
-  constructor() { }
+  constructor(private _timesheetService: TimesheetService) { }
 
   working: boolean;
 
@@ -19,6 +20,7 @@ export class TimesheetCardComponent implements OnInit {
       this.working = false;
     } else {
       this.working = true;
+      this._timesheetService.startWork();
     }
   }
 

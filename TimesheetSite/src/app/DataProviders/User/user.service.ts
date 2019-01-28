@@ -3,7 +3,7 @@ import { BaseService } from '../base.service';
 import { HttpClient } from '@angular/common/http';
 import { LoginRequest } from 'src/app/Model/LoginRequest';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators'
+import { catchError } from 'rxjs/operators';
 import { LoginResponse } from 'src/app/Model/loginResponse';
 
 @Injectable({
@@ -25,8 +25,5 @@ export class UserService extends BaseService {
       );
   }
 
-  logout() {
-    // remove user from local storage to log user out
-    sessionStorage.removeItem('token');
-  }
+
 }

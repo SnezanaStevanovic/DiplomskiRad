@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { BaseService } from '../base.service';
+import { catchError } from 'rxjs/operators';
+import { throwError, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +14,13 @@ export class TimesheetDataProviderService extends BaseService {
 
   }
 
-  startWork(): void {
-
+  startWork(employeeId: number): Observable<any> {
+    const url = this._baseUrl + 'Timesheet/setStartTime';
+    const postBudy = JSON.stringify(employeeId);
+    return this._http.post<any>(url, postBudy, this.httpOptions)
+      .pipe(
+        catchError(err => throwError(err))
+      );
   }
 
 

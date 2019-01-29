@@ -22,7 +22,7 @@ namespace Timesheet.Model.APIModel
 
         public string Password { get; set; }
 
-        public Role Role { get; set; }
+        public string Role { get; set; }
 
         public List<int> ProjectIds { get; set; }
 

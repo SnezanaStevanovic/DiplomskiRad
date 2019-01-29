@@ -133,7 +133,7 @@ namespace Timesheet.DAL
                         cmd.Parameters.AddWithValue("@FirstName", employee.FirstName);
                         cmd.Parameters.AddWithValue("@LastName", employee.LastName);
                         cmd.Parameters.AddWithValue("@DateOfBirth", employee.DateOfBirth == null ? DBNull.Value : (object)employee.DateOfBirth);
-                        cmd.Parameters.AddWithValue("@Gender", employee.Gender == null ? DBNull.Value : (object)employee.Gender);
+                        cmd.Parameters.AddWithValue("@Gender", employee.Gender.ToString());
                         cmd.Parameters.AddWithValue("@Adress", employee.Adress == null ? DBNull.Value : (object)employee.Adress);
 
                         employee.Id = (int)await cmd.ExecuteScalarAsync()
@@ -234,7 +234,7 @@ namespace Timesheet.DAL
                 employee.FirstName = await SqlParamHelper.ReadReaderValue<string>(reader, "FirstName");
                 employee.LastName = await SqlParamHelper.ReadReaderValue<string>(reader, "LastName");
                 employee.Adress = await SqlParamHelper.ReadReaderValue<string>(reader, "Adress");
-                employee.Gender = await SqlParamHelper.StringToEnum<Gender>(reader, "Gender");
+                employee.Gender = (Gender)Enum.Parse(typeof(Gender), reader["Gender"].ToString());
                 employee.DateOfBirth = await SqlParamHelper.ReadReaderDateTimeNullableValue(reader, "DateOfBirth");
 
             }

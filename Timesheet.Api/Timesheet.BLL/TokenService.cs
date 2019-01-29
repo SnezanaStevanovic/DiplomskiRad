@@ -36,7 +36,7 @@ namespace Timesheet.BLL
                     {
                         new Claim (ClaimTypes.Role, role.ToString()),
                         new Claim (ClaimTypes.Name, email),
-                        new Claim(ClaimTypes.NameIdentifier,employeeId.ToString())
+                        new Claim (ClaimTypes.NameIdentifier, employeeId.ToString())
 
                     }),
                     Expires = DateTime.UtcNow.AddMinutes(30),

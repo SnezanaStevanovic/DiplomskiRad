@@ -75,7 +75,7 @@ namespace Timesheet.BLL
                         Adress = registrationRequest.Adress,
                         DateOfBirth = registrationRequest.DateOfBirth,
                         Gender = registrationRequest.Gender,
-                        Role = registrationRequest.Role,
+                        Role = (Role)Enum.Parse(typeof(Role), registrationRequest.Role),
                         UserId = registeredUser.Id
                     };
 

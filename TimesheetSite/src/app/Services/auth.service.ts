@@ -30,9 +30,9 @@ export class AuthService {
     const helper = new JwtHelperService();
     const token = localStorage.getItem('token');
     const decoded = helper.decodeToken(token);
-    const roleVal = +decoded.role;
+    const roleStr: string = decoded.role;
     const logged = new LoggedUser();
-    logged.role = roleVal;
+    logged.role = Role[roleStr];
     logged.username = decoded.unique_name;
     logged.employeeId = +decoded.nameid;
     return logged;

@@ -17,10 +17,17 @@ export class TimesheetCardComponent implements OnInit {
 
   work(): void {
     if (this.working) {
-      this.working = false;
+      this._timesheetService.stopWork().subscribe(res => {
+        if (res) {
+          this.working = false;
+        }
+      });
     } else {
-      this.working = true;
-      this._timesheetService.startWork();
+      this._timesheetService.startWork().subscribe(res => {
+        if (res) {
+          this.working = true;
+        }
+      });
     }
   }
 

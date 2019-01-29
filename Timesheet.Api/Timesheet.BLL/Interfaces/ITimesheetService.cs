@@ -21,5 +21,8 @@ namespace Timesheet.BLL.Interfaces
         Task<List<Model.Timesheet>> PeriodTimesheetGetAsync(int employeeId,
                                                             DateTime startDate,
                                                             DateTime endDate);
+
+
+        Task<long> GetTimesheetStateOfDayAsync(int employeeId);
     }
 }

@@ -65,7 +65,6 @@ namespace Timesheet.Api.Controllers
             {
                 response.Message = "Method failed";
                 response.Success = false;
-
                 Logger.Error($"{ex}");
             }
 
@@ -142,5 +141,29 @@ namespace Timesheet.Api.Controllers
             return Ok(response);
 
         }
+
+
+        [HttpGet("TimesheetStateForDay")]
+        public async Task<ActionResult> GetTimesheetState(int employeeId)
+        {
+            TimesheetStateOfDayResponse response = new TimesheetStateOfDayResponse();
+
+            try
+            {
+                long workingSecounds = await _timesheetService.GetTimesheetStateOfDayAsync(employeeId);
+                response.Success = true;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error($"There was an error during GetTimesheetState request. EmployeeId : {employeeId}",ex);
+                response.Success = false;
+                response.Message = "";
+            }
+
+            return Ok(response);
+
+        }
+
+
     }
 }

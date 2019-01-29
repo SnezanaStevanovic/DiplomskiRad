@@ -1,42 +1,36 @@
 import { Injectable, EventEmitter } from '@angular/core';
+import { Subscription, Observable, timer } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TimerService {
 
-  private play = false;
-  private pause = false;
-  private stop = true;
+
+  start = 0;
+  ticks = 0;
+
+  timerSub: Subscription;
+
+
   public playPauseStop$ = new EventEmitter();
 
-  public playTimer() {
-    this.play = true;
-    this.pause = false;
-    this.stop = false;
+  public playTimer(fromSecounds: number) {
+    this.start = fromSecounds;
+    const timerr = timer(1, 1000);
 
-    this.playPauseStop$.emit({
-      play: this.play
-    });
-  }
-
-  public pauseTimer() {
-    this.play = false;
-    this.pause = true;
-    this.stop = false;
-
-    this.playPauseStop$.emit({
-      pause: this.pause
+    this.timerSub = timerr.subscribe(x => {
+      this.ticks = this.start + x;
+      this.playPauseStop$.emit(this.ticks);
     });
   }
 
   public stopTimer() {
-    this.play = false;
-    this.pause = false;
-    this.stop = true;
-
-    this.playPauseStop$.emit({
-      stop: this.stop
-    });
+    this.start = 0;
+    this.ticks = 0;
+    this.timerSub.unsubscribe();
   }
+
+
+
 }

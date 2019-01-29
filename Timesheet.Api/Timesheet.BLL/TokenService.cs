@@ -30,13 +30,11 @@ namespace Timesheet.BLL
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
 
-                int roleVal = (int)role;
-
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = new ClaimsIdentity(new Claim[]
                     {
-                        new Claim (ClaimTypes.Role, roleVal.ToString()),
+                        new Claim (ClaimTypes.Role, role.ToString()),
                         new Claim (ClaimTypes.Name, email),
                         new Claim(ClaimTypes.NameIdentifier,employeeId.ToString())
 
@@ -51,7 +49,7 @@ namespace Timesheet.BLL
             }
             catch (Exception ex)
             {
-                Logger.Error($"ERROR: Error in TokenService.TokenCreate: {ex}");
+                Logger.Error($"ERROR: Error in TokenService.TokenCreate:",ex);
                 throw;
             }
 

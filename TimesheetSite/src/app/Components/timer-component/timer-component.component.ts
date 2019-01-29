@@ -11,9 +11,6 @@ import { TimerService } from 'src/app/Services/Timer/timer-service.service';
 export class TimerComponentComponent implements OnInit, OnDestroy {
   private playPauseStopUnsubscribe: any;
 
-  start = 0;
-  ticks = 0;
-
   minutesDisplay = 0;
   hoursDisplay = 0;
   secondsDisplay = 0;
@@ -31,46 +28,10 @@ export class TimerComponentComponent implements OnInit, OnDestroy {
     this.playPauseStopUnsubscribe.unsubscribe();
   }
 
-  private playPauseStop(res: any) {
-    if (res.play) {
-      this.startTimer();
-    } else if (res.pause) {
-      this.pauseTimer();
-    } else if (res.stop) {
-      this.stopTimer();
-    }
-  }
-
-  private startTimer() {
-
-    const timerr = timer(1, 1000);
-    this.sub = timerr.subscribe(
-      t => {
-        this.ticks = this.start + t;
-        this.secondsDisplay = this.getSeconds(this.ticks);
-        this.minutesDisplay = this.getMinutes(this.ticks);
-        this.hoursDisplay = this.getHours(this.ticks);
-      }
-    );
-  }
-
-  private pauseTimer() {
-    this.start = ++this.ticks;
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
-  }
-
-  private stopTimer() {
-    this.start = 0;
-    this.ticks = 0;
-
-    this.minutesDisplay = 0;
-    this.hoursDisplay = 0;
-    this.secondsDisplay = 0;
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+  private playPauseStop(ticks: number) {
+    this.secondsDisplay = this.getSeconds(ticks);
+    this.minutesDisplay = this.getMinutes(ticks);
+    this.hoursDisplay = this.getHours(ticks);
   }
 
   private getSeconds(ticks: number) {

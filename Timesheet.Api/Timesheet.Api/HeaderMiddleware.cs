@@ -37,7 +37,7 @@ namespace Timesheet.Api
                     string userEmail = bearerTokenIdentity.FindFirst(ClaimTypes.Name).Value;
                     string roleIdentifier = bearerTokenIdentity.FindFirst(ClaimTypes.Role).Value;
 
-                    Role role = (Role)Convert.ToInt32(roleIdentifier);
+                    Role role = (Role)Enum.Parse(typeof(Role), roleIdentifier);
 
                     int employeeId = Convert.ToInt32(bearerTokenIdentity.FindFirst(ClaimTypes.NameIdentifier).Value);
 

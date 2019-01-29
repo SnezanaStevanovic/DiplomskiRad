@@ -38,7 +38,7 @@ namespace Timesheet.DAL
               VALUES
               (
                 @EmployeeId,
-                @StartTime
+                GETUTCDATE()
                 );
              ";
 
@@ -73,7 +73,7 @@ namespace Timesheet.DAL
              UPDATE 
                   Timesheet
              SET 
-                EndTime = @EndTime 
+                EndTime = GETUTCDATE()
              WHERE 
                 EmployeeId = @EmployeeId;
              ";
@@ -158,7 +158,6 @@ namespace Timesheet.DAL
                     using (SqlCommand cmd = new SqlCommand(INSERT_START_TIME, connection))
                     {
                         cmd.Parameters.AddWithValue("@EmployeeId", employeeId);
-                        cmd.Parameters.AddWithValue("@StartTime", DateTime.UtcNow);
 
                         await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
                     }
@@ -186,7 +185,6 @@ namespace Timesheet.DAL
                     using (SqlCommand cmd = new SqlCommand(UPDATE_ONLY_END_TIME, connection))
                     {
                         cmd.Parameters.AddWithValue("@EmployeeId", employeeId);
-                        cmd.Parameters.AddWithValue("@EndTime", DateTime.UtcNow);
 
                         await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
                     }

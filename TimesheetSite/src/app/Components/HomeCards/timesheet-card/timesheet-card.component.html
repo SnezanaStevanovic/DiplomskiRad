@@ -3,5 +3,7 @@
     <span *ngIf="!working">Start day!</span>
     <span *ngIf="working">End day!</span>
   </button>
-  <span *ngIf="working">Today work time: insert timer here </span>
+  <span *ngIf="working">
+    <app-timer-component></app-timer-component>
+  </span>
 </div>

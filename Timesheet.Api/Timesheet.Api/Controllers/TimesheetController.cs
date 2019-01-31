@@ -150,7 +150,7 @@ namespace Timesheet.Api.Controllers
 
             try
             {
-                long workingSecounds = await _timesheetService.GetTimesheetStateOfDayAsync(employeeId);
+                response.WorkingSecounds = await _timesheetService.GetTimesheetStateOfDayAsync(employeeId);
                 response.Success = true;
             }
             catch (Exception ex)

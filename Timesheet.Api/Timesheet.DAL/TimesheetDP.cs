@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Text;
 using System.Threading.Tasks;
 using Timesheet.Common;
+using Timesheet.Common.Extensions;
 using Timesheet.DAL.Interfaces;
 using Timesheet.Model;
 
@@ -70,12 +71,13 @@ namespace Timesheet.DAL
 
         private string UPDATE_ONLY_END_TIME =
            @"
-             UPDATE 
+            UPDATE 
                   Timesheet
              SET 
                 EndTime = GETUTCDATE()
              WHERE 
-                EmployeeId = @EmployeeId;
+                EmployeeId = @EmployeeId
+                AND  Id= (SELECT MAX(Id) FROM Timesheet)
              ";
 
         #endregion
@@ -185,7 +187,7 @@ namespace Timesheet.DAL
                     using (SqlCommand cmd = new SqlCommand(UPDATE_ONLY_END_TIME, connection))
                     {
                         cmd.Parameters.AddWithValue("@EmployeeId", employeeId);
-
+                       
                         await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
                     }
 

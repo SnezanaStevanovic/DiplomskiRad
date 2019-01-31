@@ -37,7 +37,7 @@ namespace Timesheet.DAL
               (
                 @Name,
                 @EstimatedTime,
-                @DateCreated,
+                GETUTCDATE(),
                 @EndDate,
                 @SpentTime,
                 @Progress  
@@ -125,7 +125,7 @@ namespace Timesheet.DAL
                 project.DateCreated = await SqlParamHelper.ReadReaderValue<DateTime>(reader, "DateCreated");
                 project.EndDate = await SqlParamHelper.ReadReaderDateTimeNullableValue(reader, "EndDate");
                 project.SpentTime = await SqlParamHelper.ReadReaderDateTimeNullableValue(reader, "SpentTime");
-                project.Progress = await SqlParamHelper.ReadReaderValue<string>(reader, "Progress");
+                project.Progress = await SqlParamHelper.ReadReaderValue<int>(reader, "Progress");
 
             }
             catch (Exception ex)
@@ -148,10 +148,9 @@ namespace Timesheet.DAL
                     {
                         cmd.Parameters.AddWithValue("@Name", project.Name);
                         cmd.Parameters.AddWithValue("@EstimatedTime", project.EstimatedTime == null ? DBNull.Value : (object)project.EstimatedTime);
-                        cmd.Parameters.AddWithValue("@DateCreated", DateTime.UtcNow);
                         cmd.Parameters.AddWithValue("@EndDate", project.EndDate == null ? DBNull.Value : (object)project.EndDate);
                         cmd.Parameters.AddWithValue("@SpentTime", project.SpentTime == null ? DBNull.Value : (object)project.SpentTime);
-                        cmd.Parameters.AddWithValue("@Progress", project.Progress == null ? DBNull.Value : (object)project.Progress);
+                        cmd.Parameters.AddWithValue("@Progress", project.Progress);
 
 
                         await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);

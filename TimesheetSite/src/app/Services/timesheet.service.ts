@@ -3,9 +3,8 @@ import { TimesheetDataProviderService } from '../DataProviders/Timesheet/timeshe
 import { AuthService } from './auth.service';
 import { LoggedUser } from '../Model/loggedUser';
 import { TimerService } from './Timer/timer-service.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -52,8 +51,27 @@ export class TimesheetService {
       }));
   }
 
-  public checkIfWorking(): boolean {
-    return this.working;
+  public checkIfWorking(): Observable<boolean> {
+    if (this.working) {
+      return of(true);
+    } else {
+      const loggedUser: LoggedUser = this._authService.getLoggedUser();
+
+      return this._timeSheetDP.checkCurrentWorkStateOfDay(loggedUser.employeeId).pipe(
+        map(res => {
+          if (res.success) {
+            if (res.workingSecounds > 0) {
+              this._timerService.playTimer(res.workingSecounds);
+              return true;
+            } else {
+              return false;
+            }
+          } else {
+            return false;
+          }
+        })
+      );
+    }
   }
 
 

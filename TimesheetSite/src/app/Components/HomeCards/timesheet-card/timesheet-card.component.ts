@@ -13,6 +13,9 @@ export class TimesheetCardComponent implements OnInit {
   working: boolean;
 
   ngOnInit() {
+    this._timesheetService.checkIfWorking().subscribe(x => {
+      this.working = x;
+    });
   }
 
   work(): void {

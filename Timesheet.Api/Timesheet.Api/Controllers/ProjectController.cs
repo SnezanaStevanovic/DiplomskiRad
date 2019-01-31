@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using log4net;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Timesheet.BLL.Interfaces;
@@ -11,6 +12,7 @@ using Timesheet.Model.APIModel;
 namespace Timesheet.Api.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class ProjectController : ControllerBase
     {
@@ -90,6 +92,7 @@ namespace Timesheet.Api.Controllers
 
             return Ok(response);
         }
+
 
         [HttpPost("AddNew")]
         public async Task<IActionResult> AddNew([FromBody] AddNewProjectRequest request)

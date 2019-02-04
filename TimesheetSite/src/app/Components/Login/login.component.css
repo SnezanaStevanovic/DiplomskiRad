@@ -7,12 +7,19 @@
                          ". . ."
   }
 
-  .login-card{
+  .login-card{   
     justify-self: center;
     align-self: center;
     grid-area: a;
-    display: grid;
   }
+
+.form-card-group{
+  justify-self: center;
+  align-self: center;
+  display: grid;
+  grid-area: a;
+}
+
   .btn-login {
     color: white;
     float: right;
@@ -25,6 +32,7 @@
     width: 250px !important;
   }
   .password-input {
+    margin-top: 10px;
     font-size: 15px;
     padding-left: 20px;
     padding-right: 30px;
@@ -36,6 +44,8 @@
     cursor: pointer;
   }
   .error-message {
-    color: red;
-    font-size: 13px;
+    padding-left: 20px;
   }
+
+
+

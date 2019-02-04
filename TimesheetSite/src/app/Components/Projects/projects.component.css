@@ -1,0 +1,38 @@
+.grid-container {
+  margin: 20px;
+}
+
+.dashboard-card {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  bottom: 15px;
+}
+
+.more-button {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+}
+
+.projets-header-row {
+  display: grid;
+  grid-template-areas: "a b";
+  grid-template-columns: 1fr auto;
+}
+
+.mat-h1{
+  grid-area: a;
+  align-self: center;
+  justify-self: left;
+}
+
+.btn-create-proj{
+  grid-area: b;
+  margin: 20px;
+}
+
+.dashboard-card-content {
+  text-align: center;
+}

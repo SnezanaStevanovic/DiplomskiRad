@@ -27,7 +27,6 @@ export class RegistrationComponent implements OnInit {
   }
 
   getErrorMessage() {
-
     if (this.registerForm.controls['Email']) {
       return this.registerForm.controls['Email'].hasError('required') ? 'You must enter a value' :
         this.registerForm.controls['Email'].hasError('email') ? 'Not a valid email' :

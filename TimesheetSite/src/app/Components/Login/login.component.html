@@ -1,21 +1,27 @@
 <div class="login-container">
   <mat-card class="login-card" (keyup.enter)="login()">
-    <mat-form-field class="username-input">
-      <input matInput [(ngModel)]="loginParam.email" (ngModelChange)="dataChanged($event)" placeholder="Email">
-    </mat-form-field>
+    <form [formGroup]="loginForm" class="form-card-group">
 
-    <mat-form-field class="password-input">
-      <input matInput [(ngModel)]="loginParam.password" (ngModelChange)="dataChanged($event)" placeholder="Password"
-        [type]="hide ? 'text': 'password'">
-      <mat-icon matSuffix class="mat-sufix-ico" (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
-    </mat-form-field>
+      <mat-form-field class="username-input">
+        <input matInput placeholder="Email" (ngModelChange)="dataChanged($event)" formControlName="Email" required>
+        <mat-error *ngIf="loginForm.controls['Email'].invalid">{{getErrorMessage()}}</mat-error>
+      </mat-form-field>
 
-    <div class="button-row">
-      <span class="error-message" *ngIf="showError">{{errorText}}</span>
-      <button mat-raised-button color="primary" (click)="login()" class="btn-login">
-        <span *ngIf="!loading">Login</span>
-        <mat-spinner style="margin:0 auto;" *ngIf="loading" [diameter]="35"></mat-spinner>
-      </button>
-    </div>
+      <mat-form-field class="password-input">
+        <input matInput placeholder="Password" formControlName="Password" (ngModelChange)="dataChanged($event)" required
+          [type]="hide ? 'text': 'password'">
+        <mat-icon matSuffix class="mat-sufix-ico" (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}
+        </mat-icon>
+        <mat-error *ngIf="loginForm.controls['Password']?.errors?.required">Password is required.</mat-error>
+      </mat-form-field>
+
+      <div class="button-row">
+        <mat-error class="error-message" *ngIf="showError">{{errorText}}</mat-error>
+        <button mat-raised-button color="primary" (click)="login()" class="btn-login">
+          <span *ngIf="!loading">Login</span>
+          <mat-spinner style="margin:0 auto;" *ngIf="loading" [diameter]="36"></mat-spinner>
+        </button>
+      </div>
+    </form>
   </mat-card>
 </div>

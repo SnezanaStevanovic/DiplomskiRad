@@ -15,8 +15,11 @@ import { NavigationComponent } from './Components/Navigation/navigation.componen
 import { TimesheetCardComponent } from './Components/HomeCards/timesheet-card/timesheet-card.component';
 import { YourTasksComponent } from './Components/HomeCards/your-tasks-card/your-tasks.component';
 import { LastDaysWorkCardComponent } from './Components/HomeCards/last-days-work-card/last-days-work-card.component';
-import { TimerComponentComponent } from './Components/timer-component/timer-component.component';
+import { TimerComponentComponent } from './Components/Timer/timer-component.component';
 import { JwtInterceptorService } from './Services/JWT/jwtInterceptor.service';
+import { MatGridListModule, MatCardModule, MatMenuModule, MatIconModule, MatButtonModule } from '@angular/material';
+import { ProjectsComponent } from './Components/Projects/projects.component';
+import { CreateProjectDialogComponent } from './Components/Dialogs/CreateProjectDialog/create-project-dialog.component';
 
 
 
@@ -32,7 +35,9 @@ import { JwtInterceptorService } from './Services/JWT/jwtInterceptor.service';
     TimesheetCardComponent,
     YourTasksComponent,
     LastDaysWorkCardComponent,
-    TimerComponentComponent
+    TimerComponentComponent,
+    ProjectsComponent,
+    CreateProjectDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -50,7 +55,12 @@ import { JwtInterceptorService } from './Services/JWT/jwtInterceptor.service';
         whitelistedDomains: ['localhost:5001'],
       }
     }),
-    LayoutModule
+    LayoutModule,
+    MatGridListModule,
+    MatCardModule,
+    MatMenuModule,
+    MatIconModule,
+    MatButtonModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true }],
   bootstrap: [AppComponent]

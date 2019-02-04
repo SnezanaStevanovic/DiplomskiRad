@@ -2,8 +2,8 @@ import { Routes, RouterModule } from "@angular/router";
 import { AuthGuard } from "./auth.guard";
 import { LoginComponent } from "./Components/Login/login.component";
 import { HomeComponent } from "./Components/home/home.component";
-import { RegistrationComponent } from "./Components/Registration/registration.component";
 import { NavigationComponent } from "./Components/Navigation/navigation.component";
+import { ProjectsComponent } from "./Components/Projects/projects.component";
 
 
 
@@ -14,6 +14,7 @@ const appRoutes: Routes = [
         path: 'main', canActivate: [AuthGuard], component: NavigationComponent,
         children: [
             { path: 'home', canActivate: [AuthGuard], component: HomeComponent },
+            { path: 'projects', canActivate: [AuthGuard], component: ProjectsComponent },
             { path: '', canActivate: [AuthGuard], component: HomeComponent },
         ]
     },

@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { CreateProjectDialogComponent } from '../Dialogs/CreateProjectDialog/create-project-dialog.component';
+import { ProjectDPService } from 'src/app/DataProviders/Project/project-dp.service';
+import { ProjectCard } from 'src/app/Model/projectCard';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-projects',
@@ -10,30 +13,48 @@ import { CreateProjectDialogComponent } from '../Dialogs/CreateProjectDialog/cre
   styleUrls: ['./projects.component.css']
 })
 export class ProjectsComponent {
-  /** Based on the screen size, switch from standard to one column per row */
-  projects = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
-    map(({ matches }) => {
-      if (matches) {
-        return [
-          { title: 'Card 1', cols: 1, rows: 1 },
-          { title: 'Card 2', cols: 1, rows: 1 },
-          { title: 'Card 3', cols: 1, rows: 1 },
-          { title: 'Card 4', cols: 1, rows: 1 }
-        ];
-      }
 
-      return [
-        { title: 'Card 1', cols: 1, rows: 1 },
-        { title: 'Card 2', cols: 1, rows: 1 },
-        { title: 'Card 3', cols: 1, rows: 1 },
-        { title: 'Card 4', cols: 1, rows: 1 }
-      ];
-    })
+  // projects = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
+  //   map(({ matches }) => {
+  //     if (matches) {
+  //       return [
+  //         { title: 'Card 1', cols: 1, rows: 1 },
+  //         { title: 'Card 2', cols: 1, rows: 1 },
+  //         { title: 'Card 3', cols: 1, rows: 1 },
+  //         { title: 'Card 4', cols: 1, rows: 1 }
+  //       ];
+  //     }
+
+  //     return [
+  //       { title: 'Card 1', cols: 1, rows: 1 },
+  //       { title: 'Card 2', cols: 1, rows: 1 },
+  //       { title: 'Card 3', cols: 1, rows: 1 },
+  //       { title: 'Card 4', cols: 1, rows: 1 }
+  //     ];
+  //   })
+  // );
+
+
+  private readonly refreshToken = new BehaviorSubject(undefined);
+
+  projects =  this.refreshToken.pipe(
+    switchMap(() => this._projectService.getAll().pipe(
+      map( res => {
+        return res.map(proj => {
+          const projectCard = new ProjectCard();
+          projectCard.cols = 1;
+          projectCard.rows = 1;
+          projectCard.project = proj;
+          return projectCard;
+        });
+      })
+    ))
   );
 
   constructor(
     private breakpointObserver: BreakpointObserver,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog,
+    private _projectService: ProjectDPService) { }
 
 
   public createProjectDialogOpen() {
@@ -41,7 +62,7 @@ export class ProjectsComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log(`Dialog result: ${result}`);
+        this.refreshToken.next(undefined);
       }
     });
   }

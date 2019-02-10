@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Timesheet.BLL.Interfaces;
+using Timesheet.Model;
 using Timesheet.Model.APIModel;
 
 namespace Timesheet.Api.Controllers
@@ -98,13 +99,13 @@ namespace Timesheet.Api.Controllers
 
 
         [HttpPost("AddNew")]
-        public async Task<IActionResult> AddNew([FromBody] AddNewProjectRequest request)
+        public async Task<IActionResult> AddNew([FromBody] Project newProject)
         {
             BaseResponse response = new BaseResponse();
 
             try
             {
-                await _projectService.AddNewAsync(request)
+                await _projectService.AddNewAsync(newProject)
                                      .ConfigureAwait(false);
 
                 response.Message = "New project added successfully";

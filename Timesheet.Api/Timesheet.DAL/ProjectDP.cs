@@ -39,9 +39,9 @@ namespace Timesheet.DAL
                 @Name,
                 @EstimatedTime,
                 GETUTCDATE(),
-                @EndDate,
-                @SpentTime,
-                @Progress  
+                NULL,
+                NULL,
+                0  
               )
             ";
 
@@ -152,11 +152,7 @@ namespace Timesheet.DAL
                     using (SqlCommand cmd = new SqlCommand(INSERT, connection))
                     {
                         cmd.Parameters.AddWithValue("@Name", project.Name);
-                        cmd.Parameters.AddWithValue("@EstimatedTime", project.EstimatedTime == null ? DBNull.Value : (object)project.EstimatedTime);
-                        cmd.Parameters.AddWithValue("@EndDate", project.EndDate == null ? DBNull.Value : (object)project.EndDate);
-                        cmd.Parameters.AddWithValue("@SpentTime", project.SpentTime == null ? DBNull.Value : (object)project.SpentTime);
-                        cmd.Parameters.AddWithValue("@Progress", project.Progress);
-
+                        cmd.Parameters.AddWithValue("@EstimatedTime", (object)project.EstimatedTime ?? DBNull.Value);
 
                         await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
                     }

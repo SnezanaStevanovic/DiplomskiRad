@@ -7,11 +7,11 @@
   </div>
 
   <mat-grid-list cols="3" rowHeight="350px">
-    <mat-grid-tile *ngFor="let project of projects | async" [colspan]="project.cols" [rowspan]="project.rows">
+    <mat-grid-tile *ngFor="let projectCard of projects | async" [colspan]="projectCard.cols" [rowspan]="projectCard.rows">
       <mat-card class="dashboard-card">
         <mat-card-header>
           <mat-card-title>
-            {{project.title}}
+            {{projectCard.project.name}}
             <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
               <mat-icon>more_vert</mat-icon>
             </button>

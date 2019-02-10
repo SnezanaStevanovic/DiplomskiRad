@@ -16,7 +16,7 @@
     </mat-dialog-content>
     <mat-dialog-actions class="action-buttons-row">
       <button mat-button [mat-dialog-close]="false">Cancel</button>
-      <button mat-button  cdkFocusInitial>Create</button>
+      <button mat-button (click)="createProject()"  cdkFocusInitial>Create</button>
     </mat-dialog-actions>
 </div>
 

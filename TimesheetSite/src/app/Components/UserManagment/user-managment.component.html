@@ -1,0 +1,20 @@
+<div class="grid-container">
+    <div class="users-header-row">
+        <h1 class="mat-h1">Users list</h1>
+        <button mat-raised-button color="primary" (click)="registerUserDialogOpen()"  class="btn-create-user">
+          Register user
+        </button>
+    </div>
+
+
+    <mat-accordion>
+        <mat-expansion-panel  *ngFor="let user of users | async">
+          <mat-expansion-panel-header>
+            {{user.firstName}}  {{user.lastName}}
+          </mat-expansion-panel-header>      
+          This the expansion 1 content 
+        </mat-expansion-panel>
+      </mat-accordion>
+
+</div>
+

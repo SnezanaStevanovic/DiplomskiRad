@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
-using log4net;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Timesheet.BLL.Interfaces;
 using Timesheet.Model.APIModel;
 
@@ -16,13 +17,14 @@ namespace Timesheet.Api.Controllers
     [ApiController]
     public class ProjectController : ControllerBase
     {
-        private ILog Logger { get; } = LogManager.GetLogger(typeof(ProjectController));
+        private readonly ILogger<ProjectController> _logger;
 
         private readonly IProjectService _projectService;
 
-        public ProjectController(IProjectService projectService)
+        public ProjectController(IProjectService projectService, ILogger<ProjectController> logger)
         {
             _projectService = projectService;
+            _logger = logger;
         }
 
         [HttpGet("GetAll")]
@@ -41,8 +43,9 @@ namespace Timesheet.Api.Controllers
                 response.Message = "GetAll() method execution failed";
                 response.Success = false;
 
-                Logger.Error($"{ex}");
+                _logger.LogError(ex, $"{nameof(ProjectController)}.{MethodBase.GetCurrentMethod().Name}");
             }
+
 
             return Ok(response);
         }
@@ -64,7 +67,7 @@ namespace Timesheet.Api.Controllers
                 response.Message = "GetEmployeeProjects() method execution failed";
                 response.Success = false;
 
-                Logger.Error($"{ex}");
+                _logger.LogError(ex, $"{nameof(ProjectController)}.{MethodBase.GetCurrentMethod().Name}");
             }
 
             return Ok(response);
@@ -87,7 +90,7 @@ namespace Timesheet.Api.Controllers
                 response.Message = "Method execution failed";
                 response.Success = false;
 
-                Logger.Error($"{ex}");
+                _logger.LogError(ex, $"{nameof(ProjectController)}.{MethodBase.GetCurrentMethod().Name}");
             }
 
             return Ok(response);
@@ -112,7 +115,7 @@ namespace Timesheet.Api.Controllers
                 response.Message = "AddNew() method execution failed";
                 response.Success = false;
 
-                Logger.Error($"{ex}");
+                _logger.LogError(ex, $"{nameof(ProjectController)}.{MethodBase.GetCurrentMethod().Name}");
             }
 
             return Ok(response);

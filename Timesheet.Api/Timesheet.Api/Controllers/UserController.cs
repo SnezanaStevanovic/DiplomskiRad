@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
+using System.Reflection;
 using System.Threading.Tasks;
-using log4net;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Timesheet.BLL.Interfaces;
 using Timesheet.DAL.Interfaces;
@@ -18,7 +15,7 @@ namespace Timesheet.Api.Controllers
     [Route("api/user")]
     public class UserController : ControllerBase
     {
-        private ILog Logger { get; } = LogManager.GetLogger(typeof(UserController));
+        private readonly ILogger<UserController> _logger;
 
         private readonly IUserLoginDP _userDP;
         private readonly IEmployeeDP _employeeDP;
@@ -35,7 +32,7 @@ namespace Timesheet.Api.Controllers
                               IHashService hashService,
                               ITokenService tokenService,
                               IUserService userService,
-                              IOptions<AppSettings> appSettings)
+                              IOptions<AppSettings> appSettings, ILogger<UserController> logger)
         {
             _userDP = userDP;
             _employeeDP = employeeDP;
@@ -43,16 +40,28 @@ namespace Timesheet.Api.Controllers
             _tokenService = tokenService;
             _userService = userService;
             _appSettings = appSettings.Value;
+            _logger = logger;
         }
         
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody]RegistrationRequest registrationRequest)
         {
-            BaseResponse response = await _userService.Register(registrationRequest)
-                                                      .ConfigureAwait(false);
+            try
+            {
+                BaseResponse response = await _userService.Register(registrationRequest)
+                                          .ConfigureAwait(false);
 
-            return Ok(response);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"{nameof(UserController)}.{MethodBase.GetCurrentMethod().Name}");
+                BaseResponse errorResponse = new BaseResponse();
+                errorResponse.Success = false;
+                errorResponse.Message = "Registration failed";
+                return Ok(errorResponse);
 
+            }
         }
 
         [HttpPost("auth")]

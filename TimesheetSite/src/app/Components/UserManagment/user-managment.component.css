@@ -1,0 +1,21 @@
+.grid-container {
+    margin: 20px;
+  }
+
+  
+  .users-header-row {
+    display: grid;
+    grid-template-areas: "a b";
+    grid-template-columns: 1fr auto;
+  }
+
+  .mat-h1{
+    grid-area: a;
+    align-self: center;
+    justify-self: left;
+  }
+
+  .btn-create-user{
+    grid-area: b;
+    margin: 20px;
+  }

@@ -1,4 +1,4 @@
-﻿using log4net;
+﻿using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,45 +11,35 @@ namespace Timesheet.BLL
 {
     public class ProjectService : IProjectService
     {
-        private ILog Logger { get; } = LogManager.GetLogger(typeof(ProjectService));
+        private readonly ILogger<ProjectService> _logger;
 
         private IProjectDP _projectDP;
 
-        public ProjectService(IProjectDP projectDP)
+        public ProjectService(IProjectDP projectDP, ILogger<ProjectService> logger)
         {
             _projectDP = projectDP;
+            _logger = logger;
         }
 
-        public async Task AddNewAsync(Project project)
+        public Task AddNewAsync(Project project)
         {
-            await _projectDP.InsertAsync(project).ConfigureAwait(false);
+             return _projectDP.InsertAsync(project);
 
         }
 
-        public async Task<List<Project>> GetAllAsync()
+        public  Task<List<Project>> GetAllAsync()
         {
-            List<Project> projects = await _projectDP.GetAllAsync()
-                                                     .ConfigureAwait(false);
-
-
-            return projects;
+            return _projectDP.GetAllAsync();
         }
 
-        public async Task<Project> GetByIdAsync(int projectId)
+        public  Task<Project> GetByIdAsync(int projectId)
         {
-            Project project = await _projectDP.GetByIdAsync(projectId)
-                                              .ConfigureAwait(false);
-
-            return project;
+            return _projectDP.GetByIdAsync(projectId);
         }
 
-        public async Task<List<Project>> GetAllProjectsForEmployee(int employeeId)
+        public  Task<List<Project>> GetAllProjectsForEmployee(int employeeId)
         {
-            List<Project> employeeProjects = await _projectDP.GetAllProjectsForEmployee(employeeId)
-                                                             .ConfigureAwait(false);
-
-
-            return employeeProjects;
+            return _projectDP.GetAllProjectsForEmployee(employeeId);
         }
     }
 }

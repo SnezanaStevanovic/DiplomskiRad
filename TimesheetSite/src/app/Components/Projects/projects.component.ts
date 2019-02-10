@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { CreateProjectDialogComponent } from '../Dialogs/CreateProjectDialog/create-project-dialog.component';
 
 @Component({
   selector: 'app-projects',
@@ -30,12 +31,18 @@ export class ProjectsComponent {
     })
   );
 
-  constructor(private breakpointObserver: BreakpointObserver) { }
+  constructor(
+    private breakpointObserver: BreakpointObserver,
+    public dialog: MatDialog) { }
 
 
   public createProjectDialogOpen() {
-    const dialogRef = this.dialog.open(CreateProjectDialogComponent, {
-      width: '250px'
+    const dialogRef = this.dialog.open(CreateProjectDialogComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log(`Dialog result: ${result}`);
+      }
     });
   }
 

@@ -1,0 +1,87 @@
+<div class="register-container">
+    <h2 mat-dialog-title>Register user</h2>
+    <mat-dialog-content class="dialog-content">
+
+        <form [formGroup]="registerForm" class="form-card-group">
+            <div class="left-column">
+                  <mat-form-field  class="name-input">
+                    <input matInput placeholder="FirstName" 
+                    formControlName="FirstName" required >
+
+                    <mat-error *ngIf="f.FirstName.errors?.required">Name is required.</mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field class="last-name-input">
+                    <input matInput placeholder="LastName" 
+                    formControlName="LastName" required>
+                    <mat-error *ngIf="f.LastName.errors?.required">Last name is required.</mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field class="adress-input">
+                    <input matInput placeholder="Adress" formControlName="Adress">
+                  </mat-form-field>
+
+                  <mat-form-field class="date-picker-date-of-birth">
+                      <input matInput [matDatepicker]="picker1" placeholder="Date of birth"
+                       formControlName="DateOfBirth" required>
+                      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                      <mat-datepicker  #picker1></mat-datepicker>
+                      <!-- touchUi -->
+                  </mat-form-field>
+                  <mat-form-field>
+                      <mat-select placeholder="Choose gender" formControlName="Gender">
+                        <mat-option>--</mat-option>
+                        <mat-option *ngFor="let genderKey of genderKeys" [value]="genderKey" >
+                            {{genders[genderKey]}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+            </div>
+
+            <div class="right-column">
+                <mat-form-field>
+                    <mat-select placeholder="Choose role" 
+                    formControlName="Role" required >
+                      <mat-option *ngFor="let roleKey of rolesKeys" [value]="roleKey">
+                          {{roles[roleKey]}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="f.Role.errors?.required">Role is required.</mat-error>
+                  </mat-form-field>
+
+                <mat-form-field class="email-input">
+                    <input matInput placeholder="Email" 
+                    formControlName="Email" required>
+                    <mat-error *ngIf="f.Email.invalid">{{getErrorMessage()}}</mat-error>
+                  </mat-form-field>
+                  
+                  <mat-form-field class="password-input">
+                      <input matInput placeholder="Password" formControlName="Password" required
+                        [type]="hide ? 'text': 'password'">
+                      <mat-icon matSuffix class="mat-sufix-ico" (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}
+                      </mat-icon>
+                      <mat-error *ngIf="f.Password.errors?.required">Password is required.</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="password-confirm-input">
+                        <input matInput placeholder="Confirm password" 
+                        formControlName="ConfirmPass" required
+                        [type]="hide ? 'text': 'password'">
+                        <mat-icon matSuffix class="mat-sufix-ico" (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}
+                        </mat-icon>
+                        <mat-error *ngIf="f.ConfirmPass.errors?.required">Confirm password is required.</mat-error>
+                        <mat-error *ngIf="f.ConfirmPass.errors?.mustMatch">Passwords does not match</mat-error>
+                    </mat-form-field>
+            </div>
+          </form>
+    </mat-dialog-content>
+
+    <mat-dialog-actions class="action-buttons-row">
+      <mat-error class="errorMessageFromServer" *ngIf="showErrorMessage">{{errorMessage}}</mat-error>
+      <div class="actionButtons">
+          <button mat-button [mat-dialog-close]="false">Cancel</button>
+          <button mat-button  (click)="register()" cdkFocusInitial>Create</button>
+      </div>
+
+    </mat-dialog-actions>
+</div>

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/DataProviders/User/user.service';
 import { Router } from '@angular/router';
-import { LoginRequest } from 'src/app/Model/LoginRequest';
 import { AuthService } from 'src/app/Services/auth.service';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { User } from 'src/app/Model/user';
 
 @Component({
   selector: 'app-login',
@@ -12,11 +12,10 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 })
 export class LoginComponent implements OnInit {
 
-
-  public loginParam = new LoginRequest();
-  private errorText = 'Wrong Username or Password';
-  private showError = false;
-  private loading = false;
+  public errorText = 'Wrong username or password';
+  public showError = false;
+  public loading = false;
+  public hide = false;
   private url = '/main';
 
   loginForm: FormGroup;
@@ -56,11 +55,17 @@ export class LoginComponent implements OnInit {
   }
 
   login(): void {
+
+    if (!this.loginForm.valid) {
+      return;
+    }
+
     this.loading = true;
 
-    this.loginParam.email = this.loginForm.get('Email').value;
-    this.loginParam.password = this.loginForm.get('Password').value;
-    this._userSerice.login(this.loginParam).subscribe(res => {
+    const loginUser: User = new User();
+    loginUser.email = this.loginForm.get('Email').value;
+    loginUser.password = this.loginForm.get('Password').value;
+    this._userSerice.login(loginUser).subscribe(res => {
 
       if (res.success) {
         this._authService.login(res.token);

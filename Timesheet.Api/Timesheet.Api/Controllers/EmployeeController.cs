@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
-using log4net;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Timesheet.BLL.Interfaces;
 using Timesheet.Model;
 using Timesheet.Model.APIModel;
@@ -15,17 +17,19 @@ namespace Timesheet.Api.Controllers
     [ApiController]
     public class EmployeeController : ControllerBase
     {
-        private ILog Logger { get; } = LogManager.GetLogger(typeof(EmployeeController));
+        private readonly ILogger<EmployeeController> _logger;
 
         private readonly IEmployeeService _employeeService;
 
         private readonly IEmployeeProjectService _employeeProjectService;
 
         public EmployeeController(IEmployeeService employeeService,
-                                  IEmployeeProjectService employeeProjectService)
+                                  IEmployeeProjectService employeeProjectService,
+                                  ILogger<EmployeeController> logger)
         {
             _employeeService = employeeService;
             _employeeProjectService = employeeProjectService;
+            _logger = logger;
         }
 
         [HttpGet("GetAll")]
@@ -44,7 +48,7 @@ namespace Timesheet.Api.Controllers
                 response.Message = "GetAll() method failed";
                 response.Success = false;
 
-                Logger.Error($"{ex}");
+                _logger.LogError(ex, $"{nameof(EmployeeController)}.{MethodBase.GetCurrentMethod().Name}");
             }
 
             return Ok(response);
@@ -66,7 +70,7 @@ namespace Timesheet.Api.Controllers
                 response.Message = "GetAllEmployeesPerProject() method failed";
                 response.Success = false;
 
-                Logger.Error($"{ex}");
+                _logger.LogError(ex, $"{nameof(EmployeeController)}.{MethodBase.GetCurrentMethod().Name}");
             }
 
             return Ok(response);
@@ -118,7 +122,7 @@ namespace Timesheet.Api.Controllers
                 response.Message = "Method AddNewEmployee() failed";
                 response.Success = false;
 
-                Logger.Error($"{ex}");
+                _logger.LogError(ex, $"{nameof(EmployeeController)}.{MethodBase.GetCurrentMethod().Name}");
             }
 
             return Ok(response);

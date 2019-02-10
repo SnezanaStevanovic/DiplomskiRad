@@ -1,23 +1,15 @@
 .login-container {
     display: grid;
-    grid-template-columns:repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    grid-template-areas: ". . ."
-                         ". a ."
-                         ". . ."
+    height: 100vh;
   }
 
   .login-card{   
     justify-self: center;
     align-self: center;
-    grid-area: a;
   }
 
 .form-card-group{
-  justify-self: center;
-  align-self: center;
   display: grid;
-  grid-area: a;
 }
 
   .btn-login {
@@ -45,6 +37,7 @@
   }
   .error-message {
     padding-left: 20px;
+    font-size: 11.25px;
   }
 
 

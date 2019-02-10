@@ -8,23 +8,9 @@ namespace Timesheet.Model.APIModel
 {
     public class RegistrationRequest
     {
-        public string FirstName { get; set; }
-
-        public string LastName { get; set; }
-
-        public Gender Gender { get; set; }
-
-        public DateTime DateOfBirth { get; set; }
-
-        public string Adress { get; set; }
-
-        public string Email { get; set; }
-
-        public string Password { get; set; }
-
-        public string Role { get; set; }
-
-        public List<int> ProjectIds { get; set; }
+        public Employee NewEmployee { get; set; }
+        public UserLogin NewUser { get; set; }
+        public List<int> ProjectIds { get; set; } = new List<int>();
 
     }
 }

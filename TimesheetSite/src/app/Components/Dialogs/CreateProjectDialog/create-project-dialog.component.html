@@ -1,3 +1,22 @@
-<p>
-  create-project-dialog works!
-</p>
+<div class="create-project-container">
+    <h2 mat-dialog-title>Create new project</h2>
+    <mat-dialog-content class="dialog-content">
+    
+      <mat-form-field class="project-name-input">
+        <input matInput placeholder="Project name"  [formControl]="projectNameControl" required>
+        <mat-error *ngIf="projectNameControl?.errors?.required">Project name is required.</mat-error>
+      </mat-form-field>
+    
+      <mat-form-field class="date-picker-estimate">
+        <input matInput [matDatepicker]="picker1" placeholder="Estimated time" [formControl]="date">
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+      
+    </mat-dialog-content>
+    <mat-dialog-actions class="action-buttons-row">
+      <button mat-button [mat-dialog-close]="false">Cancel</button>
+      <button mat-button  cdkFocusInitial>Create</button>
+    </mat-dialog-actions>
+</div>
+

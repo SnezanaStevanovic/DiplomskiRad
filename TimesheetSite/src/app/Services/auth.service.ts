@@ -22,7 +22,7 @@ export class AuthService {
   }
 
   public logout() {
-    sessionStorage.removeItem('token');
+    localStorage.removeItem('token');
   }
 
 

@@ -1,4 +1,5 @@
-﻿using log4net;
+﻿
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -12,21 +13,19 @@ namespace Timesheet.BLL
 {
     public class TaskService : ITaskService
     {
-        private ILog Logger { get; } = LogManager.GetLogger(typeof(TaskService));
+        private readonly ILogger<TaskService> _logger;
 
         private readonly ITaskDP _taskDP;
 
-        public TaskService(ITaskDP taskDP)
+        public TaskService(ITaskDP taskDP, ILogger<TaskService> logger)
         {
             _taskDP = taskDP;
+            _logger = logger;
         }
 
-        public async Task<List<ProjectTask>> TasksPerProjectGetAsync(int projectId)
+        public  Task<List<ProjectTask>> TasksPerProjectGetAsync(int projectId)
         {
-            List<ProjectTask> projectTasks = await _taskDP.TasksPerProjectGetAsync(projectId)
-                                                          .ConfigureAwait(false);
-
-            return projectTasks;
+            return _taskDP.TasksPerProjectGetAsync(projectId);
         }
 
     }

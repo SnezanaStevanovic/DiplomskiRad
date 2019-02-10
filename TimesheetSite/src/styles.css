@@ -9,3 +9,8 @@ body{
 .mat-progress-spinner circle, .mat-spinner circle {
     stroke: white!important;
 }
+
+
+.mat-sufix-ico:hover {
+  cursor: pointer;
+}

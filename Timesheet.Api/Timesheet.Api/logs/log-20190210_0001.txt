@@ -1,0 +1,56 @@
+﻿2019-02-10 18:56:59.703 +01:00 [Information] User profile is available. Using '"C:\Users\vladi\AppData\Local\ASP.NET\DataProtection-Keys"' as key repository and Windows DPAPI to encrypt keys at rest.
+2019-02-10 18:59:08.304 +01:00 [Information] Request starting HTTP/1.1 OPTIONS http://localhost:5001/api/user/auth  
+2019-02-10 18:59:08.304 +01:00 [Information] Request starting HTTP/1.1 OPTIONS http://localhost:5001/api/user/auth  
+2019-02-10 18:59:08.862 +01:00 [Warning] The CORS protocol does not allow specifying a wildcard (any) origin and credentials at the same time. Configure the policy by listing individual origins if credentials needs to be supported.
+2019-02-10 18:59:08.863 +01:00 [Warning] The CORS protocol does not allow specifying a wildcard (any) origin and credentials at the same time. Configure the policy by listing individual origins if credentials needs to be supported.
+2019-02-10 18:59:08.866 +01:00 [Information] CORS policy execution successful.
+2019-02-10 18:59:08.866 +01:00 [Information] CORS policy execution successful.
+2019-02-10 18:59:09.051 +01:00 [Information] Request finished in 767.7292ms 204 
+2019-02-10 18:59:09.051 +01:00 [Information] Request finished in 767.7727ms 204 
+2019-02-10 18:59:09.069 +01:00 [Information] Request starting HTTP/1.1 POST http://localhost:5001/api/user/auth application/json 38
+2019-02-10 18:59:09.069 +01:00 [Information] Request starting HTTP/1.1 POST http://localhost:5001/api/user/auth application/json 38
+2019-02-10 18:59:09.070 +01:00 [Warning] The CORS protocol does not allow specifying a wildcard (any) origin and credentials at the same time. Configure the policy by listing individual origins if credentials needs to be supported.
+2019-02-10 18:59:09.070 +01:00 [Warning] The CORS protocol does not allow specifying a wildcard (any) origin and credentials at the same time. Configure the policy by listing individual origins if credentials needs to be supported.
+2019-02-10 18:59:09.070 +01:00 [Information] CORS policy execution successful.
+2019-02-10 18:59:09.070 +01:00 [Information] CORS policy execution successful.
+2019-02-10 18:59:10.539 +01:00 [Information] Route matched with "{action = \"Login\", controller = \"User\"}". Executing action "Timesheet.Api.Controllers.UserController.Login (Timesheet.Api)"
+2019-02-10 18:59:10.539 +01:00 [Information] Route matched with "{action = \"Login\", controller = \"User\"}". Executing action "Timesheet.Api.Controllers.UserController.Login (Timesheet.Api)"
+2019-02-10 18:59:11.816 +01:00 [Information] Executing action method "Timesheet.Api.Controllers.UserController.Login (Timesheet.Api)" with arguments (["Timesheet.Model.APIModel.LoginRequest"]) - Validation state: Valid
+2019-02-10 18:59:11.816 +01:00 [Information] Executing action method "Timesheet.Api.Controllers.UserController.Login (Timesheet.Api)" with arguments (["Timesheet.Model.APIModel.LoginRequest"]) - Validation state: Valid
+2019-02-10 18:59:22.783 +01:00 [Information] Executed action method "Timesheet.Api.Controllers.UserController.Login (Timesheet.Api)", returned result "Microsoft.AspNetCore.Mvc.OkObjectResult" in 10958.7921ms.
+2019-02-10 18:59:22.783 +01:00 [Information] Executed action method "Timesheet.Api.Controllers.UserController.Login (Timesheet.Api)", returned result "Microsoft.AspNetCore.Mvc.OkObjectResult" in 10958.8536ms.
+2019-02-10 18:59:22.892 +01:00 [Information] Executing ObjectResult, writing value of type '"Timesheet.Model.APIModel.LoginResponse"'.
+2019-02-10 18:59:22.892 +01:00 [Information] Executing ObjectResult, writing value of type '"Timesheet.Model.APIModel.LoginResponse"'.
+2019-02-10 18:59:22.989 +01:00 [Information] Executed action "Timesheet.Api.Controllers.UserController.Login (Timesheet.Api)" in 12437.652ms
+2019-02-10 18:59:22.989 +01:00 [Information] Executed action "Timesheet.Api.Controllers.UserController.Login (Timesheet.Api)" in 12437.6445ms
+2019-02-10 18:59:23.013 +01:00 [Information] Request finished in 13943.4405ms 200 application/json; charset=utf-8
+2019-02-10 18:59:23.013 +01:00 [Information] Request finished in 13943.6108ms 200 application/json; charset=utf-8
+2019-02-10 18:59:23.152 +01:00 [Information] Request starting HTTP/1.1 OPTIONS http://localhost:5001/api/Timesheet/TimesheetStateForDay?employeeId=1  
+2019-02-10 18:59:23.152 +01:00 [Warning] The CORS protocol does not allow specifying a wildcard (any) origin and credentials at the same time. Configure the policy by listing individual origins if credentials needs to be supported.
+2019-02-10 18:59:23.152 +01:00 [Information] CORS policy execution successful.
+2019-02-10 18:59:23.153 +01:00 [Information] Request finished in 0.5553ms 204 
+2019-02-10 18:59:23.386 +01:00 [Information] Request starting HTTP/1.1 GET http://localhost:5001/api/Timesheet/TimesheetStateForDay?employeeId=1 application/json 
+2019-02-10 18:59:23.521 +01:00 [Information] Successfully validated the token.
+2019-02-10 18:59:23.576 +01:00 [Warning] The CORS protocol does not allow specifying a wildcard (any) origin and credentials at the same time. Configure the policy by listing individual origins if credentials needs to be supported.
+2019-02-10 18:59:23.576 +01:00 [Information] CORS policy execution successful.
+2019-02-10 18:59:23.607 +01:00 [Information] Route matched with "{action = \"GetTimesheetState\", controller = \"Timesheet\"}". Executing action "Timesheet.Api.Controllers.TimesheetController.GetTimesheetState (Timesheet.Api)"
+2019-02-10 18:59:23.676 +01:00 [Information] Authorization was successful.
+2019-02-10 18:59:23.735 +01:00 [Information] Executing action method "Timesheet.Api.Controllers.TimesheetController.GetTimesheetState (Timesheet.Api)" with arguments (["1"]) - Validation state: Valid
+2019-02-10 18:59:23.998 +01:00 [Information] Executed action method "Timesheet.Api.Controllers.TimesheetController.GetTimesheetState (Timesheet.Api)", returned result "Microsoft.AspNetCore.Mvc.OkObjectResult" in 262.1777ms.
+2019-02-10 18:59:23.999 +01:00 [Information] Executing ObjectResult, writing value of type '"Timesheet.Model.APIModel.TimesheetStateOfDayResponse"'.
+2019-02-10 18:59:24.030 +01:00 [Information] Executed action "Timesheet.Api.Controllers.TimesheetController.GetTimesheetState (Timesheet.Api)" in 423.1811ms
+2019-02-10 18:59:24.047 +01:00 [Information] Request finished in 661.8798ms 200 application/json; charset=utf-8
+2019-02-10 18:59:29.578 +01:00 [Information] Request starting HTTP/1.1 OPTIONS http://localhost:5001/api/Employee/GetAll  
+2019-02-10 18:59:29.579 +01:00 [Warning] The CORS protocol does not allow specifying a wildcard (any) origin and credentials at the same time. Configure the policy by listing individual origins if credentials needs to be supported.
+2019-02-10 18:59:29.580 +01:00 [Information] CORS policy execution successful.
+2019-02-10 18:59:29.580 +01:00 [Information] Request finished in 1.7469ms 204 
+2019-02-10 18:59:29.587 +01:00 [Information] Request starting HTTP/1.1 GET http://localhost:5001/api/Employee/GetAll application/json 
+2019-02-10 18:59:29.588 +01:00 [Information] Successfully validated the token.
+2019-02-10 18:59:29.589 +01:00 [Warning] The CORS protocol does not allow specifying a wildcard (any) origin and credentials at the same time. Configure the policy by listing individual origins if credentials needs to be supported.
+2019-02-10 18:59:29.589 +01:00 [Information] CORS policy execution successful.
+2019-02-10 18:59:29.601 +01:00 [Information] Route matched with "{action = \"GetAll\", controller = \"Employee\"}". Executing action "Timesheet.Api.Controllers.EmployeeController.GetAll (Timesheet.Api)"
+2019-02-10 18:59:29.636 +01:00 [Information] Executing action method "Timesheet.Api.Controllers.EmployeeController.GetAll (Timesheet.Api)" - Validation state: Valid
+2019-02-10 18:59:29.715 +01:00 [Information] Executed action method "Timesheet.Api.Controllers.EmployeeController.GetAll (Timesheet.Api)", returned result "Microsoft.AspNetCore.Mvc.OkObjectResult" in 78.5485ms.
+2019-02-10 18:59:29.715 +01:00 [Information] Executing ObjectResult, writing value of type '"Timesheet.Model.APIModel.AllEmployeesResponse"'.
+2019-02-10 18:59:29.753 +01:00 [Information] Executed action "Timesheet.Api.Controllers.EmployeeController.GetAll (Timesheet.Api)" in 151.2485ms
+2019-02-10 18:59:29.753 +01:00 [Information] Request finished in 166.2342ms 200 application/json; charset=utf-8

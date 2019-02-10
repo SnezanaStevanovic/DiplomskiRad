@@ -20,7 +20,7 @@ namespace Timesheet.Model
 
         public string Adress { get; set; }
 
-        public Gender Gender { get; set; }
+        public Gender? Gender { get; set; }
 
     }
 }

@@ -1,6 +1,7 @@
-﻿using log4net;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
+using System.Reflection;
 using System.Threading.Tasks;
 using Timesheet.BLL.Interfaces;
 using Timesheet.DAL.Interfaces;
@@ -12,16 +13,18 @@ namespace Timesheet.Api.Controllers
     [ApiController]
     public class TaskController : ControllerBase
     {
-        private ILog Logger { get; } = LogManager.GetLogger(typeof(TaskController));
+        private readonly ILogger<TaskController> _logger;
 
         private readonly ITaskService _taskService;
         private readonly ITaskDP _taskDP;
 
         public TaskController(ITaskService taskService,
-                              ITaskDP taskDP)
+                              ITaskDP taskDP, 
+                              ILogger<TaskController> logger)
         {
             _taskService = taskService;
             _taskDP = taskDP;
+            _logger = logger;
         }
 
         [HttpGet("GetAllTasksPerProject/{projectId}")]
@@ -39,9 +42,10 @@ namespace Timesheet.Api.Controllers
                 response.Message = "Method execution failed";
                 response.Success = false;
 
-                Logger.Error($"{ex}");
+                _logger.LogError(ex, $"{nameof(TaskController)}.{MethodBase.GetCurrentMethod().Name}");
             }
 
+            
             return Ok(response);
         }
 
@@ -61,7 +65,7 @@ namespace Timesheet.Api.Controllers
                 response.Message = "Method execution failed";
                 response.Success = false;
 
-                Logger.Error($"{ex}");
+                _logger.LogError(ex, $"{nameof(TaskController)}.{MethodBase.GetCurrentMethod().Name}");
             }
 
             return Ok(response);

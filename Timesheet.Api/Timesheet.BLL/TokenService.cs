@@ -1,9 +1,10 @@
-﻿using log4net;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Reflection;
 using System.Security.Claims;
 using System.Text;
 using Timesheet.BLL.Interfaces;
@@ -13,13 +14,13 @@ namespace Timesheet.BLL
 {
     public class TokenService : ITokenService
     {
-        private ILog Logger { get; } = LogManager.GetLogger(typeof(TokenService));
-
+        private readonly ILogger<TokenService> _logger;
         private readonly AppSettings _appSettings;
 
-        public TokenService(IOptions<AppSettings> appSettings)
+        public TokenService(IOptions<AppSettings> appSettings, ILogger<TokenService> logger)
         {
             _appSettings = appSettings.Value;
+            _logger = logger;
         }
 
         public string TokenCreate(string email, Role role, int employeeId)
@@ -49,10 +50,11 @@ namespace Timesheet.BLL
             }
             catch (Exception ex)
             {
-                Logger.Error($"ERROR: Error in TokenService.TokenCreate:",ex);
+                _logger.LogError(ex, $"{nameof(TokenService)}.{MethodBase.GetCurrentMethod().Name}");
                 throw;
             }
 
+            
             return retValToken;
         }
     }

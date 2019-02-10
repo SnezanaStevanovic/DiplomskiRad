@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
-using log4net;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Timesheet.BLL.Interfaces;
 using Timesheet.Model.APIModel;
 
@@ -16,13 +14,14 @@ namespace Timesheet.Api.Controllers
     [Authorize]
     public class TimesheetController : ControllerBase
     {
-        private ILog Logger { get; } = LogManager.GetLogger(typeof(TimesheetController));
+        private readonly ILogger<TimesheetController> _logger;
 
         private readonly ITimesheetService _timesheetService;
 
-        public TimesheetController(ITimesheetService timesheetService)
+        public TimesheetController(ITimesheetService timesheetService, ILogger<TimesheetController> logger)
         {
             _timesheetService = timesheetService;
+            _logger = logger;
         }
 
         [HttpPost("setStartTime")]
@@ -42,8 +41,9 @@ namespace Timesheet.Api.Controllers
                 response.Message = "Method failed";
                 response.Success = false;
 
-                Logger.Error($"{ex}");
+                _logger.LogError(ex, $"{nameof(TimesheetController)}.{MethodBase.GetCurrentMethod().Name}");
             }
+
 
             return Ok(response);
 
@@ -65,7 +65,7 @@ namespace Timesheet.Api.Controllers
             {
                 response.Message = "Method failed";
                 response.Success = false;
-                Logger.Error($"{ex}");
+                _logger.LogError(ex, $"{nameof(TimesheetController)}.{MethodBase.GetCurrentMethod().Name}");
             }
 
             return Ok(response);
@@ -102,7 +102,7 @@ namespace Timesheet.Api.Controllers
                 response.Message = "Method execution failed";
                 response.Success = false;
 
-                Logger.Error($"{ex}");
+                _logger.LogError(ex, $"{nameof(TimesheetController)}.{MethodBase.GetCurrentMethod().Name}");
             }
 
             return Ok(response);
@@ -135,7 +135,7 @@ namespace Timesheet.Api.Controllers
                 response.Message = $"Method execution failed";
                 response.Success = false;
 
-                Logger.Error($"{ex}");
+                _logger.LogError(ex, $"{nameof(TimesheetController)}.{MethodBase.GetCurrentMethod().Name}");
             }
 
             return Ok(response);
@@ -155,7 +155,7 @@ namespace Timesheet.Api.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error($"There was an error during GetTimesheetState request. EmployeeId : {employeeId}",ex);
+                _logger.LogError(ex, $"{nameof(TimesheetController)}.{MethodBase.GetCurrentMethod().Name}  EmployeeId : {employeeId}");
                 response.Success = false;
                 response.Message = "";
             }

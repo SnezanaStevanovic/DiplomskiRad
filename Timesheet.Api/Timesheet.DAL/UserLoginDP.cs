@@ -1,8 +1,9 @@
-﻿using log4net;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Reflection;
 using System.Threading.Tasks;
 using Timesheet.Common;
 using Timesheet.DAL.Interfaces;
@@ -13,8 +14,7 @@ namespace Timesheet.DAL
     public class UserLoginDP : IUserLoginDP
     {
 
-        private ILog Logger { get; } = LogManager.GetLogger(typeof(UserLoginDP));
-
+        private readonly ILogger<UserLoginDP> _logger;
         private readonly AppSettings _config;
 
         #region SqlQueries
@@ -49,9 +49,10 @@ namespace Timesheet.DAL
                     Email = @Email;
             ";
         #endregion
-        public UserLoginDP(IOptions<AppSettings> config)
+        public UserLoginDP(IOptions<AppSettings> config, ILogger<UserLoginDP> logger)
         {
             this._config = config.Value;
+            _logger = logger;
         }
 
         public async Task<List<UserLogin>> GetAllAsync()
@@ -81,7 +82,7 @@ namespace Timesheet.DAL
             }
             catch (Exception ex)
             {
-                this.Logger.Error($"{ex}");
+                _logger.LogError(ex, $"{nameof(UserLoginDP)}.{MethodBase.GetCurrentMethod().Name}");
                 throw;
 
             }
@@ -100,7 +101,7 @@ namespace Timesheet.DAL
             }
             catch (Exception ex)
             {
-                Logger.Error($"{ex}");
+                _logger.LogError(ex, $"{nameof(UserLoginDP)}.{MethodBase.GetCurrentMethod().Name}");
                 throw;
             }
 
@@ -128,7 +129,7 @@ namespace Timesheet.DAL
             }
             catch (Exception ex)
             {
-                Logger.Error($"{ex}");
+                _logger.LogError(ex, $"{nameof(UserLoginDP)}.{MethodBase.GetCurrentMethod().Name}");
                 throw;
 
             }
@@ -162,7 +163,7 @@ namespace Timesheet.DAL
             }
             catch (Exception ex)
             {
-                this.Logger.Error($"{ex}");
+                _logger.LogError(ex, $"{nameof(UserLoginDP)}.{MethodBase.GetCurrentMethod().Name}");
                 throw;
             }
 

@@ -1,0 +1,31 @@
+.create-project-container{
+    display: grid;
+    justify-content: center;
+}
+
+.dialog-content{
+    display: grid;
+    align-content: center;
+    align-items: center;
+    justify-content: left;
+    justify-items: left;
+}
+.slider-progress  {
+    margin-top: 10px;
+    width: 250px !important;
+}
+
+.date-picker-estimate{
+    margin-top: 10px;
+    width: 250px !important;
+}
+
+.project-name-input{
+    margin-top: 10px;
+    width: 250px !important;
+}
+
+.action-buttons-row {
+    justify-self: end;
+    align-self: center;
+}

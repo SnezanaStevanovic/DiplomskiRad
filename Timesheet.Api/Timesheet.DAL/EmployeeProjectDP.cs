@@ -1,8 +1,9 @@
-﻿using log4net;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Timesheet.DAL.Interfaces;
@@ -12,7 +13,7 @@ namespace Timesheet.DAL
 {
     public class EmployeeProjectDP : IEmployeeProjectDP
     {
-        private ILog Logger { get; } = LogManager.GetLogger(typeof(EmployeeProjectDP));
+        private readonly ILogger<EmployeeProjectDP> _logger;
 
         #region SQLQueries
         private const string INSERT =
@@ -65,9 +66,10 @@ namespace Timesheet.DAL
             }
             catch (Exception ex)
             {
-                Logger.Error($"{ex}");
+                _logger.LogError(ex, $"{nameof(EmployeeProjectDP)}.{MethodBase.GetCurrentMethod().Name}");
                 throw;
             }
+
         }
 
         public async Task RemoveAsync(EmployeeProject employeeProject)
@@ -91,7 +93,7 @@ namespace Timesheet.DAL
             }
             catch (Exception ex)
             {
-                Logger.Error($"{ex}");
+                _logger.LogError(ex, $"{nameof(EmployeeProjectDP)}.{MethodBase.GetCurrentMethod().Name}");
                 throw;
             }
         }

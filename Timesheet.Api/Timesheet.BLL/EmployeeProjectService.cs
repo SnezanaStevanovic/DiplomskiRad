@@ -1,6 +1,7 @@
-﻿using log4net;
+﻿using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Timesheet.BLL.Interfaces;
@@ -11,13 +12,14 @@ namespace Timesheet.BLL
 {
     public class EmployeeProjectService : IEmployeeProjectService
     {
-        private ILog Logger { get; } = LogManager.GetLogger(typeof(EmployeeProjectService));
+        private readonly ILogger<EmployeeProjectService> _logger;
 
         private readonly IEmployeeProjectDP _employeeProjectDP;
 
-        public EmployeeProjectService(IEmployeeProjectDP employeeProjectDP)
+        public EmployeeProjectService(IEmployeeProjectDP employeeProjectDP, ILogger<EmployeeProjectService> logger)
         {
             _employeeProjectDP = employeeProjectDP;
+            _logger = logger;
         }
 
         public async Task AddNewAsync(int employeeId, int projectId)
@@ -35,8 +37,10 @@ namespace Timesheet.BLL
             }
             catch (Exception ex)
             {
-                Logger.Error($"{ex}");
+                _logger.LogError(ex, $"{nameof(EmployeeProjectService)}.{MethodBase.GetCurrentMethod().Name}");
+                throw;
             }
+
         }
     }
 }

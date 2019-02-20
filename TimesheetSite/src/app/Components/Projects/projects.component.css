@@ -33,6 +33,40 @@
   margin: 20px;
 }
 
-.dashboard-card-content {
-  text-align: center;
+.project-card-content {
+  height: 90%;
+  display: grid;
+  grid-template-rows: 3fr 1fr;
+}
+
+.down-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.up-row {
+  display: grid;
+  align-items: center;
+  justify-items: center;
+}
+
+.progress-margin {
+  margin: 10px;
+}
+
+.progress-section {
+  display: flex;
+  align-content: center;
+  align-items: center;
+}
+
+.project-title {
+  width: 90%;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+}
+
+.title {
+  justify-self: center;
+  align-self: center;
 }

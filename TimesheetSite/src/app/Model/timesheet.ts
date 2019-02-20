@@ -3,6 +3,6 @@ export interface Timesheet {
     employeeId: number;
     overtime: Date | string;
     pause: Date | string;
-    startTime: Date | string;
-    endTime: Date | string;
+    startTime: Date;
+    endTime: Date;
 }

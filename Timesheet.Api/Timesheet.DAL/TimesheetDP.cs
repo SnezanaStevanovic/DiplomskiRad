@@ -102,8 +102,8 @@ namespace Timesheet.DAL
                     using (SqlCommand cmd = new SqlCommand(PERIOD_TIMESHEET_GET, connection))
                     {
                         cmd.Parameters.AddWithValue("@EmployeeId", employeeId);
-                        cmd.Parameters.AddWithValue("@EndDateTime", endDateTime == DateTime.MinValue ? DBNull.Value : (object)endDateTime);
-                        cmd.Parameters.AddWithValue("@StartDateTime", startDateTime == DateTime.MinValue ? DBNull.Value : (object)startDateTime);
+                        cmd.Parameters.AddWithValue("@EndDateTime", endDateTime);
+                        cmd.Parameters.AddWithValue("@StartDateTime",startDateTime);
 
                         using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
                         {

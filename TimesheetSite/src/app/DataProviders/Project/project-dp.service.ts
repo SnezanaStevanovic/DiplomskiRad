@@ -42,6 +42,21 @@ export class ProjectDPService extends BaseService {
       );
   }
 
+  public getEmployeeProjects(employeeId: number): Observable<Array<Project>> {
+    const url = this._baseUrl + `Project/GetEmployeeProjects/${employeeId}`;
+    return this._http.get<ListProjectsResponse>(url, this.httpOptions)
+      .pipe(
+        map(res => {
+            if (res.success) {
+              return res.projects;
+            } else {
+              return new Array<Project>();
+            }
+        }),
+        catchError(err => throwError(err))
+      );
+  }
+
 
 
 }

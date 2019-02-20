@@ -39,7 +39,7 @@ export class UserService extends BaseService {
       );
   }
 
-  getAll(): Observable<Array<Employee>> {
+  public getAll(): Observable<Array<Employee>> {
     const url = this._baseUrl + 'Employee/GetAll';
     return this._http.get<AllEmployeesResponse>(url, this.httpOptions)
       .pipe(
@@ -49,6 +49,17 @@ export class UserService extends BaseService {
         catchError(err => throwError(err))
       );
   }
+
+public getAllForProject(projectId: number): Observable<Array<Employee>> {
+  const url = this._baseUrl + `Employee/GetAllEmployeesPerProject/${projectId}`;
+    return this._http.get<AllEmployeesResponse>(url, this.httpOptions)
+      .pipe(
+        map(res => {
+          return res.employees;
+        }),
+        catchError(err => throwError(err))
+      );
+}
 
 
 }

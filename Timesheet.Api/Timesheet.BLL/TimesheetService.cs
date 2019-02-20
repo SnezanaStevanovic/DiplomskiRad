@@ -40,16 +40,17 @@ namespace Timesheet.BLL
 
         }
 
-        public async Task<List<Model.Timesheet>> PeriodTimesheetGetAsync(int employeeId,
+        public Task<List<Model.Timesheet>> PeriodTimesheetGetAsync(int employeeId,
                                                                          DateTime startDate,
                                                                          DateTime endDate)
         {
-            List<Model.Timesheet> retValue = await _timesheetDP.PeriodTimeshetGetAsync(employeeId,
-                                                                                       startDate,
-                                                                                       endDate)
-                                                               .ConfigureAwait(false);
 
-            return retValue;
+            if (startDate == default || endDate == default)
+            {
+                throw new Exception("Incorect startDate or endDate");
+            }
+
+             return _timesheetDP.PeriodTimeshetGetAsync(employeeId,startDate,endDate);
         }
 
         public  Task SetStartTimeForEmployee(int employeeId)

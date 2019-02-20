@@ -19,3 +19,36 @@
     grid-area: b;
     margin: 20px;
   }
+
+  .user-details {
+    display: grid;
+    grid-template-areas: "a b c";
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .first-column {
+    grid-area: a;
+    display: grid;
+  }
+
+  .secound-column {
+    grid-area: b;
+    display: grid;
+   }
+
+   .third-column {
+    grid-area: c;
+    display: grid;
+   }
+
+   .row-margin {
+     margin-top: 20px;
+   }
+
+   .devider-row {
+     margin-right: 20px;
+   }
+
+   .project-name {
+     margin-left: 20px;
+   }

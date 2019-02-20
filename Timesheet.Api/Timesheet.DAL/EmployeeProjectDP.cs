@@ -40,10 +40,12 @@ namespace Timesheet.DAL
         #endregion
 
         private readonly AppSettings _appSettings;
-        public EmployeeProjectDP(IOptions<AppSettings> appSettings)
+        public EmployeeProjectDP(IOptions<AppSettings> appSettings, ILogger<EmployeeProjectDP> logger)
         {
             _appSettings = appSettings.Value;
+            _logger = logger;
         }
+
 
         public async Task InsertAsync(EmployeeProject employeeProject)
         {

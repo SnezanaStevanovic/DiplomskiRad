@@ -17,29 +17,15 @@ namespace Timesheet.Api.Controllers
     {
         private readonly ILogger<UserController> _logger;
 
-        private readonly IUserLoginDP _userDP;
-        private readonly IEmployeeDP _employeeDP;
-
-        private readonly IHashService _hashService;
-        private readonly ITokenService _tokenService;
 
         private readonly IUserService _userService;
 
-        private readonly AppSettings _appSettings;
 
-        public UserController(IUserLoginDP userDP,
-                              IEmployeeDP employeeDP,
-                              IHashService hashService,
-                              ITokenService tokenService,
-                              IUserService userService,
-                              IOptions<AppSettings> appSettings, ILogger<UserController> logger)
+        public UserController(IUserService userService,ILogger<UserController> logger)
         {
-            _userDP = userDP;
-            _employeeDP = employeeDP;
-            _hashService = hashService;
-            _tokenService = tokenService;
+
             _userService = userService;
-            _appSettings = appSettings.Value;
+
             _logger = logger;
         }
         

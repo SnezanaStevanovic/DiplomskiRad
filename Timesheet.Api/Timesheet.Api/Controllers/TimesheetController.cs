@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Data.SqlTypes;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -108,16 +110,27 @@ namespace Timesheet.Api.Controllers
             return Ok(response);
         }
 
-        [HttpPost("periodTimesheetGet")]
-        public async Task<IActionResult> PeriodTimesheetGet([FromBody]PeriodTimeheetGetRequest request)
+        [HttpGet("periodTimesheetGet")]
+        public async Task<IActionResult> PeriodTimesheetGet(int employeeId, DateTime startDate, DateTime endDate)
         {
             PeriodTimeheetGetResponse response = new PeriodTimeheetGetResponse();
             try
             {
-                response.AllTimesheetsForPeriod = await _timesheetService.PeriodTimesheetGetAsync(request.EmployeeId,
-                                                                                                  request.StartDate,
-                                                                                                  request.EndDate)
-                                                                         .ConfigureAwait(false);
+                if (startDate == default 
+                    || startDate < SqlDateTime.MinValue 
+                    || startDate > SqlDateTime.MaxValue
+                    || endDate == default
+                    || endDate < SqlDateTime.MinValue
+                    || endDate > SqlDateTime.MaxValue)
+                {
+                    response.Success = false;
+                    response.Message = "Incorect startDate or endDate";
+                    return Ok(response);
+                }
+
+
+                response.AllTimesheetsForPeriod = await _timesheetService.PeriodTimesheetGetAsync(employeeId,startDate,endDate).ConfigureAwait(false);
+
 
                 if (response.AllTimesheetsForPeriod.Count > 0)
                 {
@@ -136,6 +149,54 @@ namespace Timesheet.Api.Controllers
                 response.Success = false;
 
                 _logger.LogError(ex, $"{nameof(TimesheetController)}.{MethodBase.GetCurrentMethod().Name}");
+            }
+
+            return Ok(response);
+
+        }
+
+
+
+        [HttpGet("GetWorkingHoursForLastDays")]
+        public async Task<IActionResult> GetWorkingHoursForPeriod(int employeeId, int lastNDays)
+        {
+            GetWorkingHoursForPeriodResponse response = new GetWorkingHoursForPeriodResponse();
+            try
+            {
+                DateTime endDate = DateTime.UtcNow;
+                DateTime startDate = DateTime.UtcNow.AddDays(-lastNDays);
+
+
+
+
+
+                var timeSheets = await _timesheetService.PeriodTimesheetGetAsync(employeeId, startDate, endDate).ConfigureAwait(false);
+
+
+
+
+                response.HoursPerDay = timeSheets
+                    .Where(x => x.EndTime != null)
+                    .Select(s => new
+                    {
+                        Key = (s.StartTime.Day,s.StartTime.Month,s.StartTime.Year),
+                        Value = (s.EndTime.Value - s.StartTime).Hours
+                    })
+                    .GroupBy(x => x.Key)
+                    .Select(g => new HoursPerDay {
+                        Date = new DateTime(g.Key.Year,g.Key.Month,g.Key.Day),
+                        Hours = g.Sum(s => s.Value) }).ToList();
+
+                response.Success = true;
+
+                
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"{nameof(TimesheetController)}.{MethodBase.GetCurrentMethod().Name}");
+                response.Success = false;
+                response.Message = "Failed to get working hours for period";
             }
 
             return Ok(response);

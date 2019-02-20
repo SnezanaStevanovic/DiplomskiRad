@@ -1,18 +1,19 @@
-import { Component } from '@angular/core';
-import { map, switchMap } from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { map, switchMap, mergeMap, toArray } from 'rxjs/operators';
 import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { CreateProjectDialogComponent } from '../Dialogs/CreateProjectDialog/create-project-dialog.component';
 import { ProjectDPService } from 'src/app/DataProviders/Project/project-dp.service';
 import { ProjectCard } from 'src/app/Model/projectCard';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, from } from 'rxjs';
+import { UserService } from 'src/app/DataProviders/User/user.service';
 
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.css']
 })
-export class ProjectsComponent {
+export class ProjectsComponent implements OnInit {
 
   // projects = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
   //   map(({ matches }) => {
@@ -39,22 +40,51 @@ export class ProjectsComponent {
 
   projects =  this.refreshToken.pipe(
     switchMap(() => this._projectService.getAll().pipe(
-      map( res => {
-        return res.map(proj => {
-          const projectCard = new ProjectCard();
-          projectCard.cols = 1;
-          projectCard.rows = 1;
-          projectCard.project = proj;
-          return projectCard;
-        });
-      })
+
+      switchMap(projects => from(projects)),
+      mergeMap(project => this._userService.getAllForProject(project.id).pipe(
+        map(employees => {
+               const projectCard = new ProjectCard();
+               projectCard.project = project;
+               projectCard.employees = employees;
+               projectCard.cols = 1;
+               projectCard.rows = 1;
+               return projectCard;
+        }))),
+        toArray()
     ))
   );
 
   constructor(
     private breakpointObserver: BreakpointObserver,
     public dialog: MatDialog,
-    private _projectService: ProjectDPService) { }
+    private _projectService: ProjectDPService,
+    private _userService: UserService) { }
+
+
+    ngOnInit(): void {
+      this.breakpointObserver.observe(Breakpoints.Handset).subscribe(x => {
+        if (x.matches) {
+          this.projects = this.projects.pipe(
+            map(c => { c.forEach(p => {
+              p.cols = 3;
+              p.rows = 1;
+            });
+            return c;
+          })
+          );
+        } else {
+          this.projects = this.projects.pipe(
+            map(c => { c.forEach(p => {
+              p.cols = 1;
+              p.rows = 1;
+            });
+            return c;
+          })
+          );
+        }
+      });
+    }
 
 
   public createProjectDialogOpen() {

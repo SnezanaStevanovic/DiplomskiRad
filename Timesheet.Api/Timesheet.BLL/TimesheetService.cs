@@ -1,4 +1,4 @@
-﻿using log4net;
+﻿using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,13 +15,13 @@ namespace Timesheet.BLL
 {
     public class TimesheetService : ITimesheetService
     {
-        private ILog Logger { get; } = LogManager.GetLogger(typeof(TimesheetService));
-
+        private readonly ILogger<TimesheetService> _logger;
         private readonly ITimesheetDP _timesheetDP;
 
-        public TimesheetService(ITimesheetDP timesheetDP)
+        public TimesheetService(ITimesheetDP timesheetDP, ILogger<TimesheetService> logger)
         {
             _timesheetDP = timesheetDP;
+            _logger = logger;
         }
 
         public async Task<bool> EndTimeSetAsync(int employeeId,
@@ -40,16 +40,17 @@ namespace Timesheet.BLL
 
         }
 
-        public async Task<List<Model.Timesheet>> PeriodTimesheetGetAsync(int employeeId,
+        public Task<List<Model.Timesheet>> PeriodTimesheetGetAsync(int employeeId,
                                                                          DateTime startDate,
                                                                          DateTime endDate)
         {
-            List<Model.Timesheet> retValue = await _timesheetDP.PeriodTimeshetGetAsync(employeeId,
-                                                                                       startDate,
-                                                                                       endDate)
-                                                               .ConfigureAwait(false);
 
-            return retValue;
+            if (startDate == default || endDate == default)
+            {
+                throw new Exception("Incorect startDate or endDate");
+            }
+
+             return _timesheetDP.PeriodTimeshetGetAsync(employeeId,startDate,endDate);
         }
 
         public  Task SetStartTimeForEmployee(int employeeId)
@@ -109,10 +110,9 @@ namespace Timesheet.BLL
             }
             catch (Exception ex)
             {
-                Logger.Error($"{nameof(TimesheetService)}.{MethodBase.GetCurrentMethod().Name}", ex);
+                _logger.LogError(ex, $"{nameof(TimesheetService)}.{MethodBase.GetCurrentMethod().Name}");
                 throw;
             }
-
         }
     }
 }

@@ -4,7 +4,10 @@ using System.Text;
 
 namespace Timesheet.Model.APIModel
 {
-    public class AddNewProjectRequest : Project
+    public class HoursPerDay
     {
+        public DateTime Date { get; set; }
+
+        public int Hours { get; set; }
     }
 }

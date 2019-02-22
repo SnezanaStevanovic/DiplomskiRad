@@ -1,8 +1,9 @@
-﻿using log4net;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Timesheet.Common;
@@ -13,7 +14,7 @@ namespace Timesheet.DAL
 {
     public class ProjectDP : IProjectDP
     {
-        private ILog Logger { get; } = LogManager.GetLogger(typeof(ProjectDP));
+        private readonly ILogger<ProjectDP> _logger;
 
         #region SqlQueries
 
@@ -38,9 +39,9 @@ namespace Timesheet.DAL
                 @Name,
                 @EstimatedTime,
                 GETUTCDATE(),
-                @EndDate,
-                @SpentTime,
-                @Progress  
+                NULL,
+                NULL,
+                0  
               )
             ";
 
@@ -75,9 +76,10 @@ namespace Timesheet.DAL
         #endregion
 
         private readonly AppSettings _config;
-        public ProjectDP(IOptions<AppSettings> config)
+        public ProjectDP(IOptions<AppSettings> config, ILogger<ProjectDP> logger)
         {
             _config = config.Value;
+            _logger = logger;
         }
 
         public async Task<List<Project>> GetAllAsync()
@@ -107,9 +109,12 @@ namespace Timesheet.DAL
             }
             catch (Exception ex)
             {
-                this.Logger.Error($"ERROR ProjectDP.GetAll() method. Details: {ex.Message} StackTrace: {ex.StackTrace}");
+                _logger.LogError(ex, $"{nameof(ProjectDP)}.{MethodBase.GetCurrentMethod().Name}");
                 throw;
             }
+
+
+         
 
             return retValProjects;
         }
@@ -130,7 +135,7 @@ namespace Timesheet.DAL
             }
             catch (Exception ex)
             {
-                Logger.Error($"{ex}");
+                _logger.LogError(ex, $"{nameof(ProjectDP)}.{MethodBase.GetCurrentMethod().Name}");
                 throw;
             }
 
@@ -147,11 +152,7 @@ namespace Timesheet.DAL
                     using (SqlCommand cmd = new SqlCommand(INSERT, connection))
                     {
                         cmd.Parameters.AddWithValue("@Name", project.Name);
-                        cmd.Parameters.AddWithValue("@EstimatedTime", project.EstimatedTime == null ? DBNull.Value : (object)project.EstimatedTime);
-                        cmd.Parameters.AddWithValue("@EndDate", project.EndDate == null ? DBNull.Value : (object)project.EndDate);
-                        cmd.Parameters.AddWithValue("@SpentTime", project.SpentTime == null ? DBNull.Value : (object)project.SpentTime);
-                        cmd.Parameters.AddWithValue("@Progress", project.Progress);
-
+                        cmd.Parameters.AddWithValue("@EstimatedTime", (object)project.EstimatedTime ?? DBNull.Value);
 
                         await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
                     }
@@ -161,7 +162,7 @@ namespace Timesheet.DAL
             }
             catch (Exception ex)
             {
-                Logger.Error($"{ex}");
+                _logger.LogError(ex, $"{nameof(ProjectDP)}.{MethodBase.GetCurrentMethod().Name}");
                 throw;
             }
         }
@@ -194,7 +195,7 @@ namespace Timesheet.DAL
             }
             catch (Exception ex)
             {
-                Logger.Error($"{ex}");
+                _logger.LogError(ex, $"{nameof(ProjectDP)}.{MethodBase.GetCurrentMethod().Name}");
                 throw;
             }
 
@@ -230,7 +231,7 @@ namespace Timesheet.DAL
             }
             catch (Exception ex)
             {
-                this.Logger.Error($"{ex}");
+                _logger.LogError(ex, $"{nameof(ProjectDP)}.{MethodBase.GetCurrentMethod().Name}");
                 throw;
             }
 

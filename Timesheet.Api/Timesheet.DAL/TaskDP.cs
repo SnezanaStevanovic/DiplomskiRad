@@ -1,8 +1,9 @@
-﻿using log4net;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Timesheet.Common;
@@ -13,8 +14,8 @@ namespace Timesheet.DAL
 {
     public class TaskDP : ITaskDP
     {
-        private ILog Logger { get; } = LogManager.GetLogger(typeof(TaskDP));
-
+        private readonly ILogger<TaskDP> _logger;
+       
         private readonly AppSettings _appSettings;
 
         #region SqlQueries
@@ -59,9 +60,10 @@ namespace Timesheet.DAL
 
         #endregion
 
-        public TaskDP(IOptions<AppSettings> appSettings)
+        public TaskDP(IOptions<AppSettings> appSettings, ILogger<TaskDP> logger)
         {
             _appSettings = appSettings.Value;
+            _logger = logger;
         }
         public async Task InsertAsync(ProjectTask task)
         {
@@ -90,7 +92,7 @@ namespace Timesheet.DAL
             }
             catch (Exception ex)
             {
-                Logger.Error($"{ex}");
+                _logger.LogError(ex, $"{nameof(TaskDP)}.{MethodBase.GetCurrentMethod().Name}");
                 throw;
             }
         }
@@ -122,7 +124,7 @@ namespace Timesheet.DAL
             }
             catch (Exception ex)
             {
-                Logger.Error($"{ex}");
+                _logger.LogError(ex, $"{nameof(TaskDP)}.{MethodBase.GetCurrentMethod().Name}");
                 throw;
             }
 
@@ -146,7 +148,7 @@ namespace Timesheet.DAL
             }
             catch (Exception ex)
             {
-                Logger.Error($"{ex}");
+                _logger.LogError(ex, $"{nameof(TaskDP)}.{MethodBase.GetCurrentMethod().Name}");
                 throw;
             }
 

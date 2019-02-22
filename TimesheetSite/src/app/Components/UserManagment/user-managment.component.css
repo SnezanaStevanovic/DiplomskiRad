@@ -1,0 +1,54 @@
+.grid-container {
+    margin: 20px;
+  }
+
+  
+  .users-header-row {
+    display: grid;
+    grid-template-areas: "a b";
+    grid-template-columns: 1fr auto;
+  }
+
+  .mat-h1{
+    grid-area: a;
+    align-self: center;
+    justify-self: left;
+  }
+
+  .btn-create-user{
+    grid-area: b;
+    margin: 20px;
+  }
+
+  .user-details {
+    display: grid;
+    grid-template-areas: "a b c";
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .first-column {
+    grid-area: a;
+    display: grid;
+  }
+
+  .secound-column {
+    grid-area: b;
+    display: grid;
+   }
+
+   .third-column {
+    grid-area: c;
+    display: grid;
+   }
+
+   .row-margin {
+     margin-top: 20px;
+   }
+
+   .devider-row {
+     margin-right: 20px;
+   }
+
+   .project-name {
+     margin-left: 20px;
+   }

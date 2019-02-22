@@ -1,8 +1,9 @@
-﻿using log4net;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Timesheet.Common;
@@ -13,8 +14,7 @@ namespace Timesheet.DAL
 {
     public class EmployeeDP : IEmployeeDP
     {
-        private ILog Logger { get; } = LogManager.GetLogger(typeof(UserLoginDP));
-
+        private readonly ILogger<EmployeeDP> _logger;
         private readonly AppSettings _config;
 
 
@@ -78,9 +78,10 @@ namespace Timesheet.DAL
             ";
         #endregion
 
-        public EmployeeDP(IOptions<AppSettings> config)
+        public EmployeeDP(IOptions<AppSettings> config, ILogger<EmployeeDP> logger)
         {
             this._config = config.Value;
+            _logger = logger;
         }
 
 
@@ -109,14 +110,17 @@ namespace Timesheet.DAL
             }
             catch (Exception ex)
             {
-                Logger.Error($"ERROR EmployeeDP.GetAll() method. Details: {ex}");
+                _logger.LogError(ex, $"{nameof(EmployeeDP)}.{MethodBase.GetCurrentMethod().Name}");
                 throw;
             }
 
             return retValEmployees;
         }
 
-        public async Task InsertAsync(Employee employee)
+
+
+
+    public async Task InsertAsync(Employee employee)
         {
             try
             {
@@ -129,12 +133,11 @@ namespace Timesheet.DAL
 
                         cmd.Parameters.AddWithValue("@UserId", employee.UserId);
                         cmd.Parameters.AddWithValue("@RoleId", employee.Role);
-                        //  cmd.Parameters.AddWithValue("@ProjectId", employee.ProjectId);
                         cmd.Parameters.AddWithValue("@FirstName", employee.FirstName);
                         cmd.Parameters.AddWithValue("@LastName", employee.LastName);
-                        cmd.Parameters.AddWithValue("@DateOfBirth", employee.DateOfBirth == null ? DBNull.Value : (object)employee.DateOfBirth);
+                        cmd.Parameters.AddWithValue("@DateOfBirth", (object)employee.DateOfBirth ?? DBNull.Value);
                         cmd.Parameters.AddWithValue("@Gender", employee.Gender.ToString());
-                        cmd.Parameters.AddWithValue("@Adress", employee.Adress == null ? DBNull.Value : (object)employee.Adress);
+                        cmd.Parameters.AddWithValue("@Adress", string.IsNullOrEmpty(employee.Adress) ? DBNull.Value : (object)employee.Adress);
 
                         employee.Id = (int)await cmd.ExecuteScalarAsync()
                                                     .ConfigureAwait(false);
@@ -145,7 +148,7 @@ namespace Timesheet.DAL
             }
             catch (Exception ex)
             {
-                Logger.Error($"{ex}");
+                _logger.LogError(ex, $"{nameof(EmployeeDP)}.{MethodBase.GetCurrentMethod().Name}");
                 throw;
             }
 
@@ -178,7 +181,7 @@ namespace Timesheet.DAL
             }
             catch (Exception ex)
             {
-                Logger.Error($"ERROR EmployeeDP.ProjectEmployeesGet() method. Details: {ex}");
+                _logger.LogError(ex, $"{nameof(EmployeeDP)}.{MethodBase.GetCurrentMethod().Name}");
                 throw;
             }
 
@@ -214,7 +217,7 @@ namespace Timesheet.DAL
             }
             catch (Exception ex)
             {
-                Logger.Error($"ERROR EmployeeDP.GetEmployee() method. Details: {ex}");
+                _logger.LogError(ex, $"{nameof(EmployeeDP)}.{MethodBase.GetCurrentMethod().Name}");
                 throw;
             }
 
@@ -230,17 +233,16 @@ namespace Timesheet.DAL
                 employee.UserId = await SqlParamHelper.ReadReaderValue<int>(reader, "UserId");
                 employee.UserId = Convert.ToInt32(reader["UserId"]);
                 employee.Role = await SqlParamHelper.ReadReaderValue<Role>(reader, "RoleId");
-                //employee.ProjectId = Convert.ToInt32(reader["ProjectId"]);
                 employee.FirstName = await SqlParamHelper.ReadReaderValue<string>(reader, "FirstName");
                 employee.LastName = await SqlParamHelper.ReadReaderValue<string>(reader, "LastName");
                 employee.Adress = await SqlParamHelper.ReadReaderValue<string>(reader, "Adress");
-                //employee.Gender = (Gender)Enum.Parse(typeof(Gender), reader["Gender"].ToString());
+                employee.Gender =  await SqlParamHelper.StringToEnum<Gender>(reader,nameof(employee.Gender));
                 employee.DateOfBirth = await SqlParamHelper.ReadReaderDateTimeNullableValue(reader, "DateOfBirth");
 
             }
             catch (Exception ex)
             {
-                Logger.Error($"ERROR EmployeeDP.Create() method. Details: {ex}");
+                _logger.LogError(ex, $"{nameof(EmployeeDP)}.{MethodBase.GetCurrentMethod().Name}");
                 throw;
             }
 

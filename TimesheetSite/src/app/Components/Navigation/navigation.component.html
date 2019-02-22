@@ -1,35 +1,37 @@
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer class="sidenav" fixedInViewport="true" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-    [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="!(isHandset$ | async)">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport="true"
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="!(isHandset$ | async)">
     <mat-toolbar color="primary">Menu</mat-toolbar>
-    <mat-nav-list>
-      <a mat-list-item [routerLink]="['/main/home']">Home</a>
-      <a mat-list-item href="#">Projects</a>
-      <a mat-list-item href="#">Tasks</a>
-      <a mat-list-item href="#">Timesheet</a>
-    </mat-nav-list>
+      <mat-nav-list>
+        <a mat-list-item [routerLink]="['/main/home']">Home</a>
+        <a mat-list-item [routerLink]="['/main/projects']">Projects</a>
+        <a mat-list-item href="#">Tasks</a>
+        <a mat-list-item href="#">Timesheet</a>
+        <a mat-list-item [routerLink]="['/main/usermanagment']">User Managment</a>
+      </mat-nav-list>
+
   </mat-sidenav>
 
   <mat-sidenav-content class="sidenav-content">
-    <mat-toolbar color="primary">
-      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="isHandset$ | async">
+    <mat-toolbar class="central-toolbar" color="primary">
+      <button class="side-nav-button" type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>TimesheetSite</span>
-      <ng-container class="user-settings">
+      <span class="title-navigation">TimesheetSite</span>
+      <div class="user-settings">
         <button mat-fab [matMenuTriggerFor]="menu">V</button>
         <mat-menu [overlapTrigger]="false" #menu="matMenu">
           <button mat-menu-item>Tasks</button>
-          <button mat-menu-item>Projects</button>
+          <button mat-menu-item [routerLink]="['/main/projects']">Projects</button>
           <button mat-menu-item>Settings</button>
-          <button mat-menu-item>Logout</button>
+          <button mat-menu-item (click)="logout()">Logout</button>
         </mat-menu>
-      </ng-container>
-
+      </div>
     </mat-toolbar>
     <ng-container>
       <router-outlet></router-outlet>
     </ng-container>
-
   </mat-sidenav-content>
 </mat-sidenav-container>

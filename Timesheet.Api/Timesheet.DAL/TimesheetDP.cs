@@ -1,8 +1,9 @@
-﻿using log4net;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Timesheet.Common;
@@ -14,7 +15,7 @@ namespace Timesheet.DAL
 {
     public class TimesheetDP : ITimesheetDP
     {
-        private ILog Logger { get; } = LogManager.GetLogger(typeof(TimesheetDP));
+        private readonly ILogger<TimesheetDP> _logger;
 
         private readonly AppSettings _appSettings;
 
@@ -82,9 +83,10 @@ namespace Timesheet.DAL
 
         #endregion
 
-        public TimesheetDP(IOptions<AppSettings> appSetiings)
+        public TimesheetDP(IOptions<AppSettings> appSetiings, ILogger<TimesheetDP> logger)
         {
             _appSettings = appSetiings.Value;
+            _logger = logger;
         }
 
         public async Task<List<Model.Timesheet>> PeriodTimeshetGetAsync(int employeeId,
@@ -100,8 +102,8 @@ namespace Timesheet.DAL
                     using (SqlCommand cmd = new SqlCommand(PERIOD_TIMESHEET_GET, connection))
                     {
                         cmd.Parameters.AddWithValue("@EmployeeId", employeeId);
-                        cmd.Parameters.AddWithValue("@EndDateTime", endDateTime == DateTime.MinValue ? DBNull.Value : (object)endDateTime);
-                        cmd.Parameters.AddWithValue("@StartDateTime", startDateTime == DateTime.MinValue ? DBNull.Value : (object)startDateTime);
+                        cmd.Parameters.AddWithValue("@EndDateTime", endDateTime);
+                        cmd.Parameters.AddWithValue("@StartDateTime",startDateTime);
 
                         using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
                         {
@@ -118,9 +120,11 @@ namespace Timesheet.DAL
             }
             catch (Exception ex)
             {
-                Logger.Error($"{ex}");
+                _logger.LogError(ex, $"{nameof(TimesheetDP)}.{MethodBase.GetCurrentMethod().Name}");
                 throw;
             }
+
+         
 
             return retValue;
         }
@@ -140,7 +144,7 @@ namespace Timesheet.DAL
             }
             catch (Exception ex)
             {
-                this.Logger.Error($"{ex}");
+                _logger.LogError(ex, $"{nameof(TimesheetDP)}.{MethodBase.GetCurrentMethod().Name}");
                 throw;
 
             }
@@ -169,7 +173,7 @@ namespace Timesheet.DAL
             }
             catch (Exception ex)
             {
-                Logger.Error($"{ex}");
+                _logger.LogError(ex, $"{nameof(TimesheetDP)}.{MethodBase.GetCurrentMethod().Name}");
                 throw;
             }
 
@@ -196,7 +200,7 @@ namespace Timesheet.DAL
             }
             catch (Exception ex)
             {
-                Logger.Error($"{ex}");
+                _logger.LogError(ex, $"{nameof(TimesheetDP)}.{MethodBase.GetCurrentMethod().Name}");
                 throw;
             }
 
@@ -235,7 +239,7 @@ namespace Timesheet.DAL
             }
             catch (Exception ex)
             {
-                Logger.Error($"{ex}");
+                _logger.LogError(ex, $"{nameof(TimesheetDP)}.{MethodBase.GetCurrentMethod().Name}");
                 throw;
             }
 

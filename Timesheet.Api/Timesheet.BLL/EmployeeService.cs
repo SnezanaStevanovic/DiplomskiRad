@@ -1,4 +1,4 @@
-﻿using log4net;
+﻿using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,13 +11,14 @@ namespace Timesheet.BLL
 {
     public class EmployeeService : IEmployeeService
     {
-        private ILog Logger { get; } = LogManager.GetLogger(typeof(EmployeeService));
+        private readonly ILogger<EmployeeService> _logger;
 
         private readonly IEmployeeDP _employeeDP;
 
-        public EmployeeService(IEmployeeDP employeeDP)
+        public EmployeeService(IEmployeeDP employeeDP, ILogger<EmployeeService> logger)
         {
             _employeeDP = employeeDP;
+            _logger = logger;
         }
 
         public async Task AddNewAsync(Employee employee)

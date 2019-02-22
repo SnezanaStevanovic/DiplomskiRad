@@ -1,8 +1,11 @@
-﻿using log4net;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
+using System.Reflection;
 using System.Threading.Tasks;
+using System.Transactions;
 using Timesheet.BLL.Interfaces;
+using Timesheet.Common;
 using Timesheet.DAL.Interfaces;
 using Timesheet.Model;
 using Timesheet.Model.APIModel;
@@ -11,8 +14,8 @@ namespace Timesheet.BLL
 {
     public class UserService : IUserService
     {
-        private ILog Logger { get; } = LogManager.GetLogger(typeof(UserService));
 
+        private readonly ILogger<UserService> _logger;
         private readonly AppSettings _appSettings;
         private readonly IHashService _hashService;
         private readonly ITokenService _tokenService;
@@ -28,7 +31,7 @@ namespace Timesheet.BLL
                            IEmployeeService employeeService,
                            IEmployeeProjectService employeeProjectService,
                            IUserLoginDP userLoginDP,
-                           IEmployeeDP employeeDP)
+                           IEmployeeDP employeeDP, ILogger<UserService> logger)
         {
             _appSettings = appSettings.Value;
             _hashService = hashService;
@@ -37,14 +40,18 @@ namespace Timesheet.BLL
             _employeeProjectService = employeeProjectService;
             _userLoginDP = userLoginDP;
             _employeeDP = employeeDP;
+            _logger = logger;
         }
+
+
+
         public async Task<BaseResponse> Register(RegistrationRequest registrationRequest)
         {
             BaseResponse baseResponse = new BaseResponse();
 
             try
             {
-                UserLogin registeredUser = await _userLoginDP.GetUserByEmailAsync(registrationRequest.Email)
+                UserLogin registeredUser = await _userLoginDP.GetUserByEmailAsync(registrationRequest.NewUser.Email)
                                                              .ConfigureAwait(false);
 
                 if (registeredUser != null)
@@ -54,40 +61,46 @@ namespace Timesheet.BLL
                     return baseResponse;
                 }
 
-                string cryptedPass = $"{registrationRequest.Password}{_appSettings.PasswordSalt}";
+                string cryptedPass = $"{registrationRequest.NewUser.Password}{_appSettings.PasswordSalt}";
                 string hashPass = _hashService.GetMd5Hash(cryptedPass);
 
                 registeredUser = new UserLogin
                 {
-                    Email = registrationRequest.Email,
+                    Email = registrationRequest.NewUser.Email,
                     Password = hashPass,
                 };
 
-                await this._userLoginDP.InsertAsync(registeredUser)
-                                       .ConfigureAwait(false);
 
-                foreach (int projectId in registrationRequest.ProjectIds)
+                using (TransactionScope transaction = TransactionScopeCreator.Create())
                 {
+                    await this._userLoginDP.InsertAsync(registeredUser)
+                        .ConfigureAwait(false);
+
                     Employee newEmployee = new Employee
                     {
-                        FirstName = registrationRequest.FirstName,
-                        LastName = registrationRequest.LastName,
-                        Adress = registrationRequest.Adress,
-                        DateOfBirth = registrationRequest.DateOfBirth,
-                        Gender = registrationRequest.Gender,
-                        Role = (Role)Enum.Parse(typeof(Role), registrationRequest.Role),
+                        FirstName = registrationRequest.NewEmployee.FirstName,
+                        LastName = registrationRequest.NewEmployee.LastName,
+                        Adress = registrationRequest.NewEmployee.Adress,
+                        DateOfBirth = registrationRequest.NewEmployee.DateOfBirth,
+                        Gender = registrationRequest.NewEmployee.Gender,
+                        Role = registrationRequest.NewEmployee.Role,
                         UserId = registeredUser.Id
                     };
 
                     await _employeeService.AddNewAsync(newEmployee)
                                           .ConfigureAwait(false);
 
-                    await _employeeProjectService.AddNewAsync(newEmployee.Id,
-                                                              projectId)
-                                                 .ConfigureAwait(false);
+                    foreach (int projectId in registrationRequest.ProjectIds)
+                    {
+                        await _employeeProjectService.AddNewAsync(newEmployee.Id,
+                                                                  projectId)
+                                                     .ConfigureAwait(false);
+                    }
+
+                    transaction.Complete();
                 }
 
-
+ 
                 baseResponse.Success = true;
                 baseResponse.Message = "Registration successful";
 
@@ -96,15 +109,13 @@ namespace Timesheet.BLL
             }
             catch (Exception ex)
             {
-                Logger.Error($"ERROR: {ex.StackTrace}");
-                baseResponse.Success = false;
-                baseResponse.Message = "Registration failed";
-                return baseResponse;
+                _logger.LogError(ex, $"{nameof(UserService)}.{MethodBase.GetCurrentMethod().Name}");
+                throw;
             }
-
 
         }
 
+       
         public async Task<LoginResponse> Login(LoginRequest loginRequest)
         {
             LoginResponse loginResponse = new LoginResponse();
@@ -135,7 +146,7 @@ namespace Timesheet.BLL
                 loginResponse.Success = false;
                 loginResponse.Message = "Login failed";
 
-                Logger.Error($"ERROR: UserService.Login() Details: {ex}");
+                _logger.LogError(ex, $"{nameof(UserService)}.{MethodBase.GetCurrentMethod().Name}");
             }
 
             return loginResponse;

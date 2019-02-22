@@ -31,7 +31,7 @@ import {
   MatTabsModule,
   MatToolbarModule,
   MatTooltipModule,
-  MatStepperModule,
+  MatStepperModule
 } from '@angular/material';
 import { CdkTableModule } from '@angular/cdk/table';
 import { A11yModule } from '@angular/cdk/a11y';
@@ -40,6 +40,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { PlatformModule } from '@angular/cdk/platform';
 import { ObserversModule } from '@angular/cdk/observers';
 import { PortalModule } from '@angular/cdk/portal';
+import { LayoutModule } from '@angular/cdk/layout';
 
 @NgModule({
   exports: [
@@ -83,6 +84,12 @@ import { PortalModule } from '@angular/cdk/portal';
     OverlayModule,
     PlatformModule,
     PortalModule,
+    MatGridListModule,
+   MatCardModule,
+   MatMenuModule,
+   MatIconModule,
+   MatButtonModule,
+   LayoutModule
   ],
   declarations: []
 })

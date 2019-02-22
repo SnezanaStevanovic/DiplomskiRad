@@ -1,0 +1,48 @@
+.register-container{    
+      display: grid;
+      justify-content: center;
+
+ }
+
+ .form-card-group{
+     display: grid;
+     grid-template-areas: "a b";
+     grid-template-columns: 1fr 1fr;
+     padding: 50px;
+ }
+
+ .action-buttons-row {
+    display: grid;
+
+}
+
+.actionButtons {
+    justify-self: end;
+    align-self: center;
+}
+
+.errorMessageFromServer {
+    justify-self: start;
+    align-self: center;
+}
+
+.left-column {
+    display: grid;
+    grid-area: a;
+    margin-right: 20px;
+}
+
+.right-column {
+    display: grid;
+    grid-area: b;
+    margin-left: 20px;
+}
+
+
+@media only screen and (max-width: 768px) {
+    .form-card-group {
+      display: grid;
+      grid-template-columns: 1fr;
+      padding: 1em;
+    }
+  }

@@ -1,0 +1,51 @@
+<div class="grid-container">
+  <div class="projets-header-row">
+    <h1 class="mat-h1">Projects list</h1>
+    <button mat-raised-button color="primary" (click)="createProjectDialogOpen()"  class="btn-create-proj">
+      Create project
+    </button>
+  </div>
+
+  <mat-grid-list cols="3" rowHeight="350px">
+    <mat-grid-tile *ngFor="let projectCard of projects | async" [colspan]="projectCard.cols" [rowspan]="projectCard.rows">
+      <mat-card class="dashboard-card">
+        <mat-card-header>
+          <mat-card-title>
+            {{projectCard.project.estimatedTime | date }}
+            <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu" xPosition="before">
+              <button mat-menu-item>Expand</button>
+              <button mat-menu-item>Remove</button>
+            </mat-menu>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="project-card-content">
+          <div class="up-row">
+            <div class="project-title">
+              <span class="title">{{projectCard.project.name}}</span>
+              <section class="progress-section">
+                  <mat-progress-bar
+                      class="progress-margin"
+                      color="primary"
+                      mode="determinate"
+                      [value]="projectCard.project.progress">
+                  </mat-progress-bar>
+              </section>
+              <section class="people-on-project">
+                  <button mat-mini-fab  [matTooltip]="employee.firstName" *ngFor="let employee of projectCard.employees">{{employee.firstName | slice:0:1 | uppercase }}</button>
+              </section>
+            </div>
+          </div>
+          
+          <div class="down-row">
+              <mat-divider class="divider"></mat-divider>
+              <button mat-button>Add people</button>
+              <button mat-button>Add task</button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>

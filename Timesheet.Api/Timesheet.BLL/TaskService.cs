@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 using Timesheet.BLL.Interfaces;
 using Timesheet.DAL.Interfaces;
 using Timesheet.Model;
-using Timesheet.Model.APIModel;
-
 
 namespace Timesheet.BLL
 {
@@ -23,7 +21,17 @@ namespace Timesheet.BLL
             _logger = logger;
         }
 
-        public  Task<List<ProjectTask>> TasksPerProjectGetAsync(int projectId)
+        public Task<List<ProjectTask>> EmployeeTasksGetAsync(int employeeId)
+        {
+            return _taskDP.EmployeeTasksGetAsync(employeeId);
+        }
+
+        public Task<List<ProjectTask>> EmployeeTasksPerProjectGetAsync(int employeeId, int projectId)
+        {
+            return _taskDP.EmployeeTasksPerProjectGetAsync(employeeId, projectId);
+        }
+
+        public Task<List<ProjectTask>> TasksPerProjectGetAsync(int projectId)
         {
             return _taskDP.TasksPerProjectGetAsync(projectId);
         }

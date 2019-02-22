@@ -17,13 +17,16 @@ namespace Timesheet.Api.Controllers
 
         private readonly ITaskService _taskService;
         private readonly ITaskDP _taskDP;
+        private readonly IEmployeeTaskService _employeeTaskService;
 
         public TaskController(ITaskService taskService,
                               ITaskDP taskDP, 
+                              IEmployeeTaskService employeeTaskService,
                               ILogger<TaskController> logger)
         {
             _taskService = taskService;
             _taskDP = taskDP;
+            _employeeTaskService = employeeTaskService;
             _logger = logger;
         }
 
@@ -49,6 +52,50 @@ namespace Timesheet.Api.Controllers
             return Ok(response);
         }
 
+        [HttpGet("GetAllEmployeeTasks/{employeeId}")]
+        public async Task<IActionResult> EmployeeTasksGet(int employeeId)
+        {
+            TasksPerProjectResponse response = new TasksPerProjectResponse();
+            try
+            {
+                response.ProjectTasks = await _taskDP.EmployeeTasksGetAsync(employeeId)
+                                                     .ConfigureAwait(false);
+                response.Success = true;
+            }
+            catch (Exception ex)
+            {
+                response.Message = "Method execution failed";
+                response.Success = false;
+
+                _logger.LogError(ex, $"{nameof(TaskController)}.{MethodBase.GetCurrentMethod().Name}");
+            }
+
+
+            return Ok(response);
+        }
+
+        [HttpGet("GetAllEmployeeTasksPerProject/{employeeId}/{projectId}")]
+        public async Task<IActionResult> EmployeeTasksGet(int employeeId, int projectId)
+        {
+            TasksPerProjectResponse response = new TasksPerProjectResponse();
+            try
+            {
+                response.ProjectTasks = await _taskDP.EmployeeTasksPerProjectGetAsync(employeeId, projectId)
+                                                     .ConfigureAwait(false);
+                response.Success = true;
+            }
+            catch (Exception ex)
+            {
+                response.Message = "Method execution failed";
+                response.Success = false;
+
+                _logger.LogError(ex, $"{nameof(TaskController)}.{MethodBase.GetCurrentMethod().Name}");
+            }
+
+
+            return Ok(response);
+        }
+
         [HttpPost("AddNew")]
         public async Task<IActionResult> AddNewTask([FromBody]AddNewTaskRequest request)
         {
@@ -56,6 +103,8 @@ namespace Timesheet.Api.Controllers
             try
             {
                 await _taskDP.InsertAsync(request).ConfigureAwait(false);
+                await _employeeTaskService.AddNewAsync(request.EmployeeId, request.ProjectId)
+                                          .ConfigureAwait(false);
 
                 response.Success = true;
 

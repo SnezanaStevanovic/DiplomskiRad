@@ -15,7 +15,7 @@ namespace Timesheet.DAL
     public class TaskDP : ITaskDP
     {
         private readonly ILogger<TaskDP> _logger;
-       
+
         private readonly AppSettings _appSettings;
 
         #region SqlQueries
@@ -56,6 +56,44 @@ namespace Timesheet.DAL
                       ProjectTask
                 WHERE
                       ProjectId = @ProjectId;
+            ";
+
+        private const string GET_EMPLOYEE_TASKS =
+            @"SELECT 
+                    pt.Id,
+                    pt.Name,
+                    pt.Description, 
+                    pt.Type, 
+                    pt.StartDate,
+                    pt.EndDate,
+                    pt.SpentTime, 
+                    pt.Progress, 
+                    pt.EstimatedTime, 
+                    pt.ProjectId 
+              FROM ProjectTask pt
+              INNER JOIN EmployeeTask et
+              ON pt.Id = et.TaskId
+              WHERE et.EmployeeId = @EmployeeId
+            ";
+
+        private const string GET_EMPLOYEE_TASKS_PER_PROJECT =
+            @"SELECT 
+                    pt.Id,
+                    pt.Name,
+                    pt.Description, 
+                    pt.Type, 
+                    pt.StartDate,
+                    pt.EndDate,
+                    pt.SpentTime, 
+                    pt.Progress, 
+                    pt.EstimatedTime, 
+                    pt.ProjectId 
+              FROM ProjectTask pt
+              INNER JOIN EmployeeTask et
+              ON pt.Id = et.TaskId
+              WHERE
+                   et.EmployeeId = @EmployeeId
+              AND  pt.ProjectId = @ProjectId
             ";
 
         #endregion
@@ -153,6 +191,77 @@ namespace Timesheet.DAL
             }
 
             return projectTask;
+        }
+
+        public async Task<List<ProjectTask>> EmployeeTasksGetAsync(int employeeId)
+        {
+            List<ProjectTask> employeeTasks = new List<ProjectTask>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_appSettings.ConnectionString))
+                {
+                    await connection.OpenAsync().ConfigureAwait(false);
+
+                    using (SqlCommand cmd = new SqlCommand(GET_EMPLOYEE_TASKS, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@EmployeeId", employeeId);
+
+                        using (SqlDataReader reader = await cmd.ExecuteReaderAsync().ConfigureAwait(false))
+                        {
+                            while (await reader.ReadAsync())
+                            {
+                                ProjectTask projectTask = await this.Create(reader);
+                                employeeTasks.Add(projectTask);
+                            }
+                        }
+                    }
+                    connection.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ex}");
+                throw;
+            }
+
+            return employeeTasks;
+        }
+
+        public async Task<List<ProjectTask>> EmployeeTasksPerProjectGetAsync(int employeeId, int projectId)
+        {
+            List<ProjectTask> employeeTasksPerProject = new List<ProjectTask>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_appSettings.ConnectionString))
+                {
+                    await connection.OpenAsync().ConfigureAwait(false);
+
+                    using (SqlCommand cmd = new SqlCommand(GET_EMPLOYEE_TASKS_PER_PROJECT, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@EmployeeId", employeeId);
+                        cmd.Parameters.AddWithValue("@ProjectId", projectId);
+
+                        using (SqlDataReader reader = await cmd.ExecuteReaderAsync().ConfigureAwait(false))
+                        {
+                            while (await reader.ReadAsync())
+                            {
+                                ProjectTask projectTask = await this.Create(reader);
+                                employeeTasksPerProject.Add(projectTask);
+                            }
+                        }
+                    }
+                    connection.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ex}");
+                throw;
+            }
+
+            return employeeTasksPerProject;
         }
     }
 }

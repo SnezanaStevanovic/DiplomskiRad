@@ -11,6 +11,8 @@ namespace Timesheet.BLL.Interfaces
     {
         Task<List<ProjectTask>> TasksPerProjectGetAsync(int projectId);
 
-      
+        Task<List<ProjectTask>> EmployeeTasksGetAsync(int employeeId);
+
+        Task<List<ProjectTask>> EmployeeTasksPerProjectGetAsync(int employeeId, int projectId);
     }
 }

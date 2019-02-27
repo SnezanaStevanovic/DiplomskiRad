@@ -10,6 +10,8 @@ namespace Timesheet.Model
 
         public int ProjectId { get; set; }
 
+        public int EmployeeId { get; set; }
+
         public string Name { get; set; }
 
         public TaskType Type { get; set; }

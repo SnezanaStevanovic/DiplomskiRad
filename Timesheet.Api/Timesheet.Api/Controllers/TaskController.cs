@@ -17,16 +17,13 @@ namespace Timesheet.Api.Controllers
 
         private readonly ITaskService _taskService;
         private readonly ITaskDP _taskDP;
-        private readonly IEmployeeTaskService _employeeTaskService;
 
         public TaskController(ITaskService taskService,
-                              ITaskDP taskDP, 
-                              IEmployeeTaskService employeeTaskService,
+                              ITaskDP taskDP,
                               ILogger<TaskController> logger)
         {
             _taskService = taskService;
             _taskDP = taskDP;
-            _employeeTaskService = employeeTaskService;
             _logger = logger;
         }
 
@@ -48,7 +45,7 @@ namespace Timesheet.Api.Controllers
                 _logger.LogError(ex, $"{nameof(TaskController)}.{MethodBase.GetCurrentMethod().Name}");
             }
 
-            
+
             return Ok(response);
         }
 
@@ -75,7 +72,7 @@ namespace Timesheet.Api.Controllers
         }
 
         [HttpGet("GetAllEmployeeTasksPerProject/{employeeId}/{projectId}")]
-        public async Task<IActionResult> EmployeeTasksGet(int employeeId, int projectId)
+        public async Task<IActionResult> EmployeeTasksPerProjectGet(int employeeId, int projectId)
         {
             TasksPerProjectResponse response = new TasksPerProjectResponse();
             try
@@ -103,8 +100,6 @@ namespace Timesheet.Api.Controllers
             try
             {
                 await _taskDP.InsertAsync(request).ConfigureAwait(false);
-                await _employeeTaskService.AddNewAsync(request.EmployeeId, request.ProjectId)
-                                          .ConfigureAwait(false);
 
                 response.Success = true;
 

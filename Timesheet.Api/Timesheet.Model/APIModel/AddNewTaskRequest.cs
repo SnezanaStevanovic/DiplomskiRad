@@ -6,6 +6,5 @@ namespace Timesheet.Model.APIModel
 {
     public class AddNewTaskRequest : ProjectTask
     {
-        public int EmployeeId { get; set; }
     }
 }

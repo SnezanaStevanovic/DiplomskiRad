@@ -67,7 +67,6 @@ namespace Timesheet.Api
             services.AddSingleton<ITimesheetDP, TimesheetDP>();
             services.AddSingleton<IProjectDP, ProjectDP>();
             services.AddSingleton<IEmployeeProjectDP, EmployeeProjectDP>();
-            services.AddSingleton<IEmployeeTaskDP, EmployeeTaskDP>();
             services.AddSingleton<ITaskDP, TaskDP>();
             services.AddSingleton<ITaskService, TaskService>();
             services.AddSingleton<ITokenService, TokenService>();
@@ -77,7 +76,6 @@ namespace Timesheet.Api
             services.AddSingleton<IEmployeeService, EmployeeService>();
             services.AddSingleton<IProjectService, ProjectService>();
             services.AddSingleton<IEmployeeProjectService, EmployeeProjectService>();
-            services.AddSingleton<IEmployeeTaskService, EmployeeTaskService>();
 
             services.AddSwaggerGen(c =>
             {

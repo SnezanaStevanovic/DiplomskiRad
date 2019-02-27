@@ -26,6 +26,7 @@ namespace Timesheet.DAL
               ProjectTask
               (  
                  ProjectId,
+                 EmployeeId,
                  Name,
                  Type,
                  Description,
@@ -38,6 +39,7 @@ namespace Timesheet.DAL
               VALUES
               ( 
                  @ProjectId,
+                 @EmployeeId,
                  @Name,
                  @Type,
                  @Description,
@@ -69,11 +71,10 @@ namespace Timesheet.DAL
                     pt.SpentTime, 
                     pt.Progress, 
                     pt.EstimatedTime, 
-                    pt.ProjectId 
+                    pt.ProjectId,
+                    pt.EmployeeId
               FROM ProjectTask pt
-              INNER JOIN EmployeeTask et
-              ON pt.Id = et.TaskId
-              WHERE et.EmployeeId = @EmployeeId
+              WHERE pt.EmployeeId = @EmployeeId
             ";
 
         private const string GET_EMPLOYEE_TASKS_PER_PROJECT =
@@ -87,12 +88,11 @@ namespace Timesheet.DAL
                     pt.SpentTime, 
                     pt.Progress, 
                     pt.EstimatedTime, 
-                    pt.ProjectId 
+                    pt.ProjectId,
+                    pt.EmployeeId
               FROM ProjectTask pt
-              INNER JOIN EmployeeTask et
-              ON pt.Id = et.TaskId
               WHERE
-                   et.EmployeeId = @EmployeeId
+                   pt.EmployeeId = @EmployeeId
               AND  pt.ProjectId = @ProjectId
             ";
 
@@ -114,6 +114,7 @@ namespace Timesheet.DAL
                     using (SqlCommand cmd = new SqlCommand(INSERT, connection))
                     {
                         cmd.Parameters.AddWithValue("@ProjectId", task.ProjectId);
+                        cmd.Parameters.AddWithValue("@EmployeeId", task.EmployeeId);
                         cmd.Parameters.AddWithValue("@Name", task.Name);
                         cmd.Parameters.AddWithValue("@Type", task.Type);
                         cmd.Parameters.AddWithValue("@Progress", task.Progress);
@@ -179,6 +180,7 @@ namespace Timesheet.DAL
                 projectTask.Name = await SqlParamHelper.ReadReaderValue<string>(reader, "Name");
                 projectTask.Progress = await SqlParamHelper.ReadReaderValue<int>(reader, "Progress");
                 projectTask.ProjectId = await SqlParamHelper.ReadReaderValue<int>(reader, "ProjectId");
+                projectTask.EmployeeId = await SqlParamHelper.ReadReaderValue<int>(reader, "EmployeeId");
                 projectTask.SpentTime = await SqlParamHelper.ReadReaderDateTimeNullableValue(reader, "SpentTime");
                 projectTask.StartDate = await SqlParamHelper.ReadReaderValue<DateTime>(reader, "StartDate");
                 projectTask.EndDate = await SqlParamHelper.ReadReaderDateTimeNullableValue(reader, "EndDate");

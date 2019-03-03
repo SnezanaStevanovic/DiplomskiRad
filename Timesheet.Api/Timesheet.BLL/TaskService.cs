@@ -26,6 +26,12 @@ namespace Timesheet.BLL
             return _taskDP.EmployeeTasksGetAsync(employeeId);
         }
 
+
+        public Task<List<ProjectTask>> EmployeeNTasksGetAsync(int employeeId,int n)
+        {
+            return _taskDP.EmployeeNTasksGetAsync(employeeId,n);
+        }
+
         public Task<List<ProjectTask>> EmployeeTasksPerProjectGetAsync(int employeeId, int projectId)
         {
             return _taskDP.EmployeeTasksPerProjectGetAsync(employeeId, projectId);
@@ -36,5 +42,9 @@ namespace Timesheet.BLL
             return _taskDP.TasksPerProjectGetAsync(projectId);
         }
 
+        public Task CreateTask(ProjectTask request)
+        {
+            return _taskDP.InsertAsync(request); 
+        }
     }
 }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Timesheet.Model.APIModel
 {
-    public class TasksPerProjectResponse : BaseResponse
+    public class TasksListResponse : BaseResponse
     {
         public List<ProjectTask> ProjectTasks { get; set; }
     }

@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
   public showError = false;
   public loading = false;
   public hide = false;
-  private url = '/main';
+  private url = '/main/home';
 
   loginForm: FormGroup;
 

@@ -13,10 +13,6 @@ namespace Timesheet.BLL.Interfaces
 
         Task SetEndTimeForEmployee(int employeeId);
 
-        Task<bool> EndTimeSetAsync(int employeeId,
-                                   DateTime endDateTime,
-                                   DateTime overtime,
-                                   DateTime pauseTime);
 
         Task<List<Model.Timesheet>> PeriodTimesheetGetAsync(int employeeId,
                                                             DateTime startDate,

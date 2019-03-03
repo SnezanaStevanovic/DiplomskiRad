@@ -1,0 +1,58 @@
+<div class="create-task-container">
+    <h2 mat-dialog-title>Create task</h2>
+    <mat-dialog-content class="dialog-content">
+        <form [formGroup]="createTaskForm" class="form-card-group">
+            <div class="left-column">
+                <mat-form-field class="name-input">
+                    <input matInput placeholder="Name" formControlName="Name" required>
+                    <mat-error *ngIf="f.Name.errors?.required">Name is required.</mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="description-input">
+                    <textarea matInput formControlName="Description" placeholder="Description"></textarea>
+                </mat-form-field>
+
+                <mat-form-field class="project-input">
+                    <input  matInput placeholder="Project" formControlName="Project">
+                </mat-form-field>
+            </div>
+            <div class="right-column">
+                <mat-form-field>
+                    <mat-select placeholder="Choose type" formControlName="Type" required>
+                        <mat-option *ngFor="let typeKey of taskTypesKeys" [value]="typeKey">
+                            {{taskTypes[typeKey]}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="f.Type.errors?.required">Type is required.</mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="date-picker-estimated-time">
+                    <input matInput [matDatepicker]="picker1" placeholder="Estimated time"
+                        formControlName="EstimatedTime">
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                    <!-- touchUi -->
+                </mat-form-field>
+
+
+                <mat-form-field>
+                        <mat-select placeholder="Choose employee" formControlName="Employee" required>
+                            <mat-option *ngFor="let employee of projectWithEmployees.employees" [value]="employee.id">
+                                {{employee.firstName}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="f.Employee.errors?.required">Employee is required.</mat-error>
+                    </mat-form-field>
+
+            </div>
+        </form>
+    </mat-dialog-content>
+
+    <mat-dialog-actions class="action-buttons-row">
+        <div class="actionButtons">
+            <button mat-button [mat-dialog-close]="false">Cancel</button>
+            <button mat-button (click)="createTask()" cdkFocusInitial>Create</button>
+        </div>
+
+    </mat-dialog-actions>
+</div>

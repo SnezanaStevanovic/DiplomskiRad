@@ -74,41 +74,6 @@ namespace Timesheet.Api.Controllers
 
         }
 
-        [HttpPost("endTimeUpdate")]
-        public async Task<IActionResult> TimesheetEndTimeSet([FromBody]TimesheetEndTimeRequest request)
-        {
-            BaseResponse response = new BaseResponse();
-
-            try
-            {
-                bool isUpdated = await _timesheetService.EndTimeSetAsync(request.EmployeeId,
-                                                                         request.EndTime,
-                                                                         request.Overtime,
-                                                                         request.Pause)
-                                                        .ConfigureAwait(false);
-
-                if (isUpdated)
-                {
-                    response.Message = "EndTime updated successfully";
-                    response.Success = true;
-                }
-                else
-                {
-                    response.Message = "Do not exist timesheet record for this employee.";
-                    response.Success = false;
-                }
-
-            }
-            catch (Exception ex)
-            {
-                response.Message = "Method execution failed";
-                response.Success = false;
-
-                _logger.LogError(ex, $"{nameof(TimesheetController)}.{MethodBase.GetCurrentMethod().Name}");
-            }
-
-            return Ok(response);
-        }
 
         [HttpGet("periodTimesheetGet")]
         public async Task<IActionResult> PeriodTimesheetGet(int employeeId, DateTime startDate, DateTime endDate)

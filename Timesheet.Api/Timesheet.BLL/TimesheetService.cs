@@ -24,21 +24,6 @@ namespace Timesheet.BLL
             _logger = logger;
         }
 
-        public async Task<bool> EndTimeSetAsync(int employeeId,
-                                                DateTime endDateTime,
-                                                DateTime overtime,
-                                                DateTime pauseTime)
-        {
-
-            bool retVal = await _timesheetDP.UpdateEndTimeAsync(employeeId,
-                                                                endDateTime,
-                                                                pauseTime,
-                                                                overtime)
-                                            .ConfigureAwait(false);
-
-            return retVal;
-
-        }
 
         public Task<List<Model.Timesheet>> PeriodTimesheetGetAsync(int employeeId,
                                                                          DateTime startDate,

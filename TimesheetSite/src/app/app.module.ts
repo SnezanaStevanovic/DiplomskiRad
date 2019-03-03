@@ -21,6 +21,7 @@ import { ProjectsComponent } from './Components/Projects/projects.component';
 import { CreateProjectDialogComponent } from './Components/Dialogs/CreateProjectDialog/create-project-dialog.component';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { UserManagmentComponent } from './Components/UserManagment/user-managment.component';
+import { CreateTaskDialogComponent } from './Components/Dialogs/create-task-dialog/create-task-dialog.component';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { UserManagmentComponent } from './Components/UserManagment/user-managmen
     TimerComponentComponent,
     ProjectsComponent,
     CreateProjectDialogComponent,
-    UserManagmentComponent
+    UserManagmentComponent,
+    CreateTaskDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -57,7 +59,7 @@ import { UserManagmentComponent } from './Components/UserManagment/user-managmen
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true },
               {provide: LocationStrategy, useClass: HashLocationStrategy},
               {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: true}}],
-  entryComponents : [CreateProjectDialogComponent, RegistrationComponent],
+  entryComponents : [CreateProjectDialogComponent, RegistrationComponent, CreateTaskDialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

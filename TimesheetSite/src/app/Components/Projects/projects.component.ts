@@ -7,6 +7,8 @@ import { ProjectDPService } from 'src/app/DataProviders/Project/project-dp.servi
 import { ProjectCard } from 'src/app/Model/projectCard';
 import { BehaviorSubject, from } from 'rxjs';
 import { UserService } from 'src/app/DataProviders/User/user.service';
+import { CreateTaskDialogComponent } from '../Dialogs/create-task-dialog/create-task-dialog.component';
+import { ProjectWithEmployees } from 'src/app/Model/projectWithEmploees';
 
 @Component({
   selector: 'app-projects',
@@ -40,7 +42,6 @@ export class ProjectsComponent implements OnInit {
 
   projects =  this.refreshToken.pipe(
     switchMap(() => this._projectService.getAll().pipe(
-
       switchMap(projects => from(projects)),
       mergeMap(project => this._userService.getAllForProject(project.id).pipe(
         map(employees => {
@@ -52,7 +53,8 @@ export class ProjectsComponent implements OnInit {
                return projectCard;
         }))),
         toArray()
-    ))
+    )),
+    map(projects =>  projects.sort(this.sortById))
   );
 
   constructor(
@@ -87,12 +89,39 @@ export class ProjectsComponent implements OnInit {
     }
 
 
+   public sortById(a: ProjectCard, b: ProjectCard) {
+      if (a.project.id < b.project.id) {
+        return -1;
+      }
+      if (a.project.id > b.project.id) {
+        return 1;
+      }
+      return 0;
+    }
+
   public createProjectDialogOpen() {
     const dialogRef = this.dialog.open(CreateProjectDialogComponent);
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.refreshToken.next(undefined);
+      }
+    });
+  }
+
+
+  public AddTask(projectCard: ProjectCard) {
+
+    const dialogData: ProjectWithEmployees = new ProjectWithEmployees();
+    dialogData.project = projectCard.project;
+    dialogData.employees = projectCard.employees;
+
+    const dialogRef = this.dialog.open(CreateTaskDialogComponent, {
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
       }
     });
   }

@@ -15,5 +15,6 @@ namespace Timesheet.DAL.Interfaces
         Task<List<ProjectTask>> EmployeeTasksGetAsync(int employeeId);
 
         Task<List<ProjectTask>> EmployeeTasksPerProjectGetAsync(int employeeId, int projectId);
+        Task<List<ProjectTask>> EmployeeNTasksGetAsync(int employeeId, int n);
     }
 }

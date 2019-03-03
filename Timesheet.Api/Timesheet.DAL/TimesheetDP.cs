@@ -44,31 +44,7 @@ namespace Timesheet.DAL
                 );
              ";
 
-        private string INSERT_END_TIME =
-            @"INSERT INTO
-                   Timesheet
-              (
-               EmployeeId,
-               EndTime
-              )
-              VALUES
-              (
-                @EmployeeId,
-                @EndTime
-                );
-             ";
 
-        private string UPDATE_END_TIME =
-           @"
-             UPDATE 
-                  Timesheet
-             SET 
-                EndTime = @EndTime, 
-                Pause = @Pause,
-                Overtime = @Overtime
-             WHERE 
-                EmployeeId = @EmployeeId;
-             ";
 
         private string UPDATE_ONLY_END_TIME =
            @"
@@ -136,8 +112,6 @@ namespace Timesheet.DAL
             {
                 timesheet.Id = await SqlParamHelper.ReadReaderValue<int>(reader, "Id");
                 timesheet.EmployeeId = await SqlParamHelper.ReadReaderValue<int>(reader, "EmployeeId");
-                timesheet.Overtime = await SqlParamHelper.ReadReaderDateTimeNullableValue(reader, "Overtime");
-                timesheet.Pause = await SqlParamHelper.ReadReaderDateTimeNullableValue(reader, "Pause");
                 timesheet.StartTime = await SqlParamHelper.ReadReaderValue<DateTime>(reader, "StartTime");
                 timesheet.EndTime = await SqlParamHelper.ReadReaderDateTimeNullableValue(reader, "EndTime");
 
@@ -204,46 +178,6 @@ namespace Timesheet.DAL
                 throw;
             }
 
-        }
-
-
-        public async Task<bool> UpdateEndTimeAsync(int EmployeeId,
-                                                   DateTime Pause,
-                                                   DateTime Overtime,
-                                                   DateTime EndTime)
-        {
-            bool retVal = false;
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(_appSettings.ConnectionString))
-                {
-                    await connection.OpenAsync()
-                                    .ConfigureAwait(false);
-
-                    using (SqlCommand cmd = new SqlCommand(UPDATE_END_TIME, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@EmployeeId", EmployeeId);
-                        cmd.Parameters.AddWithValue("@EndTime", EndTime == null ? DBNull.Value : (object)EndTime);
-                        cmd.Parameters.AddWithValue("@Overtime", Overtime == null ? DBNull.Value : (object)Overtime);
-                        cmd.Parameters.AddWithValue("@Pause", Pause == null ? DBNull.Value : (object)Pause);
-
-                        int affeectedRows = await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
-                        if (affeectedRows > 0)
-                        {
-                            retVal = true;
-                        }
-                    }
-
-                    connection.Close();
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"{nameof(TimesheetDP)}.{MethodBase.GetCurrentMethod().Name}");
-                throw;
-            }
-
-            return retVal;
         }
     }
 }

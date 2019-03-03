@@ -1,0 +1,3 @@
+
+ALTER TABLE Timesheet DROP COLUMN  OverTime
+ALTER TABLE Timesheet DROP COLUMN  Pause

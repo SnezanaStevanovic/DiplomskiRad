@@ -1,46 +1,56 @@
 <div class="grid-container">
-    <div class="users-header-row">
-        <h1 class="mat-h1">Users list</h1>
-        <button mat-raised-button color="primary" (click)="registerUserDialogOpen()"  class="btn-create-user">
-          Register user
-        </button>
-    </div>
+  <div class="users-header-row">
+    <h1 class="mat-h1">Users list</h1>
+    <button mat-raised-button color="primary" (click)="registerUserDialogOpen()" class="btn-create-user">
+      Register user
+    </button>
+  </div>
 
 
-    <mat-accordion>
-        <mat-expansion-panel  *ngFor="let user of users | async">
-          <mat-expansion-panel-header>
-              <mat-panel-title>
-                  {{user.employee.firstName}}  {{user.employee.lastName}}
-              </mat-panel-title>
-              <mat-panel-description>
-                User info
-              </mat-panel-description>  
-          </mat-expansion-panel-header>
-          <div class="user-details">
-              <div class="first-column">
-                <span class="row-margin">First name : {{user.employee.firstName}}</span> 
-                <mat-divider class="devider-row"></mat-divider>
-                <span class="row-margin">Last name : {{user.employee.lastName}}</span>
-                <mat-divider class="devider-row"></mat-divider> 
-                <span class="row-margin">Role : {{Role[user.employee.role]}}</span>
-                <mat-divider class="devider-row"></mat-divider> 
-              </div>
-              <div class="secound-column">
-                  <span class="row-margin">Address : {{user.employee.address}}</span>
-                  <mat-divider class="devider-row"></mat-divider> 
-                  <span class="row-margin">Gender : {{Gender[user.employee.gender]}}</span>
-                  <mat-divider class="devider-row"></mat-divider> 
-                  <span class="row-margin">Date of birth : {{user.employee.dateOfBirth | date }}</span>
-                  <mat-divider class="devider-row"></mat-divider> 
-              </div>
-              <div class="third-column">
-                  <span class="row-margin">Projects : </span> 
-                  <span class="project-name" *ngFor="let project of user.projects"  >{{project.name}} </span>                  
-              </div>
-          </div>
-        </mat-expansion-panel>
-      </mat-accordion>
+  <mat-accordion>
+    <mat-expansion-panel *ngFor="let user of users | async">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{user.employee.firstName}} {{user.employee.lastName}}
+        </mat-panel-title>
+        <mat-panel-description>
+          User info
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="user-details">
+        <div class="first-column">
+          <mat-form-field>
+            <input disabled="true" matInput placeholder="First name" [value]="user.employee.firstName">
+          </mat-form-field>
+
+          <mat-form-field>
+            <input disabled="true" matInput placeholder="Last name" [value]="user.employee.lastName">
+          </mat-form-field>
+
+          <mat-form-field>
+            <input disabled="true" matInput placeholder="Role" [value]="Role[user.employee.role]">
+          </mat-form-field>
+        </div>
+        <div class="secound-column">
+          <mat-form-field>
+            <input disabled="true" matInput placeholder="Address" [value]="user.employee.address">
+          </mat-form-field>
+
+          <mat-form-field>
+            <input disabled="true" matInput placeholder="Gender" [value]="Gender[user.employee.gender]">
+          </mat-form-field>
+
+          <mat-form-field>
+            <input disabled="true" matInput placeholder="Date of birth" [value]="user.employee.dateOfBirth | date">
+          </mat-form-field>
+
+        </div>
+        <div class="third-column">
+          <span class="row-margin">Projects : </span>
+          <span class="left-margin" *ngFor="let project of user.projects">{{project.name}} </span>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
 
 </div>
-

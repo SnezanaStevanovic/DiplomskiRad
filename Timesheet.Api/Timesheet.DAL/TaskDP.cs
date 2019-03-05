@@ -97,11 +97,16 @@ namespace Timesheet.DAL
             ";
 
         private readonly string GET_LAST_N_TASKS_FOR_EMPL = @"
-                SELECT
-	                *
-                FROM ProjectTask
-	                WHERE EmployeeId = @EmployeeId
-	                ORDER BY Id DESC LIMIT @n;";
+                WITH OrderedTasks AS
+                (
+                    SELECT *,
+                    ROW_NUMBER() OVER (ORDER BY Id) AS 'RowNumber'
+                    FROM ProjectTask
+                )
+                SELECT *
+                FROM OrderedTasks
+                WHERE RowNumber <= @n
+                and EmployeeId = @EmployeeId;";
 
         #endregion SqlQueries
 
@@ -188,6 +193,7 @@ namespace Timesheet.DAL
                 projectTask.Progress = await SqlParamHelper.ReadReaderValue<int>(reader, "Progress");
                 projectTask.ProjectId = await SqlParamHelper.ReadReaderValue<int>(reader, "ProjectId");
                 projectTask.EmployeeId = await SqlParamHelper.ReadReaderValue<int>(reader, "EmployeeId");
+                projectTask.EstimatedTime = await SqlParamHelper.ReadReaderDateTimeNullableValue(reader, "EstimatedTime");
                 projectTask.SpentTime = await SqlParamHelper.ReadReaderDateTimeNullableValue(reader, "SpentTime");
                 projectTask.StartDate = await SqlParamHelper.ReadReaderValue<DateTime>(reader, "StartDate");
                 projectTask.EndDate = await SqlParamHelper.ReadReaderDateTimeNullableValue(reader, "EndDate");

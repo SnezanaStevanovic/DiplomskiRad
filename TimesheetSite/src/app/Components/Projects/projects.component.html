@@ -22,7 +22,7 @@
           </mat-card-title>
         </mat-card-header>
         <mat-card-content class="project-card-content">
-          <div class="up-row">
+          <div class="up-row" (click)="goToProjectDetails(projectCard)">
             <div class="project-title">
               <span class="title">{{projectCard.project.name}}</span>
               <section class="progress-section">

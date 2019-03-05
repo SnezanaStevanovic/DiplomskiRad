@@ -1,5 +1,5 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { Subscription, Observable, timer } from 'rxjs';
+import { Subscription, Observable, timer, BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ export class TimerService {
   timerSub: Subscription;
 
 
-  public playPauseStop$ = new EventEmitter();
+  public playPauseStop$ = new BehaviorSubject(this.start);
 
   public playTimer(fromSecounds: number) {
     this.start = fromSecounds;
@@ -21,7 +21,7 @@ export class TimerService {
 
     this.timerSub = timerr.subscribe(x => {
       this.ticks = this.start + x;
-      this.playPauseStop$.emit(this.ticks);
+      this.playPauseStop$.next(this.ticks);
     });
   }
 

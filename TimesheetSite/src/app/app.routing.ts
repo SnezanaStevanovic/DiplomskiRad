@@ -5,6 +5,7 @@ import { HomeComponent } from "./Components/Home/home.component";
 import { NavigationComponent } from "./Components/Navigation/navigation.component";
 import { ProjectsComponent } from "./Components/Projects/projects.component";
 import { UserManagmentComponent } from './Components/UserManagment/user-managment.component';
+import { ProjectDetailsComponent } from './Components/project-details/project-details.component';
 
 
 
@@ -17,6 +18,7 @@ const appRoutes: Routes = [
             { path: 'home', canActivate: [AuthGuard], component: HomeComponent },
             { path: 'projects', canActivate: [AuthGuard], component: ProjectsComponent },
             { path: 'usermanagment', canActivate: [AuthGuard], component: UserManagmentComponent },
+            { path: 'projectDetails', canActivate: [AuthGuard], component: ProjectDetailsComponent },
             { path: '', canActivate: [AuthGuard], component: HomeComponent },
         ]
     },

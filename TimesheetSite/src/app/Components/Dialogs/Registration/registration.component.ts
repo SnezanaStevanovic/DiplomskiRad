@@ -83,7 +83,7 @@ public register(): void {
 
   this._userService.register(registrationRequest).subscribe(res => {
         if (res.success) {
-          this.dialogRef.close();
+          this.dialogRef.close(true);
         } else {
           this.errorMessage = res.message;
           this.showErrorMessage = true;

@@ -22,6 +22,7 @@ import { CreateProjectDialogComponent } from './Components/Dialogs/CreateProject
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { UserManagmentComponent } from './Components/UserManagment/user-managment.component';
 import { CreateTaskDialogComponent } from './Components/Dialogs/create-task-dialog/create-task-dialog.component';
+import { ProjectDetailsComponent } from './Components/project-details/project-details.component';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { CreateTaskDialogComponent } from './Components/Dialogs/create-task-dial
     ProjectsComponent,
     CreateProjectDialogComponent,
     UserManagmentComponent,
-    CreateTaskDialogComponent
+    CreateTaskDialogComponent,
+    ProjectDetailsComponent
   ],
   imports: [
     BrowserModule,

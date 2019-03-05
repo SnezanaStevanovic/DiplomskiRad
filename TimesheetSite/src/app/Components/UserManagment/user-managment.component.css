@@ -24,6 +24,7 @@
     display: grid;
     grid-template-areas: "a b c";
     grid-template-columns: 1fr 1fr 1fr;
+    grid-column-gap: 20px;
   }
 
   .first-column {
@@ -49,6 +50,6 @@
      margin-right: 20px;
    }
 
-   .project-name {
+   .left-margin {
      margin-left: 20px;
    }

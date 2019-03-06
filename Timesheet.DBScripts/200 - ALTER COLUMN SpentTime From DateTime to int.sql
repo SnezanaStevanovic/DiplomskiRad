@@ -1,0 +1,8 @@
+
+
+
+ALTER TABLE ProjectTask 
+ALTER COLUMN SpentTime VARCHAR NULL 
+
+ALTER TABLE ProjectTask 
+ALTER COLUMN SpentTime INT NULL 

@@ -5,6 +5,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ProjectWithEmployees } from 'src/app/Model/projectWithEmploees';
 import { Task } from 'src/app/Model/task';
 import { TaskDPService } from 'src/app/DataProviders/Task/task-dp.service';
+import { TaskStatus } from 'src/app/Model/taskStatus.enum';
 
 @Component({
   selector: 'app-create-task-dialog',
@@ -54,6 +55,7 @@ export class CreateTaskDialogComponent implements OnInit {
     task.estimatedTime = this.createTaskForm.get('EstimatedTime').value;
     task.projectId = this.projectWithEmployees.project.id;
     task.employeeId = this.createTaskForm.get('Employee').value;
+    task.status = TaskStatus.New;
 
     this._taskDP.createTask(task).subscribe(x => {
       if (x.success) {

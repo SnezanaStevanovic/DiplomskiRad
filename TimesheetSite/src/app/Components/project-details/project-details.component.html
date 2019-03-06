@@ -7,7 +7,7 @@
     </mat-card-header>
     <mat-card-content class="project-card-content">
 
-      <mat-form-field class="estimated-time">
+      <mat-form-field>
         <input disabled="true" matInput placeholder="Estimated Time"
           [value]="projectWithEmployees.project.estimatedTime | date">
       </mat-form-field>
@@ -30,7 +30,21 @@
   <mat-card>
     <mat-tab-group>
       <mat-tab label="People">
-        Peoples
+        <div class="employee-of-project">
+          <mat-list dense>
+            <mat-list-item class="list-item" *ngFor="let employee of projectWithEmployees.employees">
+              <div class="one-employee">
+                <mat-icon class="icon" mat-list-icon>account_circle</mat-icon>
+                <div class="name-es-time-container">
+                  <p mat-line class="name">{{employee.firstName}}</p>
+                  <p mat-line class="estimated-time"> {{employee.lastName}} </p>
+                </div>
+                <span class="type">{{role[employee.role]}}</span>
+              </div>
+              <mat-divider></mat-divider>
+            </mat-list-item>
+          </mat-list>
+        </div>
       </mat-tab>
       <mat-tab label="Tasks">
           <div class="your-tasks-container">
@@ -41,6 +55,10 @@
                     <div class="name-es-time-container">
                       <p mat-line class="name">{{task.name}}</p>
                       <p mat-line class="estimated-time"> {{task.estimatedTime | date}} </p>
+                    </div>
+                    <div class="employee-on-task">
+                        <mat-icon  mat-list-icon>account_circle</mat-icon>
+                        <span class="employee-name">{{task.employeeName}}</span> 
                     </div>
                     <span class="type">{{taskType[task.type]}}</span>
                   </div>

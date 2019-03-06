@@ -19,10 +19,11 @@ namespace Timesheet.DAL
         #region SqlQueries
 
         private const string GET_ALL =
-            @"SELECT 
+            @"SELECT
                     *
               FROM
                     Project";
+
         private const string INSERT =
             @"INSERT INTO
               Project
@@ -32,21 +33,23 @@ namespace Timesheet.DAL
                 DateCreated,
                 EndDate,
                 SpentTime,
-                Progress
+                Progress,
+                Description
               )
-              VALUES 
+              VALUES
               (
                 @Name,
                 @EstimatedTime,
                 GETUTCDATE(),
                 NULL,
                 NULL,
-                0  
+                0,
+                @Description
               )
             ";
 
         private const string GET_BY_ID =
-            @"SELECT 
+            @"SELECT
                      Id,
                      Name,
                      EstimatedTime,
@@ -60,7 +63,7 @@ namespace Timesheet.DAL
              ";
 
         private const string GET_ALL_PROJECTS_FOR_EMPLOYEE =
-            @"SELECT 
+            @"SELECT
                      p.Id,
                      p.Name,
                      p.EstimatedTime,
@@ -68,14 +71,15 @@ namespace Timesheet.DAL
                      p.EndDate,
                      p.SpentTime,
                      p.Progress
-             FROM Project p 
+             FROM Project p
              INNER JOIN EmployeeProject ep
              ON p.Id = ep.ProjectId
              WHERE ep.EmployeeId =  @EmployeeId";
 
-        #endregion
+        #endregion SqlQueries
 
         private readonly AppSettings _config;
+
         public ProjectDP(IOptions<AppSettings> config, ILogger<ProjectDP> logger)
         {
             _config = config.Value;
@@ -113,9 +117,6 @@ namespace Timesheet.DAL
                 throw;
             }
 
-
-         
-
             return retValProjects;
         }
 
@@ -131,7 +132,7 @@ namespace Timesheet.DAL
                 project.EndDate = await SqlParamHelper.ReadReaderDateTimeNullableValue(reader, "EndDate");
                 project.SpentTime = await SqlParamHelper.ReadReaderDateTimeNullableValue(reader, "SpentTime");
                 project.Progress = await SqlParamHelper.ReadReaderValue<int>(reader, "Progress");
-
+                project.Description = await SqlParamHelper.ReadReaderValue<string>(reader, "Description");
             }
             catch (Exception ex)
             {
@@ -153,6 +154,7 @@ namespace Timesheet.DAL
                     {
                         cmd.Parameters.AddWithValue("@Name", project.Name);
                         cmd.Parameters.AddWithValue("@EstimatedTime", (object)project.EstimatedTime ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Description", string.IsNullOrEmpty(project.Description) ? DBNull.Value : (object)project.Description);
 
                         await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
                     }

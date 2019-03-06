@@ -19,5 +19,7 @@ namespace Timesheet.Model
         public DateTime? EndDate { get; set; }
 
         public int Progress { get; set; }
+
+        public string Description { get; set; }
     }
 }

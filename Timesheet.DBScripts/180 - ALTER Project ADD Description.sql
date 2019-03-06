@@ -1,0 +1,1 @@
+ALTER TABLE Project ADD Description nvarchar(max) null

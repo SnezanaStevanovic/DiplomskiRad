@@ -34,7 +34,8 @@ namespace Timesheet.DAL
                  StartDate,
                  EndDate,
                  SpentTime,
-                 Progress
+                 Progress,
+                 StatusId
                 )
               VALUES
               (
@@ -47,7 +48,8 @@ namespace Timesheet.DAL
                  GETUTCDATE(),
                  @EndDate,
                  @SpentTime,
-                 @Progress
+                 @Progress,
+                 @Status
               )";
 
         private const string GET_TASKS_FOR_PROJECT =
@@ -135,6 +137,7 @@ namespace Timesheet.DAL
                         cmd.Parameters.AddWithValue("@EndDate", (object)task.EndDate ?? DBNull.Value);
                         cmd.Parameters.AddWithValue("@EstimatedTime", (object)task.EstimatedTime ?? DBNull.Value);
                         cmd.Parameters.AddWithValue("@Description", task.Description);
+                        cmd.Parameters.AddWithValue("@Status", task.Status);
 
                         await cmd.ExecuteNonQueryAsync();
                     }
@@ -194,7 +197,7 @@ namespace Timesheet.DAL
                 projectTask.ProjectId = await SqlParamHelper.ReadReaderValue<int>(reader, "ProjectId");
                 projectTask.EmployeeId = await SqlParamHelper.ReadReaderValue<int>(reader, "EmployeeId");
                 projectTask.EstimatedTime = await SqlParamHelper.ReadReaderDateTimeNullableValue(reader, "EstimatedTime");
-                projectTask.SpentTime = await SqlParamHelper.ReadReaderDateTimeNullableValue(reader, "SpentTime");
+                projectTask.SpentTime = await SqlParamHelper.ReadReaderValue<int?>(reader, "SpentTime");
                 projectTask.StartDate = await SqlParamHelper.ReadReaderValue<DateTime>(reader, "StartDate");
                 projectTask.EndDate = await SqlParamHelper.ReadReaderDateTimeNullableValue(reader, "EndDate");
                 projectTask.Type = await SqlParamHelper.ReadReaderValue<TaskType>(reader, "Type");

@@ -24,9 +24,10 @@ namespace Timesheet.Model
 
         public DateTime? EndDate { get; set; }
 
-        public DateTime? SpentTime { get; set; }
+        public int? SpentTime { get; set; }
 
         public int Progress { get; set; }
 
+        public TaskStatus Status { get; set; }
     }
 }

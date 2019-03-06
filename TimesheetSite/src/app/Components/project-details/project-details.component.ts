@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 import { Task } from 'src/app/Model/task';
 import { TaskDPService } from 'src/app/DataProviders/Task/task-dp.service';
 import { TaskType } from 'src/app/Model/taskType';
+import { map } from 'rxjs/operators';
+import { Role } from 'src/app/Model/role.enum';
 
 @Component({
   selector: 'app-project-details',
@@ -18,6 +20,7 @@ export class ProjectDetailsComponent implements OnInit {
 
   tasks: Observable<Array<Task>>;
   taskType = TaskType;
+  role = Role;
   constructor(private _router: Router, private _taskService: TaskDPService) {
     const navigation = this._router.getCurrentNavigation();
     const state = navigation.extras.state as {project: string};
@@ -28,7 +31,16 @@ export class ProjectDetailsComponent implements OnInit {
   get isDirty()  {  return this.progress !== this.projectWithEmployees.project.progress; }
 
   ngOnInit() {
-    this.tasks = this._taskService.getTasksForProject(this.projectWithEmployees.project.id);
+    this.tasks = this._taskService.getTasksForProject(this.projectWithEmployees.project.id).pipe(
+      map(tasks => {
+        tasks.forEach(task => {
+          task.employeeName = this.projectWithEmployees.employees.filter(x => x.id === task.employeeId)[0].firstName;
+          task.projectName = this.projectWithEmployees.project.name;
+        });
+
+        return tasks;
+      })
+    );
   }
 
 }

@@ -6,6 +6,7 @@ import { catchError, map } from 'rxjs/operators';
 import { throwError, Observable } from 'rxjs';
 import { BaseResponse } from 'src/app/Model/baseResponse';
 import { ListProjectsResponse } from 'src/app/Model/listProjectsResponse';
+import { GetProjectByIdResponse } from 'src/app/Model/projectByIdResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -57,6 +58,23 @@ export class ProjectDPService extends BaseService {
       );
   }
 
+
+  public getById(projectId: number): Observable<Project> {
+    const url = this._baseUrl + `Project/GetById/${projectId}`;
+
+    return this._http.get<GetProjectByIdResponse>(url, this.httpOptions)
+      .pipe(
+        map(res => {
+            if (res.success) {
+              return res.project;
+            } else {
+              return new Project();
+            }
+        }),
+        catchError(err => throwError(err))
+      );
+
+  }
 
 
 }

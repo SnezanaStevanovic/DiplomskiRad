@@ -59,4 +59,19 @@ export class TaskDPService extends BaseService {
   }
 
 
+  public getAllTasksForEmployee(employeeId: number): Observable<Array<Task>> {
+    const url = this._baseUrl + `Task/GetAllEmployeeTasks/${employeeId}`;
+    return this._http.get<TasksListResponse>(url, this.httpOptions)
+      .pipe(
+        map(res => {
+            if (res.success) {
+              return res.projectTasks;
+            } else {
+              return new Array<Task>();
+            }
+        }),
+        catchError(err => throwError(err))
+      );
+  }
+
 }

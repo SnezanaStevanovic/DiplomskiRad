@@ -7,6 +7,7 @@ import { ProjectsComponent } from "./Components/Projects/projects.component";
 import { UserManagmentComponent } from './Components/UserManagment/user-managment.component';
 import { ProjectDetailsComponent } from './Components/project-details/project-details.component';
 import { TaskDetailsComponent } from './Components/task-details/task-details.component';
+import { TasksComponent } from './Components/tasks/tasks.component';
 
 
 
@@ -18,6 +19,7 @@ const appRoutes: Routes = [
         children: [
             { path: 'home', canActivate: [AuthGuard], component: HomeComponent },
             { path: 'projects', canActivate: [AuthGuard], component: ProjectsComponent },
+            { path: 'tasks', canActivate: [AuthGuard], component: TasksComponent },
             { path: 'usermanagment', canActivate: [AuthGuard], component: UserManagmentComponent },
             { path: 'projectDetails', canActivate: [AuthGuard], component: ProjectDetailsComponent },
             { path: 'taskDetails', canActivate: [AuthGuard], component: TaskDetailsComponent },

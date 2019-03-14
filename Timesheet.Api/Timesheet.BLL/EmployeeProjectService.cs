@@ -40,7 +40,26 @@ namespace Timesheet.BLL
                 _logger.LogError(ex, $"{nameof(EmployeeProjectService)}.{MethodBase.GetCurrentMethod().Name}");
                 throw;
             }
+        }
 
+        public async Task AddEmployeesToProject(int projectId, List<int> employeesIds)
+        {
+            try
+            {
+                List<Task> pendingTasks = new List<Task>();
+
+                foreach (var employeeId in employeesIds)
+                {
+                    pendingTasks.Add(AddNewAsync(employeeId, projectId));
+                }
+
+                await Task.WhenAll(pendingTasks);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"{nameof(EmployeeProjectService)}.{MethodBase.GetCurrentMethod().Name}");
+                throw;
+            }
         }
     }
 }

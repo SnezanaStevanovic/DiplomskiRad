@@ -1,3 +1,27 @@
-<p>
-  tasks works!
-</p>
+<div class="grid-container">
+  <div class="tasks-header-row">
+    <h1 class="mat-h1">Your tasks</h1>
+  </div>
+
+
+  <div class="your-tasks-container">
+      <mat-list dense>
+        <mat-list-item class="list-item" *ngFor="let taskWithDetails of tasks | async">
+          <div class="one-task">
+            <mat-icon class="icon" mat-list-icon>assignment</mat-icon>
+            <div class="name-es-time-container">
+              <p mat-line class="name">{{taskWithDetails.task.name}}</p>
+              <p mat-line class="estimated-time"> {{taskWithDetails.task.estimatedTime | date}} </p>
+            </div>
+            <div class="project-task">
+                <mat-icon  mat-list-icon>work</mat-icon>
+                <span class="project-name">{{taskWithDetails.project.name}}</span> 
+            </div>
+            <span class="type">{{taskType[taskWithDetails.task.type]}}</span>
+          </div>
+          <mat-divider></mat-divider>
+        </mat-list-item>
+      </mat-list>
+    </div>
+
+</div>

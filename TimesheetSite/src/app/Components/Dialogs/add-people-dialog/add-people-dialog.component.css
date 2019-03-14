@@ -1,0 +1,18 @@
+.add-people-container{    
+    display: grid;
+    justify-content: center;
+
+}
+
+.dialog-content{
+    display: grid;
+    align-content: center;
+    align-items: center;
+    justify-content: left;
+    justify-items: left;
+}
+
+.action-buttons-row {
+    justify-self: end;
+    align-self: center;
+}

@@ -56,7 +56,8 @@ namespace Timesheet.DAL
                      DateCreated,
                      EndDate,
                      SpentTime,
-                     Progress
+                     Progress,
+                     Description
                FROM
                      Project
                WHERE Id = @ProjectId;
@@ -70,7 +71,8 @@ namespace Timesheet.DAL
                      p.DateCreated,
                      p.EndDate,
                      p.SpentTime,
-                     p.Progress
+                     p.Progress,
+                     p.Description
              FROM Project p
              INNER JOIN EmployeeProject ep
              ON p.Id = ep.ProjectId

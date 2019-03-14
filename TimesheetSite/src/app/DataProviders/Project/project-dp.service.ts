@@ -7,6 +7,7 @@ import { throwError, Observable } from 'rxjs';
 import { BaseResponse } from 'src/app/Model/baseResponse';
 import { ListProjectsResponse } from 'src/app/Model/listProjectsResponse';
 import { GetProjectByIdResponse } from 'src/app/Model/projectByIdResponse';
+import { AddEmployeesToProjectRequest } from 'src/app/Model/addEmployeesToProjectRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -74,6 +75,17 @@ export class ProjectDPService extends BaseService {
         catchError(err => throwError(err))
       );
 
+  }
+
+
+  public addEmployeesToProject(request: AddEmployeesToProjectRequest): Observable<boolean> {
+    const url = this._baseUrl + 'Project/AddEmployees';
+    const postBody = JSON.stringify(request);
+    return this._http.post<BaseResponse>(url, postBody, this.httpOptions)
+      .pipe(
+        map(x => x.success),
+        catchError(err => throwError(err))
+      );
   }
 
 

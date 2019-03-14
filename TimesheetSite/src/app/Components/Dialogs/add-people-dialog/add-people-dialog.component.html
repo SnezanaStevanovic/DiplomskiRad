@@ -1,0 +1,19 @@
+<div class="add-people-container">
+  <h2 mat-dialog-title>Add employee to project</h2>
+  <mat-dialog-content class="dialog-content">
+      <mat-selection-list #employees [(ngModel)]="selectedEmployees">
+          <mat-list-option *ngFor="let employee of users | async" [value]="employee">
+            {{employee.firstName}} {{employee.lastName}}
+          </mat-list-option>
+        </mat-selection-list>
+  </mat-dialog-content>
+
+  <mat-dialog-actions class="action-buttons-row">      
+      <div class="actionButtons">
+          <button mat-button [mat-dialog-close]="false">Cancel</button>
+          <button mat-button  (click)="addEmployees(employees)" cdkFocusInitial>Add</button>
+      </div>
+
+    </mat-dialog-actions>
+
+</div>

@@ -9,5 +9,6 @@ namespace Timesheet.BLL.Interfaces
     public interface IEmployeeProjectService
     {
         Task AddNewAsync(int employeeId, int projectId);
+        Task AddEmployeesToProject(int projectId, List<int> employeesIds);
     }
 }

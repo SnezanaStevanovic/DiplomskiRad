@@ -24,7 +24,8 @@ import { UserManagmentComponent } from './Components/UserManagment/user-managmen
 import { CreateTaskDialogComponent } from './Components/Dialogs/create-task-dialog/create-task-dialog.component';
 import { ProjectDetailsComponent } from './Components/project-details/project-details.component';
 import { TasksComponent } from './Components/tasks/tasks.component';
-import { TaskDetailsComponent } from './task-details/task-details.component';
+import { TaskDetailsComponent } from './Components/task-details/task-details.component';
+import { AddPeopleDialogComponent } from './Components/Dialogs/add-people-dialog/add-people-dialog.component';
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import { TaskDetailsComponent } from './task-details/task-details.component';
     CreateTaskDialogComponent,
     ProjectDetailsComponent,
     TasksComponent,
-    TaskDetailsComponent
+    TaskDetailsComponent,
+    AddPeopleDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -65,7 +67,11 @@ import { TaskDetailsComponent } from './task-details/task-details.component';
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true },
               {provide: LocationStrategy, useClass: HashLocationStrategy},
               {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: true}}],
-  entryComponents : [CreateProjectDialogComponent, RegistrationComponent, CreateTaskDialogComponent],
+  entryComponents : [
+    CreateProjectDialogComponent,
+    RegistrationComponent,
+    CreateTaskDialogComponent,
+    AddPeopleDialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

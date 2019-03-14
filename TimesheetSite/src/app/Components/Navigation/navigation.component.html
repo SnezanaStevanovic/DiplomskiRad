@@ -6,7 +6,7 @@
       <mat-nav-list>
         <a mat-list-item  routerLinkActive="active" [routerLink]="['/main/home']">Home</a>
         <a mat-list-item  routerLinkActive="active" [routerLink]="['/main/projects']">Projects</a>
-        <a mat-list-item href="#">Tasks</a>
+        <a mat-list-item routerLinkActive="active" [routerLink]="['/main/tasks']">Tasks</a>
         <a mat-list-item href="#">Timesheet</a>
         <a mat-list-item  routerLinkActive="active" [routerLink]="['/main/usermanagment']">User Managment</a>
       </mat-nav-list>
@@ -23,7 +23,7 @@
       <div class="user-settings">
         <button mat-fab [matMenuTriggerFor]="menu">{{  loggedUser.username | slice:0:1 | uppercase}}</button>
         <mat-menu [overlapTrigger]="false" #menu="matMenu">
-          <button mat-menu-item>Tasks</button>
+          <button mat-menu-item [routerLink]="['/main/tasks']">Tasks</button>
           <button mat-menu-item [routerLink]="['/main/projects']">Projects</button>
           <button mat-menu-item>Settings</button>
           <button mat-menu-item (click)="logout()">Logout</button>

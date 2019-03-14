@@ -11,6 +11,8 @@ import { ProjectWithEmployees } from 'src/app/Model/projectWithEmploees';
 import { ProjectService } from 'src/app/Services/Project/project.service';
 import { Router, NavigationExtras } from '@angular/router';
 import { JsonPipe } from '@angular/common';
+import { AddPeopleDialogComponent } from '../Dialogs/add-people-dialog/add-people-dialog.component';
+import { Project } from 'src/app/Model/project';
 
 @Component({
   selector: 'app-projects',
@@ -85,6 +87,27 @@ export class ProjectsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+      }
+    });
+  }
+
+
+
+  public AddEmployee(projectCard: ProjectCard): void {
+
+    const dialogData: ProjectWithEmployees = new ProjectWithEmployees();
+    dialogData.project = projectCard.project;
+    dialogData.employees = projectCard.employees;
+
+    const addPeopleDialogRef = this.dialog.open(AddPeopleDialogComponent, {
+      data: dialogData
+    });
+
+    addPeopleDialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this._userService.getAllForProject(projectCard.project.id).subscribe(x => {
+          projectCard.employees = x;
+        });
       }
     });
   }

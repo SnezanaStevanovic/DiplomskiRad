@@ -22,10 +22,16 @@ namespace Timesheet.Api.Controllers
 
         private readonly IProjectService _projectService;
 
-        public ProjectController(IProjectService projectService, ILogger<ProjectController> logger)
+        private readonly IEmployeeProjectService _employeeProjectService;
+
+        public ProjectController(
+            IProjectService projectService,
+            ILogger<ProjectController> logger,
+            IEmployeeProjectService employeeProjectService)
         {
             _projectService = projectService;
             _logger = logger;
+            _employeeProjectService = employeeProjectService;
         }
 
         [HttpGet("GetAll")]
@@ -46,7 +52,6 @@ namespace Timesheet.Api.Controllers
 
                 _logger.LogError(ex, $"{nameof(ProjectController)}.{MethodBase.GetCurrentMethod().Name}");
             }
-
 
             return Ok(response);
         }
@@ -97,7 +102,6 @@ namespace Timesheet.Api.Controllers
             return Ok(response);
         }
 
-
         [HttpPost("AddNew")]
         public async Task<IActionResult> AddNew([FromBody] Project newProject)
         {
@@ -117,6 +121,24 @@ namespace Timesheet.Api.Controllers
                 response.Success = false;
 
                 _logger.LogError(ex, $"{nameof(ProjectController)}.{MethodBase.GetCurrentMethod().Name}");
+            }
+
+            return Ok(response);
+        }
+
+        [HttpPost("AddEmployees")]
+        public async Task<ActionResult> AddEmployeesToProject([FromBody]AddEmployeesToProjectRequest addEmployeesToProjectRequest)
+        {
+            BaseResponse response = new BaseResponse();
+            try
+            {
+                await _employeeProjectService.AddEmployeesToProject(addEmployeesToProjectRequest.ProjectId, addEmployeesToProjectRequest.EmployeesIds);
+                response.Success = true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"{nameof(ProjectController)}.{MethodBase.GetCurrentMethod().Name}");
+                response.Success = false;
             }
 
             return Ok(response);
